@@ -12,8 +12,10 @@ public class GiantNetSync : Photon.MonoBehaviour //enable it to access GameObjec
 	private string[] bodyPartNames = new string[]{"Hips","Shoulder","Arm","ForeArm"};
 	private const int numNonDuplicateBodyParts = 1; //prefix not left or right
 	private int totalNumBodyParts;
-	public BigLittleGameLogic gameLogic;
+	//public BigLittleGameLogic gameLogic;//Need Identify
 
+	private Platform platform;
+	
 	[HideInInspector]
 	public Transform[] bodyPartTransforms = null;
 	[HideInInspector]
@@ -50,12 +52,16 @@ public class GiantNetSync : Photon.MonoBehaviour //enable it to access GameObjec
 		}
 
 	}
+
+	void Start() {
+		platform = GameObject.Find("PlatformManager").GetComponent<PlatformIndicator>().platform;
+	}
+
 	
 	// Update is called once per frame
 	void Update()
 	{
-		//Debug.Log (gameLogic.giantID);
-		if (PhotonNetwork.player.ID != gameLogic.giantID)
+		if (platform == Platform.PC_Giant)//Need Identify
 		{
 			//Debug.Log ("Giant is not mine");
 			for(int i = 0;i < totalNumBodyParts;i++) {

@@ -5,11 +5,13 @@ public class TreeLifeCycle : Photon.MonoBehaviour {
 
 	public float timeToDestroyAfterRelease = 30f;
 	//public BigLittleGameLogic gameLogic;
-	private bool isGiantClient;
+	//private bool isGiantClient;//Need Identify
+	private Platform platform;
 	bool isPhotonSelfDestroy = false;
 	void Awake() {
-		isGiantClient = (GameObject.FindGameObjectWithTag ("OVR") != null);
+		//isGiantClient = (GameObject.FindGameObjectWithTag ("OVR") != null);
 		//gameLogic = GameObject.Find ("NetworkManager").GetComponent<BigLittleGameLogic> ();
+		platform = GameObject.Find("PlatformManager").GetComponent<PlatformIndicator>().platform;
 	}
 
 	// Use this for initialization
@@ -23,14 +25,14 @@ public class TreeLifeCycle : Photon.MonoBehaviour {
 	}
 
 	public void countDownDestroy(){
-		if (isGiantClient && isPhotonSelfDestroy == false ) {
+		if (platform == Platform.PC_Giant && isPhotonSelfDestroy == false ) {
 			Invoke ("PhotonSelfDestroy", timeToDestroyAfterRelease);
 			isPhotonSelfDestroy = true;
 		}
 	}
 
 	public void cancelDestroy(){
-		if (isGiantClient && isPhotonSelfDestroy == true) {
+		if (platform == Platform.PC_Giant && isPhotonSelfDestroy == true) {
 			CancelInvoke ("PhotonSelfDestroy");
 			isPhotonSelfDestroy = false;
 		}
@@ -45,14 +47,14 @@ public class TreeLifeCycle : Photon.MonoBehaviour {
 
 	public void DetachPoint()
 	{
-		if (isGiantClient) {
+		if (platform == Platform.PC_Giant) {
 			photonView.RPC ("RPCDetachPoint", PhotonTargets.All, null);
 		}
 	}
 
 	public void AttachPoint(string AttachObjectName)
 	{
-		if (isGiantClient) {
+		if (platform == Platform.PC_Giant) {
 			photonView.RPC ("RPCAttachPoint", PhotonTargets.All, AttachObjectName);
 		}
 	}

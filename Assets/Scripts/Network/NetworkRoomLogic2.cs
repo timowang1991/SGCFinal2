@@ -9,13 +9,14 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 	//private PhotonView playerPhotonView;
 	//private string roomName = "bigLittleBattle";
 	public Transform startPoint;
-	private BigLittleGameLogic gameLogic;
-
+	private BigLittleGameLogic gameLogic;//Need Identify
+	private Platform platform;
 	// Use this for initialization
     void Start()
     {
 		PhotonNetwork.ConnectUsingSettings("0.1");
 		gameLogic = GetComponent<BigLittleGameLogic>();
+		platform = GameObject.Find("PlatformManager").GetComponent<PlatformIndicator>().platform;
     }
 
 	void OnJoinedLobby()
@@ -39,7 +40,8 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
     {
 		Debug.Log("joined room");
 
-		if(GameObject.FindGameObjectWithTag("OVR") != null) {
+		if (platform == Platform.PC_Giant)//Need Identify
+		{
 			//init as giant
 			//Vector3 giantPos = new Vector3(250,-70,119);
 			//GameObject currPlayer = PhotonNetwork.Instantiate("Giant_Net", giantPos, Quaternion.identity, 0);

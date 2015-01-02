@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlatformEnum : MonoBehaviour {
-	[HideInInspector]
-	public enum Platform{
-		Phone,
-		PC_Miniature,
-		PC_Giant
-	};
+public enum Platform{
+	Phone,
+	PC_Miniature,
+	PC_Giant
+};
+
+public class PlatformIndicator : MonoBehaviour {
+
 	[HideInInspector]
 	public Platform platform;
 

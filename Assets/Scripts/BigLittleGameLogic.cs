@@ -5,8 +5,7 @@ public class BigLittleGameLogic : Photon.MonoBehaviour {
 	
 	public int giantID = -1;
 	public HeroCtrl_Net2 currPlayerCharCtrl = null;
-	
-	//private static PhotonView ScenePhotonView;
+	private Platform platform;
 	
 	// Use this for initialization
 	public void Start()
@@ -17,8 +16,8 @@ public class BigLittleGameLogic : Photon.MonoBehaviour {
 	public void OnJoinedRoom()
 	{
 		// game logic: if this is the only player, then this player is big man
-		
-		if (GameObject.FindGameObjectWithTag("OVR") != null)
+		platform = GameObject.Find("PlatformManager").GetComponent<PlatformIndicator>().platform;
+		if (platform == Platform.PC_Giant)//Need Identify
 		{
 			giantID = PhotonNetwork.player.ID;
 			NoticeWhoIsGiant(giantID);
