@@ -94,7 +94,7 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 						Camera.main.transform.position = camToPutTrans.position;
 						Camera.main.transform.rotation = camToPutTrans.rotation;
 						Camera.main.transform.parent = myCatapult.transform;
-			targetPointTrans.parent = Camera.main.transform;
+						targetPointTrans.parent = Camera.main.transform;
 						Camera.main.GetComponent<MobileController>().setCatapult(myCatapult);
 
 				}

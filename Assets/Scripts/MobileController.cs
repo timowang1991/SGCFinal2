@@ -7,10 +7,12 @@ public class MobileController : MonoBehaviour {
 	public float RotationSpeed = 10f;
 	[HideInInspector]
 	public GameObject Catapult = null;
-	public float viewAngleLowerBound = 0;
+//	[HideInInspector]
+	private float viewAngleUpperBound = 360 - 0.05f;
+	private float viewAngleLowerBound = 320;
 	private Transform _transformCache;
 	private Transform _parentTransformCache;
-	private Transform _catapultTransformCahce;
+	private Transform _catapultTransformCache;
 
 	private Animator animator = null;
 	private string state_shot = "Shoot_Stone";
@@ -23,20 +25,23 @@ public class MobileController : MonoBehaviour {
 		Input.gyro.enabled = true;
 		_transformCache = GetComponent<Transform>();
 		RotateJoystick = GameObject.Find ("CNJoystick").GetComponent<CNJoystick>();
+
 	}
 
 	public void setCatapult(GameObject pCatapult) {
 		Catapult = pCatapult;
 		animator = Catapult.GetComponent<Animator>();
-		_catapultTransformCahce = Catapult.GetComponent<Transform>();
+		_catapultTransformCache = Catapult.GetComponent<Transform>();
 		cataCtrl = Catapult.GetComponent<CatapultsController>();
 		cataCtrl.TargetPoint = GameObject.Find ("TargetPoint").transform;
 		_parentTransformCache = _transformCache.parent;
-		  Vector3 posToLookAtInLocal = new Vector3 (0, viewAngleLowerBound + 0.5f, 0);
-		_transformCache.LookAt(posToLookAtInLocal + pCatapult.transform.position);
-
-
+		_transformCache.Rotate (-10, 0, 0); //turn view angle upward 10 degrees
+		Vector3 giantWaistPos = GameObject.Find ("GiantWaist").transform.position;
+		giantWaistPos.y = _catapultTransformCache.transform.position.y;
+		_catapultTransformCache.LookAt (giantWaistPos);
 	}
+
+	private const float angleOffset = 0.05f;
 
 	// Update is called once per frame
 	void Update () {
@@ -44,10 +49,12 @@ public class MobileController : MonoBehaviour {
 			float rotationX = RotateJoystick.GetAxis("Horizontal") * RotationSpeed * Time.deltaTime;
 			float rotationY = RotateJoystick.GetAxis("Vertical") * RotationSpeed * Time.deltaTime;
 			_parentTransformCache.Rotate(0f, rotationX, 0f, Space.World);
-			_catapultTransformCahce.Rotate(0f, rotationX, 0f, Space.World);
-			//if(_transformCache.rotation.x >= viewAngleLowerBound) {
+			_catapultTransformCache.Rotate(0f, rotationX, 0f, Space.World);
+			float curViewAngle = _transformCache.eulerAngles.x;
+			//Debug.Log (curViewAngle);
+			if(viewAngleUpperBound - curViewAngle - angleOffset > -rotationY && curViewAngle- viewAngleLowerBound - angleOffset > rotationY) {
 				_transformCache.Rotate(-rotationY, 0f, 0f);
-			//}
+			}
 		}
 		if(isShooting == false){	
 			StartShooting();
