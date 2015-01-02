@@ -55,7 +55,7 @@ public class GiantNetSync : Photon.MonoBehaviour //enable it to access GameObjec
 	void Update()
 	{
 		Debug.Log (gameLogic.giantID);
-		if (!photonView.isMine && PhotonNetwork.player.ID == gameLogic.giantID)
+		if (PhotonNetwork.player.ID != gameLogic.giantID)
 		{
 			Debug.Log ("Giant is not mine");
 			for(int i = 0;i < totalNumBodyParts;i++) {
