@@ -54,10 +54,10 @@ public class GiantNetSync : Photon.MonoBehaviour //enable it to access GameObjec
 	// Update is called once per frame
 	void Update()
 	{
-		Debug.Log (gameLogic.giantID);
+		//Debug.Log (gameLogic.giantID);
 		if (PhotonNetwork.player.ID != gameLogic.giantID)
 		{
-			Debug.Log ("Giant is not mine");
+			//Debug.Log ("Giant is not mine");
 			for(int i = 0;i < totalNumBodyParts;i++) {
 				bodyPartTransforms[i].position = Vector3.Lerp (bodyPartTransforms[i].position,correctBodyPartPositions[i],Time.deltaTime * 5);
 				bodyPartTransforms[i].rotation = Quaternion.Lerp (bodyPartTransforms[i].rotation,correctBodyPartRotations[i],Time.deltaTime * 5);

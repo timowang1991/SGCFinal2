@@ -29,7 +29,7 @@ public class GrabScript : MonoBehaviour {
 	void Update () {
 		recordPosition ();
 		computeVelocity ();
-		holdingObjects();
+//		holdingObjects();
 		throwObjects ();
 	}
 
@@ -46,11 +46,11 @@ public class GrabScript : MonoBehaviour {
 //		Debug.Log ("displacement magnitude : " + displacement.magnitude);
 	}
 
-	void holdingObjects(){
-		foreach(Collider collider in colliderList){
-			collider.transform.position = transform.position;
-		}
-	}
+//	void holdingObjects(){
+//		foreach(Collider collider in colliderList){
+//			collider.transform.position = transform.position;
+//		}
+//	}
 
 	void OnTriggerEnter(Collider other){
 		//Debug.Log ("OnTriggerEnter : object" + other.gameObject.name);
