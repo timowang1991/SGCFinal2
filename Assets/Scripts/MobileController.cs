@@ -5,6 +5,7 @@ public class MobileController : MonoBehaviour {
 
 	public CNAbstractController RotateJoystick;
 	public float RotationSpeed = 10f;
+	[HideInInspector]
 	public GameObject Catapult;
 
 	private Transform _transformCahce;
