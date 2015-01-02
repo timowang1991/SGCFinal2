@@ -45,7 +45,7 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 			//GameObject currPlayer = PhotonNetwork.Instantiate("Giant_Net", giantPos, Quaternion.identity, 0);
 			GameObject.FindGameObjectWithTag("OVR").GetComponent<OculusFollower>().setOculusFollower();
 			GameObject.Find ("Giant_Net").GetComponent<PhotonView>().RequestOwnership();
-
+			GetComponent<TreesGeneratorNet>().enabled = true;
 		}
 		else {
 			GameObject currPlayer = PhotonNetwork.Instantiate("Ninja_Net2_noCollider", startPoint.position, Quaternion.identity, 0);
