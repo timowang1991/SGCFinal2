@@ -6,6 +6,7 @@ public class TreeLifeCycle : Photon.MonoBehaviour {
 	public float timeToDestroyAfterRelease = 30f;
 	//public BigLittleGameLogic gameLogic;
 	private bool isGiantClient;
+	bool isPhotonSelfDestroy = false;
 	void Awake() {
 		isGiantClient = (GameObject.FindGameObjectWithTag ("OVR") != null);
 		//gameLogic = GameObject.Find ("NetworkManager").GetComponent<BigLittleGameLogic> ();
@@ -22,14 +23,16 @@ public class TreeLifeCycle : Photon.MonoBehaviour {
 	}
 
 	public void countDownDestroy(){
-		if (isGiantClient) {
+		if (isGiantClient && isPhotonSelfDestroy == false ) {
 			Invoke ("PhotonSelfDestroy", timeToDestroyAfterRelease);
+			isPhotonSelfDestroy = true;
 		}
 	}
 
 	public void cancelDestroy(){
-		if (isGiantClient) {
+		if (isGiantClient && isPhotonSelfDestroy == true) {
 			CancelInvoke ("PhotonSelfDestroy");
+			isPhotonSelfDestroy = false;
 		}
 	}
 
