@@ -4,7 +4,12 @@ using System.Collections;
 public class TreeLifeCycle : Photon.MonoBehaviour {
 
 	public float timeToDestroyAfterRelease = 30f;
-	bool iscountDownDestroy = false;
+	//public BigLittleGameLogic gameLogic;
+	private bool isGiantClient;
+	void Awake() {
+		isGiantClient = (GameObject.FindGameObjectWithTag ("OVR") != null);
+		//gameLogic = GameObject.Find ("NetworkManager").GetComponent<BigLittleGameLogic> ();
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -17,38 +22,36 @@ public class TreeLifeCycle : Photon.MonoBehaviour {
 	}
 
 	public void countDownDestroy(){
-		if(iscountDownDestroy == false)
-		{
-			Invoke("PhotonSelfDestroy", timeToDestroyAfterRelease);
-			iscountDownDestroy = true;
+		if (isGiantClient) {
+			Invoke ("PhotonSelfDestroy", timeToDestroyAfterRelease);
 		}
 	}
 
 	public void cancelDestroy(){
-		if(iscountDownDestroy == true)
-		{
-			CancelInvoke("PhotonSelfDestroy");
-			iscountDownDestroy = false;
+		if (isGiantClient) {
+			CancelInvoke ("PhotonSelfDestroy");
 		}
 	}
 
 	void PhotonSelfDestroy(){
 		//photonView.RPC("selfTreeDestroy", PhotonTargets.All, null);
-		Debug.Log("PhotonSelfDestroy called :" + photonView.viewID);
-		if(GameObject.FindGameObjectWithTag("OVR") !=null)
-		{
-			PhotonNetwork.Destroy(this.gameObject);
-		}
+		Debug.Log ("PhotonSelfDestroy");
+		PhotonNetwork.Destroy(this.gameObject);
+
 	}
 
 	public void DetachPoint()
 	{
-		photonView.RPC("RPCDetachPoint", PhotonTargets.All, null);
+		if (isGiantClient) {
+			photonView.RPC ("RPCDetachPoint", PhotonTargets.All, null);
+		}
 	}
 
 	public void AttachPoint(string AttachObjectName)
 	{
-		photonView.RPC("RPCAttachPoint", PhotonTargets.All, AttachObjectName);
+		if (isGiantClient) {
+			photonView.RPC ("RPCAttachPoint", PhotonTargets.All, AttachObjectName);
+		}
 	}
 	[RPC]
 	public void RPCAttachPoint(string AttachObjectTag)
