@@ -70,7 +70,8 @@ public class CatapultsController : MonoBehaviour {
 		//player = GameObject.FindGameObjectWithTag("Player");
 	}
 
-	GameObject Stone_clone;
+	[HideInInspector]
+	public GameObject Stone_clone;
 	// Update is called once per frame
 	void Update () {
 		//Debug.Log (Catapults_animator.GetCurrentAnimatorStateInfo (0).nameHash);
