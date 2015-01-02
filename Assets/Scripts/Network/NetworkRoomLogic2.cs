@@ -40,37 +40,38 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
     {
 		Debug.Log("joined room");
 
-		if (platform == Platform.PC_Giant)//Need Identify
-		{
-			//init as giant
-			//Vector3 giantPos = new Vector3(250,-70,119);
-			//GameObject currPlayer = PhotonNetwork.Instantiate("Giant_Net", giantPos, Quaternion.identity, 0);
-			GameObject.FindGameObjectWithTag("OVR").GetComponent<OculusFollower>().setOculusFollower();
-			GameObject.Find ("Giant_Net").GetComponent<PhotonView>().RequestOwnership();
-			GetComponent<TreesGeneratorNet>().enabled = true;
-		}
-		else {
-			GameObject currPlayer = PhotonNetwork.Instantiate("Ninja_Net2_noCollider", startPoint.position, Quaternion.identity, 0);
-			//currPlayer.GetComponent<CharacterNetSyncAlias>().correctPlayerPos = startPoint.position;
-			HeroCtrlAlias netCtrl = currPlayer.GetComponent<HeroCtrlAlias>();
-			netCtrl.isControllable = true;
-			gameLogic.currPlayerCharCtrl = netCtrl;
-			HeroCamAlias cameraLogic = currPlayer.GetComponent<HeroCamAlias>();
-			if(cameraLogic == null) {
-				currPlayer.AddComponent<HeroCamAlias>();
-				cameraLogic = currPlayer.GetComponent<HeroCamAlias>();
-			}
-			Camera mainCam = Camera.main;
-			if(mainCam == null) {
-				mainCam = new Camera();
-				mainCam.tag = "MainCamera";
-			}
-			cameraLogic.cam = mainCam.transform;
-			cameraLogic.enabled = true;
-			mainCam.transform.parent = currPlayer.transform;
+		if (platform == Platform.PC_Giant) {//Need Identify
+						//init as giant
+						//Vector3 giantPos = new Vector3(250,-70,119);
+						//GameObject currPlayer = PhotonNetwork.Instantiate("Giant_Net", giantPos, Quaternion.identity, 0);
+						GameObject.FindGameObjectWithTag ("OVR").GetComponent<OculusFollower> ().setOculusFollower ();
+						GameObject.Find ("Giant_Net").GetComponent<PhotonView> ().RequestOwnership ();
+						GetComponent<TreesGeneratorNet> ().enabled = true;
+				} else if (platform == Platform.PC_Miniature) {
+						GameObject currPlayer = PhotonNetwork.Instantiate ("Ninja_Net2_noCollider", startPoint.position, Quaternion.identity, 0);
+						//currPlayer.GetComponent<CharacterNetSyncAlias>().correctPlayerPos = startPoint.position;
+						HeroCtrlAlias netCtrl = currPlayer.GetComponent<HeroCtrlAlias> ();
+						netCtrl.isControllable = true;
+						gameLogic.currPlayerCharCtrl = netCtrl;
+						HeroCamAlias cameraLogic = currPlayer.GetComponent<HeroCamAlias> ();
+						if (cameraLogic == null) {
+								currPlayer.AddComponent<HeroCamAlias> ();
+								cameraLogic = currPlayer.GetComponent<HeroCamAlias> ();
+						}
+						Camera mainCam = Camera.main;
+						if (mainCam == null) {
+								mainCam = new Camera ();
+								mainCam.tag = "MainCamera";
+						}
+						cameraLogic.cam = mainCam.transform;
+						cameraLogic.enabled = true;
+						mainCam.transform.parent = currPlayer.transform;
 
-			gameLogic.initVarsByRPC(netCtrl,PhotonTargets.Others);
-		}
+						gameLogic.initVarsByRPC (netCtrl, PhotonTargets.Others);
+				} 
+				else if (platform == Platform.Phone) {
+							
+				}
     }
 
 	void OnPhotonJoinRoomFailed() {
