@@ -61,7 +61,7 @@ public class GiantNetSync : Photon.MonoBehaviour //enable it to access GameObjec
 	// Update is called once per frame
 	void Update()
 	{
-		if (platform == Platform.PC_Giant)//Need Identify
+		if (platform != Platform.PC_Giant)//Need Identify
 		{
 			//Debug.Log ("Giant is not mine");
 			for(int i = 0;i < totalNumBodyParts;i++) {
