@@ -4,6 +4,7 @@ using System.Collections;
 public class TreeLifeCycle : Photon.MonoBehaviour {
 
 	public float timeToDestroyAfterRelease = 30f;
+	bool iscountDownDestroy = false;
 
 	// Use this for initialization
 	void Start () {
@@ -16,15 +17,24 @@ public class TreeLifeCycle : Photon.MonoBehaviour {
 	}
 
 	public void countDownDestroy(){
-		Invoke("PhotonSelfDestroy", timeToDestroyAfterRelease);
+		if(iscountDownDestroy == false)
+		{
+			Invoke("PhotonSelfDestroy", timeToDestroyAfterRelease);
+			iscountDownDestroy = true;
+		}
 	}
 
 	public void cancelDestroy(){
-		CancelInvoke("PhotonSelfDestroy");
+		if(iscountDownDestroy == true)
+		{
+			CancelInvoke("PhotonSelfDestroy");
+			iscountDownDestroy = false;
+		}
 	}
 
 	void PhotonSelfDestroy(){
 		//photonView.RPC("selfTreeDestroy", PhotonTargets.All, null);
+		Debug.Log("PhotonSelfDestroy called :" + photonView.viewID);
 		if(GameObject.FindGameObjectWithTag("OVR") !=null)
 		{
 			PhotonNetwork.Destroy(this.gameObject);
@@ -33,12 +43,12 @@ public class TreeLifeCycle : Photon.MonoBehaviour {
 
 	public void DetachPoint()
 	{
-		photonView.RPC("RPCDetachPoint", PhotonTargets.AllBuffered, null);
+		photonView.RPC("RPCDetachPoint", PhotonTargets.All, null);
 	}
 
 	public void AttachPoint(string AttachObjectName)
 	{
-		photonView.RPC("RPCAttachPoint", PhotonTargets.AllBuffered, AttachObjectName);
+		photonView.RPC("RPCAttachPoint", PhotonTargets.All, AttachObjectName);
 	}
 	[RPC]
 	public void RPCAttachPoint(string AttachObjectTag)

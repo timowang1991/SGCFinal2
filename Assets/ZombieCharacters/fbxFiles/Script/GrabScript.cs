@@ -29,7 +29,7 @@ public class GrabScript : MonoBehaviour {
 	void Update () {
 		recordPosition ();
 		computeVelocity ();
-		holdingObjects();
+//		holdingObjects();
 		throwObjects ();
 	}
 
@@ -46,23 +46,37 @@ public class GrabScript : MonoBehaviour {
 //		Debug.Log ("displacement magnitude : " + displacement.magnitude);
 	}
 
-	void holdingObjects(){
-		foreach(Collider collider in colliderList){
-			collider.transform.position = transform.position;
-		}
-	}
+//	void holdingObjects(){
+//		foreach(Collider collider in colliderList){
+//			collider.transform.position = transform.position;
+//		}
+//	}
 
 	void OnTriggerEnter(Collider other){
 		//Debug.Log ("OnTriggerEnter : object" + other.gameObject.name);
 		if (other.gameObject.layer == LayerMask.NameToLayer (grabbableLayerName) &&
 		    colliderList.Count < maxNumOfObjectsOnHand) {
-			//Debug.Log("OnTriggerEnter : " + other.gameObject.name + "after if");
+			Debug.Log("OnTriggerEnter : " + other.gameObject.name + "after if");
 			colliderList.Add (other);
 //			other.transform.parent = this.transform;
+
 			if(other.gameObject.tag == "BigTreeTrunk")
 			{
-				//Debug.Log("BigTreeTrunkAttach");
-				other.gameObject.GetComponent<TreeLifeCycle>().AttachPoint(this.gameObject.tag);
+//				bool isExist = false;
+//				//Debug.Log("BigTreeTrunkAttach");
+//				foreach(Collider collide in colliderList)
+//				{
+//					if(collide.gameObject.GetComponent<PhotonView>().viewID == other.gameObject.GetComponent<PhotonView>().viewID)
+//					{
+//						isExist = true;
+//					}
+//				}
+////				Debug.Log
+//				if(!isExist)
+//				{
+					Debug.Log("Attach to "+this.gameObject.tag +" ID: " +other.gameObject.GetComponent<PhotonView>().viewID);
+					other.gameObject.GetComponent<TreeLifeCycle>().AttachPoint(this.gameObject.tag);
+//				}
 			}
 			//other.transform.position = this.transform.position;
 //			other.rigidbody.isKinematic = true;
