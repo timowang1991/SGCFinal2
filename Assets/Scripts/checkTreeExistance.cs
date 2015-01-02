@@ -30,7 +30,8 @@ public class checkTreeExistance : Photon.MonoBehaviour {
 	void OnTriggerExit(Collider other) {
 		if(other.tag == treeTag && other.gameObject == treeBeSet) {
 			Debug.Log ("be set tree exited");
-			if(PhotonNetwork.player.ID == gameLogic.GetbigManID()) {
+			Debug.Log(gameLogic.giantID);
+			if(PhotonNetwork.player.ID == gameLogic.giantID) {
 				photonView.RPC ("setTreeToNull",PhotonTargets.All,null);
 			}
 		}

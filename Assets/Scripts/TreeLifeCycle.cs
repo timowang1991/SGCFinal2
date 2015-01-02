@@ -25,7 +25,10 @@ public class TreeLifeCycle : Photon.MonoBehaviour {
 
 	void PhotonSelfDestroy(){
 		//photonView.RPC("selfTreeDestroy", PhotonTargets.All, null);
-		PhotonNetwork.Destroy(this.gameObject);
+		if(GameObject.FindGameObjectWithTag("OVR") !=null)
+		{
+			PhotonNetwork.Destroy(this.gameObject);
+		}
 	}
 
 	public void DetachPoint()

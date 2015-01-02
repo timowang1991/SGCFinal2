@@ -12,6 +12,7 @@ public class GiantNetSync : Photon.MonoBehaviour //enable it to access GameObjec
 	private string[] bodyPartNames = new string[]{"Hips","Shoulder","Arm","ForeArm"};
 	private const int numNonDuplicateBodyParts = 1; //prefix not left or right
 	private int totalNumBodyParts;
+	public BigLittleGameLogic gameLogic;
 
 	[HideInInspector]
 	public Transform[] bodyPartTransforms = null;
@@ -53,7 +54,8 @@ public class GiantNetSync : Photon.MonoBehaviour //enable it to access GameObjec
 	// Update is called once per frame
 	void Update()
 	{
-		if (!photonView.isMine && !photonView.isSceneView)
+		Debug.Log (gameLogic.giantID);
+		if (!photonView.isMine && PhotonNetwork.player.ID == gameLogic.giantID)
 		{
 			Debug.Log ("Giant is not mine");
 			for(int i = 0;i < totalNumBodyParts;i++) {
