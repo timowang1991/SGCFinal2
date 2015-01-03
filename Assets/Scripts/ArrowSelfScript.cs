@@ -3,10 +3,6 @@ using System.Collections;
 
 public class ArrowSelfScript : MonoBehaviour {
 
-	public int WeakPoint;
-	public int WeakerPoint;
-	public int WeakestPoint;
-
 	public enum ArrowState
 	{
 		holding,
@@ -32,22 +28,22 @@ public class ArrowSelfScript : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerEnter(Collider other) {
+	void OnCollisionEnter(Collision other) {
 
 		if(other.gameObject.tag == "Weak")
 		{
 			Debug.Log ("Arrow: " + other.gameObject.tag);
-			GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().loseHealthPoint(WeakPoint);
+			GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().HurtGiant(1,this.gameObject.tag);
 		}
 		else if(other.gameObject.tag == "Weaker")
 		{
 			Debug.Log ("Arrow: " + other.gameObject.tag);
-			GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().loseHealthPoint(WeakerPoint);
+			GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().HurtGiant(2,this.gameObject.tag);
 		}
 		else if(other.gameObject.tag == "Weakest")
 		{
 			Debug.Log ("Arrow: " + other.gameObject.tag);
-			GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().loseHealthPoint(WeakestPoint);
+			GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().HurtGiant(3,this.gameObject.tag);
 		}
 	}
 }

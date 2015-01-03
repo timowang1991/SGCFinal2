@@ -102,6 +102,7 @@ public class CatapultsController : Photon.MonoBehaviour {
 
 	void Update () {
 		//Debug.Log (Catapults_animator.GetCurrentAnimatorStateInfo (0).nameHash);
+<<<<<<< HEAD
 		//if(isControllable) { //use enable/disable mechanism
 		if (Catapults_animator.GetCurrentAnimatorStateInfo (0).nameHash == LoadedState && isLoaded == false && Stone_clone==null) {
 			parasArrayForStoneInit[0] = photonView.viewID;
@@ -113,6 +114,20 @@ public class CatapultsController : Photon.MonoBehaviour {
 		if(Catapults_animator.GetCurrentAnimatorStateInfo (0).nameHash == LoadingleState){
 			isLoaded=false;
 		}
+=======
+		if(isControllable) {
+			if (Catapults_animator.GetCurrentAnimatorStateInfo (0).nameHash == LoadedState && isLoaded == false && Stone_clone==null) {
+				parasArrayForStoneInit[0] = photonView.viewID;
+				Stone_clone =  PhotonNetwork.Instantiate ("Stone_Net", stonePlacedTrans.position , transform.rotation , 0, parasArrayForStoneInit);
+				Stone_clone.GetComponent<StoneSelfScript>().CatapultPhotonView = photonView;
+				photonView.RPC ("getTheClonedStone",PhotonTargets.All,Stone_clone.GetComponent<PhotonView>().viewID);
+				isLoaded=true;
+			} 
+
+			if(Catapults_animator.GetCurrentAnimatorStateInfo (0).nameHash == LoadingleState){
+				isLoaded=false;
+			}
+>>>>>>> 0e030f80aac4ef0a10284eeeba974d99ec18372a
 
 //		switch (playstate) {
 //			case PlayerState.PlayerInside:

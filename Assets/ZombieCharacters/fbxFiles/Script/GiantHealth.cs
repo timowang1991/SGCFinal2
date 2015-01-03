@@ -4,10 +4,13 @@ using System.Collections;
 public class GiantHealth : MonoBehaviour {
 
 	public int healthPoint;
+	public float Factor;
+	public int minHurtPoint;
+	private static PhotonView GiantPhotonView;
 
 	// Use this for initialization
 	void Start () {
-	
+		GiantPhotonView = this.GetComponent<PhotonView>();
 	}
 	
 	// Update is called once per frame
@@ -15,7 +18,7 @@ public class GiantHealth : MonoBehaviour {
 
 	}
 
-	public void loseHealthPoint(int losePoint){
+	void loseHealthPoint(int losePoint){
 		healthPoint -= losePoint;
 		if(healthPoint <= 0){
 			death ();
@@ -25,4 +28,24 @@ public class GiantHealth : MonoBehaviour {
 	void death(){
 
 	}
+	
+	// int valus 1=Weak 2=Weaker 3=Weakest
+	public void HurtGiant(int HurtWeakLevel , string Thing)
+	{
+		GiantPhotonView.RPC("RPCHurtGiant",PhotonTargets.All ,HurtWeakLevel,Thing);
+	}
+
+	[RPC]
+	void RPCHurtGiant(int HurtWeakLevel , string Thing)
+	{
+		if(Thing == "Stone")
+		{
+			loseHealthPoint((int)(minHurtPoint * HurtWeakLevel * Factor));
+		}
+		else if(Thing == "Arrow")
+		{
+			loseHealthPoint(minHurtPoint * HurtWeakLevel);
+		}
+	}
+
 }
