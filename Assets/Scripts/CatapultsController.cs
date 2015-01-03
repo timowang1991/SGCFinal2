@@ -44,15 +44,17 @@ public class CatapultsController : Photon.MonoBehaviour {
 //	}
 	[HideInInspector]
 	public GameObject Stone_clone;
-
+	private GameObject stoneClonedCache;
 	public void Shoot_Stone()//should be protected by isControllable
 	{
 		//if(photonView.isMine) {
 			Debug.Log ("shoot stone called by me");
-			Vector3 direction =  TargetPoint.transform.position - Cam.position;
-			Stone_clone.GetComponent<PhotonView> ().RPC ("shootSelfRPC", PhotonTargets.All, direction);
-			Stone_clone.GetComponent<Stone_NetSync>().invokeDestroySelfOverNet (10);
+			stoneClonedCache = Stone_clone;
 			Stone_clone = null;
+			Vector3 direction =  TargetPoint.transform.position - Cam.position;
+			stoneClonedCache.GetComponent<PhotonView> ().RPC ("shootSelfRPC", PhotonTargets.All, direction);
+			stoneClonedCache.GetComponent<Stone_NetSync>().invokeDestroySelfOverNet (10);
+			//Stone_clone = null;
 		//}
 	}
 
