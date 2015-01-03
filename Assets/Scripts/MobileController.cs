@@ -19,21 +19,27 @@ public class MobileController : MonoBehaviour {
 	private bool isShooting = false;
 	private float threshold = 0.3f;
 	private CatapultsController cataCtrl = null;
+	private Platform platform;
+	[HideInInspector]
+	public bool isControllable = false;
 
 	// Use this for initialization
 	void Start () {
+		//if(isControllable) {
 		Input.gyro.enabled = true;
-		_transformCache = GetComponent<Transform>();
 		RotateJoystick = GameObject.Find ("CNJoystick").GetComponent<CNJoystick>();
-
+		//}
+		_transformCache = GetComponent<Transform>();
 	}
 
+	//this script should only be called in current player
 	public void setCatapult(GameObject pCatapult) {
 		Catapult = pCatapult;
 		animator = Catapult.GetComponent<Animator>();
 		_catapultTransformCache = Catapult.GetComponent<Transform>();
 		cataCtrl = Catapult.GetComponent<CatapultsController>();
-		cataCtrl.TargetPoint = GameObject.Find ("TargetPoint").transform;
+		cataCtrl.isControllable = true;
+		//cataCtrl.TargetPoint = GameObject.Find ("TargetPoint").transform; //set directly in inspector
 		_parentTransformCache = _transformCache.parent;
 		_transformCache.Rotate (-10, 0, 0); //turn view angle upward 10 degrees
 		Vector3 giantWaistPos = GameObject.Find ("GiantWaist").transform.position;
@@ -45,30 +51,38 @@ public class MobileController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if(RotateJoystick != null && Catapult != null){
-			float rotationX = RotateJoystick.GetAxis("Horizontal") * RotationSpeed * Time.deltaTime;
-			float rotationY = RotateJoystick.GetAxis("Vertical") * RotationSpeed * Time.deltaTime;
-			_parentTransformCache.Rotate(0f, rotationX, 0f, Space.World);
-			_catapultTransformCache.Rotate(0f, rotationX, 0f, Space.World);
-			float curViewAngle = _transformCache.eulerAngles.x;
-			//Debug.Log (curViewAngle);
-			if(viewAngleUpperBound - curViewAngle - angleOffset > -rotationY && curViewAngle- viewAngleLowerBound - angleOffset > rotationY) {
-				_transformCache.Rotate(-rotationY, 0f, 0f);
+		if(isControllable) {
+			if(RotateJoystick != null && Catapult != null){
+				float rotationX = RotateJoystick.GetAxis("Horizontal") * RotationSpeed * Time.deltaTime;
+				float rotationY = RotateJoystick.GetAxis("Vertical") * RotationSpeed * Time.deltaTime;
+				_parentTransformCache.Rotate(0f, rotationX, 0f, Space.World);
+				_catapultTransformCache.Rotate(0f, rotationX, 0f, Space.World);
+				float curViewAngle = _transformCache.eulerAngles.x;
+				//Debug.Log (curViewAngle);
+				if(viewAngleUpperBound - curViewAngle - angleOffset > -rotationY && curViewAngle- viewAngleLowerBound - angleOffset > rotationY) {
+					_transformCache.Rotate(-rotationY, 0f, 0f);
+				}
+			}
+			if(isShooting == false){	
+				StartShooting();
 			}
 		}
-		if(isShooting == false){	
-			StartShooting();
-		}
-
 	}
 	private void StartShooting(){
 		if((Input.GetKeyDown(KeyCode.Space) || PhoneShooting()) && animator != null && cataCtrl.Stone_clone != null){
-			Debug.Log ("shot");
-			animator.SetBool(state_shot, true);
-			isShooting = true;
-			Invoke("StopShooting", 0.7f);
+			//photonView.RPC ("startShootingRPC",PhotonTargets.All,null);
+			startShootingRPC(); //called locally
 		}
 	}
+
+	[RPC]
+	public void startShootingRPC() {
+		Debug.Log ("shot");
+		animator.SetBool(state_shot, true);
+		isShooting = true;
+		Invoke("StopShooting", 0.7f);
+	}
+
 	private void StopShooting(){
 		if (animator != null) {
 			animator.SetBool (state_shot, false);
@@ -76,7 +90,6 @@ public class MobileController : MonoBehaviour {
 		}
 	}
 	private bool PhoneShooting(){
-
 		if(Input.gyro.rotationRateUnbiased.z > threshold)
 			return true;
 		return false;
