@@ -13,11 +13,12 @@ public class CatapultsController : MonoBehaviour {
 	public bool isPlayerInside = false;
 	int PlayerAround = Animator.StringToHash("PlayerAround");
 	static int LoadedState = Animator.StringToHash("Base Layer.loaded");
-	static int idleState = Animator.StringToHash("Base Layer.idle");
+	static int LoadingleState = Animator.StringToHash("Base Layer.Loading");
 
 	public float ShootTime;
 	public float Speed;
 	public Transform eye;
+	//[HideInInspector]
 	public Transform TargetPoint;
 	Transform Cam;
 	bool notToLoad = false;
@@ -83,7 +84,7 @@ public class CatapultsController : MonoBehaviour {
 			isLoaded=true;
 		} 
 
-		if(Catapults_animator.GetCurrentAnimatorStateInfo (0).nameHash == idleState){
+		if(Catapults_animator.GetCurrentAnimatorStateInfo (0).nameHash == LoadingleState){
 			isLoaded=false;
 		}
 

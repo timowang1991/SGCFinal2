@@ -9,8 +9,24 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 	//private PhotonView playerPhotonView;
 	//private string roomName = "bigLittleBattle";
 	public Transform startPoint;
+	public Transform[] catapultPoints = new Transform[2];
+	private Vector3[] cataPointsPos = new Vector3[2];
+	private float catapultXDiff = 0;
+	private float catapultYDiff = 0;
+	private Vector3 randPos = new Vector3();
+
 	private BigLittleGameLogic gameLogic;//Need Identify
 	private Platform platform;
+	
+	void Awake() {
+		Random.seed = (int)Time.realtimeSinceStartup;
+		cataPointsPos [0] = catapultPoints [0].position;
+		cataPointsPos [1] = catapultPoints [1].position;
+		catapultXDiff = cataPointsPos[0].x - cataPointsPos[1].x;
+		catapultYDiff = cataPointsPos[0].y - cataPointsPos[1].y;
+		randPos.z = (cataPointsPos[0].z + cataPointsPos[1].z)/2;
+	}
+
 	// Use this for initialization
     void Start()
     {
@@ -70,9 +86,35 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 						gameLogic.initVarsByRPC (netCtrl, PhotonTargets.Others);
 				} 
 				else if (platform == Platform.Phone) {
-							
+						GameObject myCatapult =PhotonNetwork.Instantiate("Catapult_Net",getPuttableCataPos(),Quaternion.identity,0);
+						Transform camToPutTrans = myCatapult.transform.FindChild("CamToPut");
+						Transform targetPointTrans = GameObject.Find ("TargetPoint").transform;
+						Transform initTargetPointTrans = myCatapult.transform.FindChild("initialTargetPoint");
+						targetPointTrans.transform.position = initTargetPointTrans.position;
+						Camera.main.transform.position = camToPutTrans.position;
+						Camera.main.transform.rotation = camToPutTrans.rotation;
+						Camera.main.transform.parent = myCatapult.transform;
+						targetPointTrans.parent = Camera.main.transform;
+						Camera.main.GetComponent<MobileController>().setCatapult(myCatapult);
+
 				}
     }
+
+	private Vector3 getPuttableCataPos() {
+		bool catapultsInTheRange = true;
+		while (catapultsInTheRange) {
+			randPos.x = cataPointsPos[1].x + Random.value * catapultXDiff;
+			randPos.y = cataPointsPos[1].y + Random.value * catapultYDiff;
+			Collider[] colliders = Physics.OverlapSphere(randPos, 10);
+			foreach(Collider collider in colliders) {
+				if(collider.tag == "Catapult") {
+					continue; //re-random
+				}
+			}
+			catapultsInTheRange = false;
+		}
+		return randPos;
+	}
 
 	void OnPhotonJoinRoomFailed() {
 		Debug.Log ("Joining Room Failed");
