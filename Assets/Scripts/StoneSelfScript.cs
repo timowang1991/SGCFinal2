@@ -16,7 +16,7 @@ public class StoneSelfScript : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision other) {
-		if(CatapultPhotonView.viewID)
+		if(CatapultPhotonView != null)
 		{
 			Debug.Log("OnTriggerEnter "+other.gameObject.name +"/tag: "+ other.gameObject.tag);
 			
@@ -24,17 +24,21 @@ public class StoneSelfScript : MonoBehaviour {
 			{
 				Debug.Log ("Stone: " + other.gameObject.tag);
 				GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().HurtGiant(1,this.gameObject.tag);
+				PhotonNetwork.Destroy(this.gameObject);
 			}
 			else if(other.gameObject.tag == "Weaker")
 			{
 				Debug.Log ("Stone: " + other.gameObject.tag);
 				GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().HurtGiant(2,this.gameObject.tag);
+				PhotonNetwork.Destroy(this.gameObject);
 			}
 			else if(other.gameObject.tag == "Weakest")
 			{
 				Debug.Log ("Stone: " + other.gameObject.tag);
 				GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().HurtGiant(3,this.gameObject.tag);
+				PhotonNetwork.Destroy(this.gameObject);
 			}
+
 		}
 	}
 }
