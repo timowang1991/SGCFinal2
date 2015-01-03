@@ -17,7 +17,6 @@ public class CatapultsController : Photon.MonoBehaviour {
 
 	public float ShootTime;
 	public float Speed;
-	public Transform eye;
 	//[HideInInspector]
 	public Transform TargetPoint;
 	Transform Cam;
@@ -55,7 +54,7 @@ public class CatapultsController : Photon.MonoBehaviour {
 			Debug.Log ("shoot stone called by me");
 			Vector3 test =  TargetPoint.transform.position - Cam.position;
 			photonView.RPC ("shootStoneRPC", PhotonTargets.All, test);
-			//Invoke ("destroyStoneOverNet", 10);
+			Invoke ("destroyStoneOverNet", 12);
 		//}
 	}
 
@@ -76,7 +75,7 @@ public class CatapultsController : Photon.MonoBehaviour {
 		stoneCloneCache.rigidbody.isKinematic = false;
 		stoneCloneCache.rigidbody.useGravity = true;
 		stoneCloneCache.rigidbody.velocity = Speed * direction/direction.magnitude;
-		Destroy (stoneCloneCache, 10); //not sure buffered RPC will be removed or not
+		//Destroy (stoneCloneCache, 10); //not sure buffered RPC will be removed or not
 	}
 
 	private Transform stonePlacedTrans = null;
@@ -88,8 +87,8 @@ public class CatapultsController : Photon.MonoBehaviour {
 		//player = GameObject.FindGameObjectWithTag("Player");
 		stonePlacedTrans = transform.Find ("Catapult_Bone_Main/Catapult_Bone_03/StonePosition");
 	}
-	[HideInInspector]
-	public bool isControllable = false;
+	//[HideInInspector]
+	//public bool isControllable = false;
 
 	[HideInInspector]
 	public GameObject Stone_clone;
@@ -103,17 +102,17 @@ public class CatapultsController : Photon.MonoBehaviour {
 
 	void Update () {
 		//Debug.Log (Catapults_animator.GetCurrentAnimatorStateInfo (0).nameHash);
-		if(isControllable) {
-			if (Catapults_animator.GetCurrentAnimatorStateInfo (0).nameHash == LoadedState && isLoaded == false && Stone_clone==null) {
-				parasArrayForStoneInit[0] = photonView.viewID;
-				Stone_clone =  PhotonNetwork.Instantiate ("Stone_Net", stonePlacedTrans.position , transform.rotation , 0, parasArrayForStoneInit);
-				photonView.RPC ("getTheClonedStone",PhotonTargets.All,Stone_clone.GetComponent<PhotonView>().viewID);
-				isLoaded=true;
-			} 
+		//if(isControllable) { //use enable/disable mechanism
+		if (Catapults_animator.GetCurrentAnimatorStateInfo (0).nameHash == LoadedState && isLoaded == false && Stone_clone==null) {
+			parasArrayForStoneInit[0] = photonView.viewID;
+			Stone_clone =  PhotonNetwork.Instantiate ("Stone_Net", stonePlacedTrans.position , transform.rotation , 0, parasArrayForStoneInit);
+			photonView.RPC ("getTheClonedStone",PhotonTargets.All,Stone_clone.GetComponent<PhotonView>().viewID);
+			isLoaded=true;
+		} 
 
-			if(Catapults_animator.GetCurrentAnimatorStateInfo (0).nameHash == LoadingleState){
-				isLoaded=false;
-			}
+		if(Catapults_animator.GetCurrentAnimatorStateInfo (0).nameHash == LoadingleState){
+			isLoaded=false;
+		}
 
 //		switch (playstate) {
 //			case PlayerState.PlayerInside:
@@ -143,10 +142,10 @@ public class CatapultsController : Photon.MonoBehaviour {
 //				break;
 //		}
 
-			if (Catapults_animator.GetBool ("Shoot_Stone") && !IsInvoking("Shoot_Stone")) {
-				Invoke("Shoot_Stone",ShootTime);
-			}
+		if (Catapults_animator.GetBool ("Shoot_Stone") && !IsInvoking("Shoot_Stone")) {
+			Invoke("Shoot_Stone",ShootTime);
 		}
+		//}
 	}
 	void notToLoad_InSec(){
 		notToLoad = false;

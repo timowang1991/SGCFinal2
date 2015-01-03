@@ -38,7 +38,8 @@ public class MobileController : MonoBehaviour {
 		animator = Catapult.GetComponent<Animator>();
 		_catapultTransformCache = Catapult.GetComponent<Transform>();
 		cataCtrl = Catapult.GetComponent<CatapultsController>();
-		cataCtrl.isControllable = true;
+		cataCtrl.enabled = true;
+		//cataCtrl.isControllable = true;
 		//cataCtrl.TargetPoint = GameObject.Find ("TargetPoint").transform; //set directly in inspector
 		_parentTransformCache = _transformCache.parent;
 		_transformCache.Rotate (-10, 0, 0); //turn view angle upward 10 degrees

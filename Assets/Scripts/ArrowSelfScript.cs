@@ -19,7 +19,7 @@ public class ArrowSelfScript : MonoBehaviour {
 	void Start () {
 		state = ArrowState.holding;
 		this.gameObject.transform.localScale = new Vector3(1f,1f,1f);
-		Destroy (this.gameObject, 10);
+		//Destroy (this.gameObject, 10);
 	}
 	
 	// Update is called once per frame
