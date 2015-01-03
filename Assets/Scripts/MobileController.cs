@@ -20,8 +20,8 @@ public class MobileController : MonoBehaviour {
 	private float threshold = 0.3f;
 	private CatapultsController cataCtrl = null;
 	private Platform platform;
-	[HideInInspector]
-	public bool isControllable = false;
+	//[HideInInspector]
+	//public bool isControllable = false;
 
 	// Use this for initialization
 	void Start () {
@@ -52,22 +52,22 @@ public class MobileController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if(isControllable) {
-			if(RotateJoystick != null && Catapult != null){
-				float rotationX = RotateJoystick.GetAxis("Horizontal") * RotationSpeed * Time.deltaTime;
-				float rotationY = RotateJoystick.GetAxis("Vertical") * RotationSpeed * Time.deltaTime;
-				_parentTransformCache.Rotate(0f, rotationX, 0f, Space.World);
-				_catapultTransformCache.Rotate(0f, rotationX, 0f, Space.World);
-				float curViewAngle = _transformCache.eulerAngles.x;
-				//Debug.Log (curViewAngle);
-				if(viewAngleUpperBound - curViewAngle - angleOffset > -rotationY && curViewAngle- viewAngleLowerBound - angleOffset > rotationY) {
-					_transformCache.Rotate(-rotationY, 0f, 0f);
-				}
-			}
-			if(isShooting == false){	
-				StartShooting();
+
+		if(RotateJoystick != null && Catapult != null){
+			float rotationX = RotateJoystick.GetAxis("Horizontal") * RotationSpeed * Time.deltaTime;
+			float rotationY = RotateJoystick.GetAxis("Vertical") * RotationSpeed * Time.deltaTime;
+			_parentTransformCache.Rotate(0f, rotationX, 0f, Space.World);
+			_catapultTransformCache.Rotate(0f, rotationX, 0f, Space.World);
+			float curViewAngle = _transformCache.eulerAngles.x;
+			//Debug.Log (curViewAngle);
+			if(viewAngleUpperBound - curViewAngle - angleOffset > -rotationY && curViewAngle- viewAngleLowerBound - angleOffset > rotationY) {
+				_transformCache.Rotate(-rotationY, 0f, 0f);
 			}
 		}
+		if(isShooting == false){	
+			StartShooting();
+		}
+
 	}
 	private void StartShooting(){
 		if((Input.GetKeyDown(KeyCode.Space) || PhoneShooting()) && animator != null && cataCtrl.Stone_clone != null){

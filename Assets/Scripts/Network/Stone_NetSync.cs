@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Stone_NetSync : Photon.MonoBehaviour {
 	private float Speed;
-	private GameObject mountedCatapult;
+	public GameObject mountedCatapult;
 	private GameObject Stone_clone;
 	private CatapultsController cataCtrl;
 	// Use this for initialization
