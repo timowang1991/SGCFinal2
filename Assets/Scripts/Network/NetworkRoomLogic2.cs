@@ -65,6 +65,8 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 						GetComponent<TreesGeneratorNet> ().enabled = true;
 				} else if (platform == Platform.PC_Miniature) {
 						GameObject currPlayer = PhotonNetwork.Instantiate ("Ninja_Net2_noCollider", startPoint.position, Quaternion.identity, 0);
+						currPlayer.GetComponent<HealthSystem>().enabled = true;
+						currPlayer.GetComponent<ArrowGenerator>().enabled = true;
 						//currPlayer.GetComponent<CharacterNetSyncAlias>().correctPlayerPos = startPoint.position;
 						HeroCtrlAlias netCtrl = currPlayer.GetComponent<HeroCtrlAlias> ();
 						netCtrl.isControllable = true;
