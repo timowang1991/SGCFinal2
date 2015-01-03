@@ -107,6 +107,7 @@ public class CatapultsController : Photon.MonoBehaviour {
 			if (Catapults_animator.GetCurrentAnimatorStateInfo (0).nameHash == LoadedState && isLoaded == false && Stone_clone==null) {
 				parasArrayForStoneInit[0] = photonView.viewID;
 				Stone_clone =  PhotonNetwork.Instantiate ("Stone_Net", stonePlacedTrans.position , transform.rotation , 0, parasArrayForStoneInit);
+				Stone_clone.GetComponent<StoneSelfScript>().CatapultPhotonView = photonView;
 				photonView.RPC ("getTheClonedStone",PhotonTargets.All,Stone_clone.GetComponent<PhotonView>().viewID);
 				isLoaded=true;
 			} 

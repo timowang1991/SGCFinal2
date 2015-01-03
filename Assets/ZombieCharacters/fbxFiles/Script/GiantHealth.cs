@@ -32,7 +32,7 @@ public class GiantHealth : MonoBehaviour {
 	// int valus 1=Weak 2=Weaker 3=Weakest
 	public void HurtGiant(int HurtWeakLevel , string Thing)
 	{
-		GiantPhotonView.RPC("RPCHurtGiant",PhotonTargets.All,HurtWeakLevel,Thing);
+		GiantPhotonView.RPC("RPCHurtGiant",PhotonTargets.All ,HurtWeakLevel,Thing);
 	}
 
 	[RPC]
