@@ -14,6 +14,9 @@ public class ArrowGenerator : Photon.MonoBehaviour {
 	public float Speed;
 	public Transform TargetPoint;
 	public float ShootTime;
+	public float scaleOfArrow;
+	private Transform camTrans;
+
 	
 	// Use this for initialization
 	void Start () {
@@ -22,6 +25,7 @@ public class ArrowGenerator : Photon.MonoBehaviour {
 		hero = GetComponent<Transform>();
 		rb = GetComponent<Rigidbody>();
 		parasArrayForClonedArrow [0] = photonView.viewID;
+		camTrans = Camera.main.transform;
 	}
 
 	GameObject Arrow_clone;
@@ -40,7 +44,7 @@ public class ArrowGenerator : Photon.MonoBehaviour {
 	}
 	public void Shoot_Arrow()
 	{
-		Vector3 direction =  TargetPoint.transform.position - R_hand.transform.position;
+		Vector3 direction =  camTrans.forward;
 		Arrow_clone.GetComponent<PhotonView> ().RPC ("beShotOutRPC",PhotonTargets.All,direction);
 		isLoadArrow=false;
 		Arrow_clone.GetComponent<Arrow_NetSync> ().invokeDestroy ();

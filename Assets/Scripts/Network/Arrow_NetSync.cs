@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class Arrow_NetSync : Photon.MonoBehaviour {
-	private const int scaleScalar = 10;
+	private float scaleScalar;
 	private GameObject Arrow_clone;
 	private Transform Bow;
 	private Transform R_hand;
@@ -13,6 +13,7 @@ public class Arrow_NetSync : Photon.MonoBehaviour {
 			int characterViewID = (int)photonView.instantiationData[0];
 			GameObject avatar = PhotonView.Find(characterViewID).gameObject;
 			ArrowGenerator arrowGen = avatar.GetComponent<ArrowGenerator>();
+			scaleScalar = arrowGen.scaleOfArrow;
 			speed = arrowGen.Speed;
 			Bow = arrowGen.Bow;
 			R_hand = arrowGen.R_hand;
