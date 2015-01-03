@@ -7,14 +7,29 @@ public class ArrowSelfScript : MonoBehaviour {
 	public int WeakerPoint;
 	public int WeakestPoint;
 
+	public enum ArrowState
+	{
+		holding,
+		shooted,
+		touched
+	}
+	public ArrowState state;
+
 	// Use this for initialization
 	void Start () {
-	
+		state = ArrowState.holding;
+		this.gameObject.transform.localScale = new Vector3(1f,1f,1f);
+		Destroy (this.gameObject, 10);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (state == ArrowState.shooted) {
+			if(transform.localScale.x < 30)
+			{
+				transform.localScale += new Vector3 (1F,1F,1F);
+			}
+		}
 	}
 
 	void OnTriggerEnter(Collider other) {
