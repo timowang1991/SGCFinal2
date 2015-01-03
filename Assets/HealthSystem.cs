@@ -31,6 +31,7 @@ public class HealthSystem : MonoBehaviour {
 			{
 				a.SetBool("Die",true);
 				SetHealthValue(0);
+				Invoke("DestroySelf",10);
 			}
 			else
 			{
@@ -44,5 +45,10 @@ public class HealthSystem : MonoBehaviour {
 	{
 		HealthPosition = Value;
 		Health_UI.GetComponent<EnergyBar> ().valueCurrent = Value;
+	}
+
+	void DestroySelf()
+	{
+		PhotonNetwork.Destroy(this.gameObject);
 	}
 }
