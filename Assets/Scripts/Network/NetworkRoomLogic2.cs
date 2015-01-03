@@ -88,14 +88,16 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 				else if (platform == Platform.Phone) {
 						GameObject myCatapult =PhotonNetwork.Instantiate("Catapult_Net",getPuttableCataPos(),Quaternion.identity,0);
 						Transform camToPutTrans = myCatapult.transform.FindChild("CamToPut");
-						Transform targetPointTrans = GameObject.Find ("TargetPoint").transform;
-						Transform initTargetPointTrans = myCatapult.transform.FindChild("initialTargetPoint");
-						targetPointTrans.transform.position = initTargetPointTrans.position;
+						Transform targetPointTrans = myCatapult.transform.Find("initialTargetPoint/TargetPoint");
+						//Transform initTargetPointTrans = myCatapult.transform.FindChild("initialTargetPoint");
+						//targetPointTrans.transform.position = initTargetPointTrans.position;
 						Camera.main.transform.position = camToPutTrans.position;
 						Camera.main.transform.rotation = camToPutTrans.rotation;
 						Camera.main.transform.parent = myCatapult.transform;
 						targetPointTrans.parent = Camera.main.transform;
-						Camera.main.GetComponent<MobileController>().setCatapult(myCatapult);
+						MobileController mCtrl = Camera.main.GetComponent<MobileController>();
+						mCtrl.isControllable = true;
+						mCtrl.setCatapult(myCatapult);
 
 				}
     }
