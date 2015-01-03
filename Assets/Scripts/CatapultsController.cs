@@ -65,7 +65,9 @@ public class CatapultsController : Photon.MonoBehaviour {
 
 	[RPC]
 	public void shootStoneRPC(Vector3 direction) {
+		Debug.Log("shootStoneRPC");
 		if(Stone_clone == null) {
+			Debug.Log("shootStoneRPC Null");
 			return;
 		}
 		stoneCloneCache = Stone_clone;
@@ -75,7 +77,6 @@ public class CatapultsController : Photon.MonoBehaviour {
 		stoneCloneCache.rigidbody.useGravity = true;
 		stoneCloneCache.rigidbody.velocity = Speed * direction/direction.magnitude;
 		Destroy (stoneCloneCache, 10); //not sure buffered RPC will be removed or not
-		isShootStoneInvoking = false;
 	}
 
 	private Transform stonePlacedTrans = null;
@@ -94,14 +95,19 @@ public class CatapultsController : Photon.MonoBehaviour {
 	public GameObject Stone_clone;
 	// Update is called once per frame
 	private object[] parasArrayForStoneInit = new object[1];
-	private bool isShootStoneInvoking = false;
+
+	[RPC]
+	public void getTheClonedStone(int stoneViewID) {
+		Stone_clone = PhotonView.Find(stoneViewID).gameObject;
+	}
+
 	void Update () {
 		//Debug.Log (Catapults_animator.GetCurrentAnimatorStateInfo (0).nameHash);
 		if(isControllable) {
 			if (Catapults_animator.GetCurrentAnimatorStateInfo (0).nameHash == LoadedState && isLoaded == false && Stone_clone==null) {
 				parasArrayForStoneInit[0] = photonView.viewID;
 				Stone_clone =  PhotonNetwork.Instantiate ("Stone_Net", stonePlacedTrans.position , transform.rotation , 0, parasArrayForStoneInit);
-				//Stone_clone.GetComponent<PhotonView>().RPC ("initRPC",PhotonTargets.AllBuffered,photonView.viewID);
+				photonView.RPC ("getTheClonedStone",PhotonTargets.All,Stone_clone.GetComponent<PhotonView>().viewID);
 				isLoaded=true;
 			} 
 
@@ -137,8 +143,7 @@ public class CatapultsController : Photon.MonoBehaviour {
 //				break;
 //		}
 
-			if (Catapults_animator.GetBool ("Shoot_Stone") && !isShootStoneInvoking) {
-				isShootStoneInvoking = true;
+			if (Catapults_animator.GetBool ("Shoot_Stone") && !IsInvoking("Shoot_Stone")) {
 				Invoke("Shoot_Stone",ShootTime);
 			}
 		}
