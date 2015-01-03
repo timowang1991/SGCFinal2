@@ -1,0 +1,311 @@
+fileFormatVersion: 2
+guid: 1c15a4ee90c9b9e42a4621d26afb5db5
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Catapult_Animated
+    100004: Catapult_Bone_00
+    100006: Catapult_Bone_01
+    100008: Catapult_Bone_02
+    100010: Catapult_Bone_03
+    100012: Catapult_Bone_04
+    100014: Catapult_Bone_Main
+    400000: //RootNode
+    400002: Catapult_Animated
+    400004: Catapult_Bone_00
+    400006: Catapult_Bone_01
+    400008: Catapult_Bone_02
+    400010: Catapult_Bone_03
+    400012: Catapult_Bone_04
+    400014: Catapult_Bone_Main
+    2300000: Catapult_Bone_00
+    2300002: Catapult_Bone_01
+    2300004: Catapult_Bone_02
+    2300006: Catapult_Bone_03
+    2300008: Catapult_Bone_04
+    2300010: Catapult_Bone_Main
+    3300000: Catapult_Bone_00
+    3300002: Catapult_Bone_01
+    3300004: Catapult_Bone_02
+    3300006: Catapult_Bone_03
+    3300008: Catapult_Bone_04
+    3300010: Catapult_Bone_Main
+    4300000: Catapult_Animated
+    4300002: Catapult_Bone_Main
+    4300004: Catapult_Bone_03
+    4300006: Catapult_Bone_00
+    4300008: Catapult_Bone_04
+    4300010: Catapult_Bone_01
+    4300012: Catapult_Bone_02
+    7400000: Catapult_idle
+    7400002: Catapult_loading
+    7400004: Catapult_loaded
+    7400006: Catapult_shot
+    7400008: Catapult
+    9500000: //RootNode
+    13700000: Catapult_Animated
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Catapult_idle
+      takeName: Catapult
+      firstFrame: 0
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Catapult_Animated
+        weight: 1
+      - path: Catapult_Bone_Main
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_01
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_02
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_03
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_03/Catapult_Bone_00
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_04
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Catapult_loading
+      takeName: Catapult
+      firstFrame: 10
+      lastFrame: 100
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Catapult_Animated
+        weight: 1
+      - path: Catapult_Bone_Main
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_01
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_02
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_03
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_03/Catapult_Bone_00
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_04
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Catapult_loaded
+      takeName: Catapult
+      firstFrame: 100
+      lastFrame: 101
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Catapult_Animated
+        weight: 1
+      - path: Catapult_Bone_Main
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_01
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_02
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_03
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_03/Catapult_Bone_00
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_04
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Catapult_shot
+      takeName: Catapult
+      firstFrame: 101
+      lastFrame: 115
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Catapult_Animated
+        weight: 1
+      - path: Catapult_Bone_Main
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_01
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_02
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_03
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_03/Catapult_Bone_00
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_04
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Catapult
+      takeName: Catapult
+      firstFrame: 115
+      lastFrame: 165
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Catapult_Animated
+        weight: 1
+      - path: Catapult_Bone_Main
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_01
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_02
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_03
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_03/Catapult_Bone_00
+        weight: 1
+      - path: Catapult_Bone_Main/Catapult_Bone_04
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: Catapult_Bone_Main
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
