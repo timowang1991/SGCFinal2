@@ -11,6 +11,7 @@ public class GiantHealth : MonoBehaviour {
 	private EnergyBar energyBar = null;
 	private Text leftTxt = null;
 	private Text rightTxt = null;
+	private Platform platform;
 
 	[RPC]
 	public void setInitialHP(int HP) {
@@ -25,9 +26,13 @@ public class GiantHealth : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		GiantPhotonView = this.GetComponent<PhotonView>();
+		platform = GameObject.Find("PlatformManager").GetComponent<PlatformIndicator>().platform;
 		energyBar = GameObject.Find ("HP_UI_Giant/Bar4").GetComponent<EnergyBar>();
-		leftTxt = GameObject.Find ("Text_Left/Text").GetComponent<Text> ();
-		rightTxt = GameObject.Find ("Text_Right/Text").GetComponent<Text> ();
+		if (platform == Platform.PC_Giant)
+		{
+			leftTxt = GameObject.Find ("Text_Left/Text").GetComponent<Text> ();
+			rightTxt = GameObject.Find ("Text_Right/Text").GetComponent<Text> ();
+		}
 	}
 	
 	// Update is called once per frame
