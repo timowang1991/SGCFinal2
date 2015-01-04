@@ -29,21 +29,30 @@ public class ArrowSelfScript : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision other) {
-
 		if(other.gameObject.tag == "Weak")
 		{
 			Debug.Log ("Arrow: " + other.gameObject.tag);
 			GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().HurtGiant(1,this.gameObject.tag);
+			AttachToCollisionPoint(other.contacts[0]);
 		}
 		else if(other.gameObject.tag == "Weaker")
 		{
 			Debug.Log ("Arrow: " + other.gameObject.tag);
 			GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().HurtGiant(2,this.gameObject.tag);
+			AttachToCollisionPoint(other.contacts[0]);
 		}
 		else if(other.gameObject.tag == "Weakest")
 		{
 			Debug.Log ("Arrow: " + other.gameObject.tag);
 			GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().HurtGiant(3,this.gameObject.tag);
+			AttachToCollisionPoint(other.contacts[0]);
 		}
+	}
+
+	void AttachToCollisionPoint(ContactPoint Point)
+	{
+		gameObject.transform.position = Point.point;
+		gameObject.rigidbody.isKinematic = true;
+		state = ArrowSelfScript.ArrowState.touched;
 	}
 }
