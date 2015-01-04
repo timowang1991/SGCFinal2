@@ -15,8 +15,11 @@ public class ArrowGenerator : Photon.MonoBehaviour {
 	public Transform TargetPoint;
 	public float ShootTime;
 	public float scaleOfArrow;
+	public float angleToRot;
 	private Transform camTrans;
 
+	public Transform mountedPosOnBow;
+	private Transform placeToPutArrow;
 	
 	// Use this for initialization
 	void Start () {
@@ -26,6 +29,8 @@ public class ArrowGenerator : Photon.MonoBehaviour {
 		rb = GetComponent<Rigidbody>();
 		parasArrayForClonedArrow [0] = photonView.viewID;
 		camTrans = Camera.main.transform;
+		placeToPutArrow = mountedPosOnBow;
+		//placeToPutArrow.position += placeToPutArrow.forward * 1f;
 	}
 
 	GameObject Arrow_clone;
@@ -35,7 +40,7 @@ public class ArrowGenerator : Photon.MonoBehaviour {
 		if (this.GetComponent<HeroCtrl_Net2> ().baseState == HeroCtrl_Net2.BaseState.Combat && a.GetBool ("Attack1") && isLoadArrow == false && Arrow_clone==null) {
 			Debug.Log("Attack");
 //			Arrow_clone =  (GameObject)Instantiate (Arrow, Bow.position , transform.rotation);
-			Arrow_clone = PhotonNetwork.Instantiate("Arrow_Net", Bow.position, transform.rotation, 0, parasArrayForClonedArrow);
+			Arrow_clone = PhotonNetwork.Instantiate("Arrow_Net", placeToPutArrow.position, Quaternion.identity, 0, parasArrayForClonedArrow);
 			//transfer arrow_clone setup into Arrow_NetSync on the Arrow
 
 			isLoadArrow=true;
