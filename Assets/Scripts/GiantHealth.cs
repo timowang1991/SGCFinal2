@@ -9,6 +9,11 @@ public class GiantHealth : MonoBehaviour {
 	public int minHurtPoint;
 	private static PhotonView GiantPhotonView;
 
+	[RPC]
+	public void setInitialHP(int HP) {
+		healthPoint = HP;
+	}
+
 	// Use this for initialization
 	void Start () {
 		GiantPhotonView = this.GetComponent<PhotonView>();
