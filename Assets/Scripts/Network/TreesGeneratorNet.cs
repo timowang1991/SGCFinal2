@@ -1,4 +1,4 @@
-﻿﻿using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class TreesGeneratorNet : Photon.MonoBehaviour {
@@ -37,12 +37,14 @@ public class TreesGeneratorNet : Photon.MonoBehaviour {
 	}
 	
 	private const int treesExistingLowerBoundInScene = 3;
-	private const float timeIntervalForChecking = 20;
+	private const float timeIntervalForChecking = 10;
 	
 	// Update is called once per frame
 	void Update () {
 		if(timerForCheckingTreeNum > timeIntervalForChecking) { //time up
+			Debug.Log ("Check for Tree existance");
 			GameObject[] existedTrees = GameObject.FindGameObjectsWithTag(treeTag);
+			Debug.Log ("num of tree existed:" + existedTrees.Length);
 			int numTreesNeedToGen = 0;
 			int numExistedTreesInScene = existedTrees.Length;
 			if(existedTrees == null) { //num trees = 0
@@ -65,8 +67,6 @@ public class TreesGeneratorNet : Photon.MonoBehaviour {
 				}
 				numTreesNeedToGen--;
 			}
-		}
-		else {
 			timerForCheckingTreeNum = 0;
 		}
 		timerForCheckingTreeNum += Time.deltaTime;

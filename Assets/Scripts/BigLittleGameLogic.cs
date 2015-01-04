@@ -6,20 +6,30 @@ public class BigLittleGameLogic : Photon.MonoBehaviour {
 	public int giantID = -1;
 	public HeroCtrl_Net2 currPlayerCharCtrl = null;
 	private Platform platform;
+	private GameObject Giant = null;
+	private GiantHealth giantHealth;
+	private PhotonView giantPhotonView;
 	
 	// Use this for initialization
 	public void Start()
 	{
-		
+		//never do this in Awake, it's the most suitable to do this start.
+		platform = GameObject.Find("PlatformManager").GetComponent<PlatformIndicator>().platform;
+		if(Giant == null) {
+			Giant = GameObject.Find ("Giant_Net");
+		}
 	}
 	
-	public void OnJoinedRoom()
+	public void OnJoinedRoom() //this will be only called once while client entering 
 	{
-		// game logic: if this is the only player, then this player is big man
-		platform = GameObject.Find("PlatformManager").GetComponent<PlatformIndicator>().platform;
 		if (platform == Platform.PC_Giant)//Need Identify
 		{
 			giantID = PhotonNetwork.player.ID;
+			if(Giant == null) {
+				Giant = GameObject.Find ("Giant_Net");
+			}
+			giantPhotonView = Giant.GetComponent<PhotonView>(); 
+			giantHealth = Giant.GetComponent<GiantHealth>();
 			NoticeWhoIsGiant(giantID);
 		}
 		
@@ -37,14 +47,18 @@ public class BigLittleGameLogic : Photon.MonoBehaviour {
 		netCtrl.photonView.RPC ("initVars",player,weaponIdx,netCtrl.renderersSet[weaponIdx-1,0].enabled,netCtrl.renderersSet[weaponIdx-1,1].enabled); //init current player's state
 	}
 	
-	public void OnPhotonPlayerConnected(PhotonPlayer player)
+	public void OnPhotonPlayerConnected(PhotonPlayer player) //every player enter would call this
 	{
 		Debug.Log("OnPhotonPlayerConnected: " + player);
 		
 		// when new players join, we send "who's it" to let them know
 		// only one player will do this: the "master"
-		
-		if (currPlayerCharCtrl != null && !player.isLocal) {
+		if (platform == Platform.PC_Giant) { //if this client is Giant, it will tell others its HP.
+			giantPhotonView.RPC ("setInitialHP",player,giantHealth.healthPoint);
+		}
+
+		if (platform == Platform.PC_Miniature && currPlayerCharCtrl != null && !player.isLocal) { 
+			//tell newly entering player that own miniature's state.
 			initVarsByRPC(currPlayerCharCtrl, player);
 		}
 	}
@@ -64,17 +78,6 @@ public class BigLittleGameLogic : Photon.MonoBehaviour {
 	public void OnPhotonPlayerDisconnected(PhotonPlayer player)
 	{
 		Debug.Log("OnPhotonPlayerDisconnected: " + player);
-		
-		/*
-		if (player.ID == bigManID)
-		{
-			//do something
-		}
-		*/
 	}
-	
-	//	public void OnMasterClientSwitched()
-	//	{
-	//		Debug.Log("OnMasterClientSwitched");
-	//	}
+
 }

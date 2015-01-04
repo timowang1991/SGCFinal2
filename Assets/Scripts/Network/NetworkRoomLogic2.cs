@@ -105,6 +105,8 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 				}
     }
 
+
+
 	private Vector3 getPuttableCataPos() {
 		bool catapultsInTheRange = true;
 		while (catapultsInTheRange) {
