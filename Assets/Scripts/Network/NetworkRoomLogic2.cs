@@ -12,19 +12,21 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 	public Transform[] catapultPoints = new Transform[2];
 	private Vector3[] cataPointsPos = new Vector3[2];
 	private float catapultXDiff = 0;
-	private float catapultYDiff = 0;
+	private float catapultZDiff = 0;
 	private Vector3 randPos = new Vector3();
 
 	private BigLittleGameLogic gameLogic;//Need Identify
 	private Platform platform;
-	
+
+	private const float highestYCoordinateInScene = 245;
+
 	void Awake() {
-		Random.seed = (int)Time.realtimeSinceStartup;
+		Random.seed = (int)(Time.realtimeSinceStartup + PhotonNetwork.GetPing() * Random.value);
 		cataPointsPos [0] = catapultPoints [0].position;
 		cataPointsPos [1] = catapultPoints [1].position;
 		catapultXDiff = cataPointsPos[0].x - cataPointsPos[1].x;
-		catapultYDiff = cataPointsPos[0].y - cataPointsPos[1].y;
-		randPos.z = (cataPointsPos[0].z + cataPointsPos[1].z)/2;
+		catapultZDiff = cataPointsPos[0].z - cataPointsPos[1].z;
+		randPos.y = highestYCoordinateInScene; 
 	}
 
 	// Use this for initialization
@@ -110,15 +112,37 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 	private Vector3 getPuttableCataPos() {
 		bool catapultsInTheRange = true;
 		while (catapultsInTheRange) {
-			randPos.x = cataPointsPos[1].x + Random.value * catapultXDiff;
-			randPos.y = cataPointsPos[1].y + Random.value * catapultYDiff;
+			randPos.x = cataPointsPos[1].x + Random.value * (1-Random.value) * catapultXDiff;
+			randPos.z = cataPointsPos[1].z + Random.value * (1-Random.value) * catapultZDiff;
 			Collider[] colliders = Physics.OverlapSphere(randPos, 10);
+			bool toReRandom = false;
 			foreach(Collider collider in colliders) {
 				if(collider.tag == "Catapult") {
-					continue; //re-random
+					toReRandom = true; //re-random
+					break;
 				}
 			}
-			catapultsInTheRange = false;
+			if(!toReRandom) {
+				catapultsInTheRange = false;
+			}
+		}
+
+		randPos.y = highestYCoordinateInScene;
+		//use raycast to find proper ground height;
+		RaycastHit[] hits;
+		hits = Physics.RaycastAll(randPos,-Vector3.up,300);
+		bool isHitTerrain = false;
+		if(hits != null) {
+			foreach(RaycastHit hit in hits) {
+				if(hit.collider.name == "Terrain") {
+					randPos.y = hit.point.y;
+					isHitTerrain = true;
+					break;
+				}
+			}
+		}
+		if(!isHitTerrain) {
+			randPos.y = (cataPointsPos[0].y + cataPointsPos[1].y)/2;
 		}
 		return randPos;
 	}
