@@ -8,15 +8,26 @@ public class GiantHealth : MonoBehaviour {
 	public float Factor;
 	public int minHurtPoint;
 	private static PhotonView GiantPhotonView;
+	private EnergyBar energyBar = null;
+	private Text leftTxt = null;
+	private Text rightTxt = null;
 
 	[RPC]
 	public void setInitialHP(int HP) {
+		Debug.Log ("set initial HP");
 		healthPoint = HP;
+		if(energyBar == null) {
+			energyBar = GameObject.Find ("HP_UI_Giant/Bar4").GetComponent<EnergyBar>();
+		}
+		energyBar.SetValueCurrent (healthPoint);
 	}
 
 	// Use this for initialization
 	void Start () {
 		GiantPhotonView = this.GetComponent<PhotonView>();
+		energyBar = GameObject.Find ("HP_UI_Giant/Bar4").GetComponent<EnergyBar>();
+		leftTxt = GameObject.Find ("Text_Left/Text").GetComponent<Text> ();
+		rightTxt = GameObject.Find ("Text_Right/Text").GetComponent<Text> ();
 	}
 	
 	// Update is called once per frame
@@ -35,14 +46,14 @@ public class GiantHealth : MonoBehaviour {
 		{
 			healthPoint -= losePoint;
 		}
-		if(GameObject.Find ("HP_UI_Giant/Bar4"))
+		if(energyBar != null)
 		{
-			GameObject.Find ("HP_UI_Giant/Bar4").GetComponent<EnergyBar> ().SetValueCurrent (healthPoint);
+			energyBar.SetValueCurrent (healthPoint);
 		}
-		else if(GameObject.Find ("Text_Left"))
+		else if(leftTxt != null && rightTxt != null)
 		{
-			GameObject.Find ("Text_Left/Text").GetComponent<Text> ().text = "HP "+healthPoint +"/1000";
-			GameObject.Find ("Text_Right/Text").GetComponent<Text> ().text = "HP "+healthPoint +"/1000";
+			leftTxt.text = "HP "+healthPoint +"/1000";
+			rightTxt.text = "HP "+healthPoint +"/1000";
 		}
 	}
 
