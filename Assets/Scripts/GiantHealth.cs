@@ -19,9 +19,19 @@ public class GiantHealth : MonoBehaviour {
 	}
 
 	void loseHealthPoint(int losePoint){
-		healthPoint -= losePoint;
-		if(healthPoint <= 0){
-			death ();
+
+		if(healthPoint - losePoint <= 0)
+		{
+			healthPoint = 0;
+			death();
+		}
+		else
+		{
+			healthPoint -= losePoint;
+		}
+		if(GameObject.Find ("HP_UI_Giant/Bar4"))
+		{
+			GameObject.Find ("HP_UI_Giant/Bar4").GetComponent<EnergyBar> ().SetValueCurrent (healthPoint);
 		}
 	}
 
