@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GiantHealth : MonoBehaviour {
 
@@ -32,6 +33,11 @@ public class GiantHealth : MonoBehaviour {
 		if(GameObject.Find ("HP_UI_Giant/Bar4"))
 		{
 			GameObject.Find ("HP_UI_Giant/Bar4").GetComponent<EnergyBar> ().SetValueCurrent (healthPoint);
+		}
+		else if(GameObject.Find ("Text_Left"))
+		{
+			GameObject.Find ("Text_Left/Text").GetComponent<Text> ().text = "HP "+healthPoint +"/1000";
+			GameObject.Find ("Text_Right/Text").GetComponent<Text> ().text = "HP "+healthPoint +"/1000";
 		}
 	}
 
