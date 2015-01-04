@@ -27,11 +27,14 @@ public class GiantHealth : MonoBehaviour {
 	void Start () {
 		GiantPhotonView = this.GetComponent<PhotonView>();
 		platform = GameObject.Find("PlatformManager").GetComponent<PlatformIndicator>().platform;
-		energyBar = GameObject.Find ("HP_UI_Giant/Bar4").GetComponent<EnergyBar>();
 		if (platform == Platform.PC_Giant)
 		{
 			leftTxt = GameObject.Find ("Text_Left/Text").GetComponent<Text> ();
 			rightTxt = GameObject.Find ("Text_Right/Text").GetComponent<Text> ();
+		}
+		else
+		{
+			energyBar = GameObject.Find ("HP_UI_Giant/Bar4").GetComponent<EnergyBar>();
 		}
 	}
 	
