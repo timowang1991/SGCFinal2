@@ -8,6 +8,8 @@ public class GrabScript : MonoBehaviour {
 
 	public float ratio = 2.0f;
 
+	public float ratioForHandToEyeTarget = 1000.0f;
+
 	public int maxNumOfObjectsOnHand = 1;
 
 	string grabbableLayerName = "Grabbable";
@@ -18,11 +20,13 @@ public class GrabScript : MonoBehaviour {
 
 	Vector3 displacement;
 
-
+	Camera ovrCamera;
+	int ovrCamRayLayer;
 
 	// Use this for initialization
 	void Start () {
-
+		ovrCamera = GameObject.FindGameObjectWithTag("OVR_CenterEye").GetComponent<Camera>();
+		ovrCamRayLayer = LayerMask.NameToLayer("Terrain");
 	}
 	
 	// Update is called once per frame
@@ -118,8 +122,31 @@ public class GrabScript : MonoBehaviour {
 				collider.rigidbody.useGravity = true;
 				collider.rigidbody.isKinematic = false;
 //				collider.rigidbody.velocity = displacement * ratio;
-				collider.rigidbody.AddForce(displacement * ratio);
+
+				Vector3 handToEyeTarget = Vector3.up;
+				if(getHandToEyeTargetDirection(ref handToEyeTarget)){
+					collider.rigidbody.AddForce(handToEyeTarget * ratioForHandToEyeTarget);
+				} else {
+					collider.rigidbody.AddForce(displacement * ratio);
+				}
 			}
 		}
+	}
+
+	bool getHandToEyeTargetDirection(ref Vector3 handToEyeTarget){
+		if(ovrCamera == null)
+			return false;
+
+		Debug.Log("rayOrigin : " + ovrCamera.transform.position + " rayDirection : " + ovrCamera.transform.forward);
+
+		RaycastHit floorHit;
+		if(Physics.Raycast(ovrCamera.transform.position, ovrCamera.transform.forward,
+		                   out floorHit, Mathf.Infinity)){
+			Debug.Log("floorHit : " + floorHit.point);
+			handToEyeTarget = (floorHit.point - transform.position).normalized;
+			return true;;
+		}
+
+		return false;
 	}
 }

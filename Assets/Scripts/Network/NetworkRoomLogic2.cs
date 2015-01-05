@@ -107,14 +107,15 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 				}
     }
 
-
+	public float spaceBetweenCatapult;
 
 	private Vector3 getPuttableCataPos() {
 		bool catapultsInTheRange = true;
 		while (catapultsInTheRange) {
 			randPos.x = cataPointsPos[1].x + Random.value * (1-Random.value) * catapultXDiff;
 			randPos.z = cataPointsPos[1].z + Random.value * (1-Random.value) * catapultZDiff;
-			Collider[] colliders = Physics.OverlapSphere(randPos, 10);
+			randPos.y = 25; //sphere cast must be done near ground
+			Collider[] colliders = Physics.OverlapSphere(randPos, spaceBetweenCatapult);
 			bool toReRandom = false;
 			foreach(Collider collider in colliders) {
 				if(collider.tag == "Catapult") {
