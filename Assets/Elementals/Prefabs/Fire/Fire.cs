@@ -66,7 +66,10 @@ public class Fire : MonoBehaviour {
 	// called by other Fire objects
 	private void caughtFire(){
 		if(particleSystem.isPlaying){
-			onFireTimer = 0.0f;
+			if(creature == null)
+			{
+				onFireTimer = 0.0f;
+			}
 			return;
 		}
 		onFireTimer = 0.0f;
