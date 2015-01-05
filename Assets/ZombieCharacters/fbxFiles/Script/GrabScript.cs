@@ -35,7 +35,7 @@ public class GrabScript : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		recordPosition ();
 		computeVelocity ();
 //		holdingObjects();
@@ -133,7 +133,7 @@ public class GrabScript : MonoBehaviour {
 
 				Vector3 handToEyeTarget = Vector3.up;
 				if(getHandToEyeTargetDirection(ref handToEyeTarget)){
-					collider.rigidbody.AddForce(handToEyeTarget * ratioForHandToEyeTarget);
+					collider.rigidbody.AddForce(handToEyeTarget * ratioForHandToEyeTarget * displacement.magnitude);
 				} else {
 					collider.rigidbody.AddForce(displacement * ratio);
 				}
@@ -152,7 +152,7 @@ public class GrabScript : MonoBehaviour {
 		                   out floorHit, Mathf.Infinity)){
 			//Debug.Log("floorHit : " + floorHit.point);
 			handToEyeTarget = (floorHit.point - transform.position).normalized;
-			return true;;
+			return true;
 		}
 
 		return false;
