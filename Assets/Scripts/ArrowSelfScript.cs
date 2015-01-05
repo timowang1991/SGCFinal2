@@ -10,7 +10,7 @@ public class ArrowSelfScript : MonoBehaviour {
 		touched
 	}
 	public ArrowState state;
-
+	public GameObject BloodFX;
 	// Use this for initialization
 	void Start () {
 		state = ArrowState.holding;
@@ -54,5 +54,8 @@ public class ArrowSelfScript : MonoBehaviour {
 		gameObject.transform.position = Point.point;
 		gameObject.rigidbody.isKinematic = true;
 		state = ArrowSelfScript.ArrowState.touched;
+
+		GameObject obj = (GameObject)Instantiate (BloodFX, Point.point, Quaternion.identity);
+		Destroy(obj,10);
 	}
 }
