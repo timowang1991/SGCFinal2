@@ -137,12 +137,12 @@ public class GrabScript : MonoBehaviour {
 		if(ovrCamera == null)
 			return false;
 
-		Debug.Log("rayOrigin : " + ovrCamera.transform.position + " rayDirection : " + ovrCamera.transform.forward);
+		//Debug.Log("rayOrigin : " + ovrCamera.transform.position + " rayDirection : " + ovrCamera.transform.forward);
 
 		RaycastHit floorHit;
 		if(Physics.Raycast(ovrCamera.transform.position, ovrCamera.transform.forward,
 		                   out floorHit, Mathf.Infinity)){
-			Debug.Log("floorHit : " + floorHit.point);
+			//Debug.Log("floorHit : " + floorHit.point);
 			handToEyeTarget = (floorHit.point - transform.position).normalized;
 			return true;;
 		}

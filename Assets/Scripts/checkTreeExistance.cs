@@ -24,7 +24,7 @@ public class checkTreeExistance : Photon.MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		Debug.Log(platform);
+		//Debug.Log(platform);
 	}
 
 	void OnTriggerEnter(Collider other) {
