@@ -87,6 +87,9 @@ public class GrabScript : MonoBehaviour {
 					other.gameObject.GetComponent<TreeLifeCycle>().AttachPoint(this.gameObject.tag);
 //				}
 			}
+			else if(other.tag == "Player") {
+				other.rigidbody.AddForce(displacement * ratio);
+			}
 			//other.transform.position = this.transform.position;
 //			other.rigidbody.isKinematic = true;
 //			other.rigidbody.useGravity = false;

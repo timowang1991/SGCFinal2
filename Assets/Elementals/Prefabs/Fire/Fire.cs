@@ -4,9 +4,24 @@ using System.Collections;
 public class Fire : MonoBehaviour {
 	public string flammableLayerName = "Flammable";
 	public float stayBurningTime;
+	public GameObject creature = null;
+	public int fireDamageOnHero;
+	private HealthSystem healthSys;
 
 	//bool isOnFire;
 	float onFireTimer;
+
+	void Awake () {
+		if(creature != null) {
+			healthSys = creature.GetComponent<HealthSystem>();
+			if(healthSys != null) {
+				Debug.Log("Fire script attach to creature with HP");
+			}
+			else {
+				Debug.Log ("Fire script attach to creature with NO HP");
+			}
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -49,12 +64,15 @@ public class Fire : MonoBehaviour {
 	}
 
 	// called by other Fire objects
-	public void caughtFire(){
+	private void caughtFire(){
 		if(particleSystem.isPlaying){
 			onFireTimer = 0.0f;
 			return;
 		}
 		onFireTimer = 0.0f;
 		particleSystem.Play ();
+		if(healthSys != null) {
+			healthSys.damage(fireDamageOnHero);	
+		}
 	}
 }
