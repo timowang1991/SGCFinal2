@@ -19,14 +19,19 @@ public class GrabScript : MonoBehaviour {
 	List<Vector3> positions = new List<Vector3> ();
 
 	Vector3 displacement;
+	private Platform platform; 
 
 	Camera ovrCamera;
 	int ovrCamRayLayer;
 
 	// Use this for initialization
 	void Start () {
-		ovrCamera = GameObject.FindGameObjectWithTag("OVR_CenterEye").GetComponent<Camera>();
-		ovrCamRayLayer = LayerMask.NameToLayer("Terrain");
+		platform = GameObject.Find("PlatformManager").GetComponent<PlatformIndicator>().platform;
+		if (platform == Platform.PC_Giant)
+		{
+			ovrCamera = GameObject.FindGameObjectWithTag("OVR_CenterEye").GetComponent<Camera>();
+			ovrCamRayLayer = LayerMask.NameToLayer("Terrain");
+		}
 	}
 	
 	// Update is called once per frame

@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(AudioSource))]
 public class StoneSelfScript : MonoBehaviour {
 
 	public PhotonView CatapultPhotonView;
 	public GameObject ExplosionFX;
+	public AudioClip clip;
 	// Use this for initialization
 	void Start () {
 
@@ -26,6 +28,7 @@ public class StoneSelfScript : MonoBehaviour {
 				GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().HurtGiant(1,this.gameObject.tag);
 				PhotonNetwork.Destroy(this.gameObject);
 				Instantiate (ExplosionFX, other.contacts[0].point, Quaternion.identity);
+				AudioSource.PlayClipAtPoint(clip, other.contacts[0].point);
 			}
 			else if(other.gameObject.tag == "Weaker")
 			{
@@ -33,6 +36,7 @@ public class StoneSelfScript : MonoBehaviour {
 				GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().HurtGiant(2,this.gameObject.tag);
 				PhotonNetwork.Destroy(this.gameObject);
 				Instantiate (ExplosionFX, other.contacts[0].point, Quaternion.identity);
+				AudioSource.PlayClipAtPoint(clip, other.contacts[0].point);
 			}
 			else if(other.gameObject.tag == "Weakest")
 			{
@@ -40,6 +44,7 @@ public class StoneSelfScript : MonoBehaviour {
 				GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().HurtGiant(3,this.gameObject.tag);
 				PhotonNetwork.Destroy(this.gameObject);
 				Instantiate (ExplosionFX, other.contacts[0].point, Quaternion.identity);
+				AudioSource.PlayClipAtPoint(clip, other.contacts[0].point);
 			}
 
 		}

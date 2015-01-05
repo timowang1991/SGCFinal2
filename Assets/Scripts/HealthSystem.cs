@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(AudioSource))]
 public class HealthSystem : MonoBehaviour {
 
 	public int HealthPosition;
 	public int hurtValue;
 	public GameObject Health_UI;
+	public AudioClip clip;
 
 	Animator a;
 
@@ -24,7 +26,8 @@ public class HealthSystem : MonoBehaviour {
 	void OnCollisionEnter(Collision collision) {
 		Debug.Log (collision.gameObject.layer);
 		if (collision.gameObject.layer.Equals(10)) {
-
+			audio.clip = clip;
+			audio.Play();
 			int tmp = Health_UI.GetComponent<EnergyBar> ().valueCurrent - hurtValue;
 
 			if(tmp<=0)

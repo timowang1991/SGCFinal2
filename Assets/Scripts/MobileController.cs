@@ -72,6 +72,7 @@ public class MobileController : MonoBehaviour {
 	private void StartShooting(){
 		if((Input.GetKeyDown(KeyCode.Space) || PhoneShooting()) && animator != null && cataCtrl.Stone_clone != null){
 			//photonView.RPC ("startShootingRPC",PhotonTargets.All,null);
+			isShooting = true;
 			startShootingRPC(); //called locally
 		}
 	}
@@ -80,7 +81,7 @@ public class MobileController : MonoBehaviour {
 	public void startShootingRPC() {
 		Debug.Log ("shot");
 		animator.SetBool(state_shot, true);
-		isShooting = true;
+
 		Invoke("StopShooting", 0.7f);
 	}
 
