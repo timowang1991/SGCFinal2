@@ -61,7 +61,6 @@ public class HeroCamera_New : MonoBehaviour
 	//self add start
 
 	GameObject ThingToControl;
-
 	public void Catapults_notify (GameObject gameobject, bool isInside)
 	{
 		if (isInside) {
@@ -76,7 +75,6 @@ public class HeroCamera_New : MonoBehaviour
 		}
 
 	}
-
 	void Catapults()
 	{
 		//Debug.Log("Catapults_enter");
@@ -357,7 +355,6 @@ public class HeroCamera_New : MonoBehaviour
 		cam.position = camPos;
 	}
 	//=================================================================================================================o
-	
 	// Clamp angle at 360deg
 	static float ClampAngle ( float angle, float min, float max )
 	{

@@ -19,8 +19,11 @@ public class BigLittleGameLogic : Photon.MonoBehaviour {
 			Giant = GameObject.Find ("Giant_Net");
 		}
 	}
-	
-	public void OnJoinedRoom() //this will be only called once while client entering 
+
+	/// <summary>
+	/// This will be only called once while client entering.
+	/// </summary>
+	public void OnJoinedRoom()
 	{
 		if (platform == Platform.PC_Giant)//Need Identify
 		{
@@ -35,6 +38,9 @@ public class BigLittleGameLogic : Photon.MonoBehaviour {
 		
 	}
 	
+	/// <summary>
+	/// (Basiclly Called by NetworkRoomLogin2.cs)
+	/// </summary>
 	public void initVarsByRPC(HeroCtrl_Net2 netCtrl,PhotonTargets target) {
 		netCtrl.photonView.RPC ("setWeaponRenderersRPC",target,HeroCtrl_Net2.WeaponState.None); //init
 		int weaponIdx = (int)netCtrl.weaponState;
