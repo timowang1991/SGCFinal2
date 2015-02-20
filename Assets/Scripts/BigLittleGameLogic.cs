@@ -21,7 +21,7 @@ public class BigLittleGameLogic : Photon.MonoBehaviour {
 	}
 
 	/// <summary>
-	/// This will be only called once while client entering.
+	/// [RPC-like]This will be only called once while client entering (all connect peer).
 	/// </summary>
 	public void OnJoinedRoom()
 	{
@@ -33,26 +33,35 @@ public class BigLittleGameLogic : Photon.MonoBehaviour {
 			}
 			giantPhotonView = Giant.GetComponent<PhotonView>(); 
 			giantHealth = Giant.GetComponent<GiantHealth>();
+
+			//notify everyone who is Giant
 			NoticeWhoIsGiant(giantID);
 		}
 		
 	}
 	
 	/// <summary>
-	/// (Basiclly Called by NetworkRoomLogin2.cs)
+	/// (Basiclly Called by NetworkRoomLogin2.cs and telling Others)Set which weapon is going to render, and render the next weapon.
 	/// </summary>
 	public void initVarsByRPC(HeroCtrl_Net2 netCtrl,PhotonTargets target) {
+		//Function in  HeroCtrl_Net2(which is inherit from Photon.MonoBehaviour), set which weapon is going to render.
 		netCtrl.photonView.RPC ("setWeaponRenderersRPC",target,HeroCtrl_Net2.WeaponState.None); //init
 		int weaponIdx = (int)netCtrl.weaponState;
+
+		//Function to use when player want to change weapon
 		netCtrl.photonView.RPC ("initVars",target,weaponIdx,netCtrl.renderersSet[weaponIdx-1,0].enabled,netCtrl.renderersSet[weaponIdx-1,1].enabled); //init current player's state
 	}
-	
+	/// <summary>
+	/// Called by self, send the info to all (? but why need everyone to tell this new player?)
+	/// </summary>
 	public void initVarsByRPC(HeroCtrl_Net2 netCtrl,PhotonPlayer player) {
 		netCtrl.photonView.RPC ("setWeaponRenderersRPC",player,HeroCtrl_Net2.WeaponState.None); //init
 		int weaponIdx = (int)netCtrl.weaponState;
 		netCtrl.photonView.RPC ("initVars",player,weaponIdx,netCtrl.renderersSet[weaponIdx-1,0].enabled,netCtrl.renderersSet[weaponIdx-1,1].enabled); //init current player's state
 	}
-	
+	/// <summary>
+	/// Call when a new client add(the new client won't call this)
+	/// </summary>
 	public void OnPhotonPlayerConnected(PhotonPlayer player) //every player enter would call this
 	{
 		Debug.Log("OnPhotonPlayerConnected: " + player);
@@ -68,7 +77,9 @@ public class BigLittleGameLogic : Photon.MonoBehaviour {
 			initVarsByRPC(currPlayerCharCtrl, player);
 		}
 	}
-	
+	/// <summary>
+	/// Use OthersBuffered to tell who is giant (which can be told the clients who joind later)
+	/// </summary>
 	public void NoticeWhoIsGiant(int playerID)
 	{
 		Debug.Log ("message sent in giant");

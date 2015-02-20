@@ -104,7 +104,7 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 						cameraLogic.cam = mainCam.transform;
 						cameraLogic.enabled = true;
 						mainCam.transform.parent = currPlayer.transform;
-
+						//init complete and tell everyone which weapon to take
 						gameLogic.initVarsByRPC (netCtrl, PhotonTargets.Others);
 				} 
 				//if is the phone
