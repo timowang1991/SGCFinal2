@@ -18,7 +18,9 @@ public class ArrowSelfScript : MonoBehaviour {
 		//Destroy (this.gameObject, 10);
 	}
 	
-	// Update is called once per frame
+	/// <summary>
+	/// Scale up when the state is shooted (let small guys and Giant to see Arrow clearly.)
+	/// </summary>
 	void Update () {
 		if (state == ArrowState.shooted) {
 			if(transform.localScale.x < 30)
@@ -27,7 +29,9 @@ public class ArrowSelfScript : MonoBehaviour {
 			}
 		}
 	}
-
+	/// <summary>
+	/// Same as Stone, Hit different tag object to hurt different value.
+	/// </summary>
 	void OnCollisionEnter(Collision other) {
 		if(other.gameObject.tag == "Weak")
 		{
@@ -48,7 +52,9 @@ public class ArrowSelfScript : MonoBehaviour {
 			AttachToCollisionPoint(other.contacts[0]);
 		}
 	}
-
+	/// <summary>
+	/// Stay at the point, and should be a child of the giant's body. This time just stay at the global position. (BUG)
+	/// </summary>
 	void AttachToCollisionPoint(ContactPoint Point)
 	{
 		gameObject.transform.position = Point.point;

@@ -23,14 +23,18 @@ public class TreeLifeCycle : Photon.MonoBehaviour {
 	void Update () {
 
 	}
-
+	/// <summary>
+	/// Called by GrabAndReleaseTree, distory self after "timeToDestroyAfterRelease" using RPC to tell everyone to destory.
+	/// </summary>
 	public void countDownDestroy(){
 		if (platform == Platform.PC_Giant && isPhotonSelfDestroy == false ) {
 			Invoke ("PhotonSelfDestroy", timeToDestroyAfterRelease);
 			isPhotonSelfDestroy = true;
 		}
 	}
-
+	/// <summary>
+	/// Called by GrabAndReleaseTree, cacel the destory if the tree hasn't destory.
+	/// </summary>
 	public void cancelDestroy(){
 		if (platform == Platform.PC_Giant && isPhotonSelfDestroy == true) {
 			CancelInvoke ("PhotonSelfDestroy");
@@ -38,26 +42,36 @@ public class TreeLifeCycle : Photon.MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Destory now!!![using RPC]
+	/// </summary>
 	void PhotonSelfDestroy(){
 		//photonView.RPC("selfTreeDestroy", PhotonTargets.All, null);
 		Debug.Log ("PhotonSelfDestroy");
 		PhotonNetwork.Destroy(this.gameObject);
 
 	}
-
+	/// <summary>
+	/// if is the giant, then Detach from point.
+	/// </summary>
 	public void DetachPoint()
 	{
 		if (platform == Platform.PC_Giant) {
 			photonView.RPC ("RPCDetachPoint", PhotonTargets.All, null);
 		}
 	}
-
+	/// <summary>
+	/// if is the giant, then Attach from point.
+	/// </summary>
 	public void AttachPoint(string AttachObjectName)
 	{
 		if (platform == Platform.PC_Giant) {
 			photonView.RPC ("RPCAttachPoint", PhotonTargets.All, AttachObjectName);
 		}
 	}
+	/// <summary>
+	/// When attached, tree's gravity is false, and it's kinematic. AttachObjectTag tell's which point to attach.
+	/// </summary>
 	[RPC]
 	public void RPCAttachPoint(string AttachObjectTag)
 	{

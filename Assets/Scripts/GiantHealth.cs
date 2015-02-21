@@ -13,6 +13,9 @@ public class GiantHealth : MonoBehaviour {
 	private Text rightTxt = null;
 	private Platform platform;
 
+	/// <summary>
+	/// Called by BigLittleGameLogic, and just do ui thing and set default HP
+	/// </summary>
 	[RPC]
 	public void setInitialHP(int HP) {
 		Debug.Log ("set initial HP");
@@ -24,6 +27,10 @@ public class GiantHealth : MonoBehaviour {
 	}
 
 	// Use this for initialization
+	// 
+	/// <summary>
+	/// Get the platform, determine which UI has to be shown at the screen.
+	/// </summary>
 	void Start () {
 		GiantPhotonView = this.GetComponent<PhotonView>();
 		platform = GameObject.Find("PlatformManager").GetComponent<PlatformIndicator>().platform;
@@ -46,6 +53,10 @@ public class GiantHealth : MonoBehaviour {
 		}
 	}
 
+
+	/// <summary>
+	/// lose how many HP and Update UI, and if Giant dead, play the animation to dead (since the Giant default animation is dead, so it only plays the dead animation.)
+	/// </summary>
 	void loseHealthPoint(int losePoint){
 
 		if(healthPoint - losePoint <= 0)
@@ -68,16 +79,25 @@ public class GiantHealth : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Enable animation (Giant)
+	/// </summary>
 	void death(){
 		GetComponent<Animator> ().enabled = true;
 	}
 	
 	// int valus 1=Weak 2=Weaker 3=Weakest
+	/// <summary>
+	/// Called by StoneSelfScript and ArrowSelfScript, only that player call this to tell everyone to hurt the giant's HP
+	/// </summary>
 	public void HurtGiant(int HurtWeakLevel , string Thing)
 	{
 		GiantPhotonView.RPC("RPCHurtGiant",PhotonTargets.All ,HurtWeakLevel,Thing);
 	}
 
+	/// <summary>
+	/// Everyone plays this, and hurt different value by different object
+	/// </summary>
 	[RPC]
 	void RPCHurtGiant(int HurtWeakLevel , string Thing)
 	{

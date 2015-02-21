@@ -10,6 +10,9 @@ public class Arrow_NetSync : Photon.MonoBehaviour {
 	private float speed;
 	private float rotAngle;
 	// Use this for initialization
+	/// <summary>
+	/// Set value from instantiationData, and 
+	/// </summary>
 	void Start () {
 		if (photonView.instantiationData != null) {
 			int characterViewID = (int)photonView.instantiationData[0];
@@ -34,7 +37,9 @@ public class Arrow_NetSync : Photon.MonoBehaviour {
 			Arrow_clone.GetComponent<ArrowSelfScript>().state = ArrowSelfScript.ArrowState.holding;
 		}
 	}
-
+	/// <summary>
+	/// Called by ArrowGenerator, and set collider true and state to be shooted.
+	/// </summary>
 	[RPC]
 	public void beShotOutRPC(Vector3 direction) {
 
@@ -56,6 +61,9 @@ public class Arrow_NetSync : Photon.MonoBehaviour {
 	
 	}
 	
+	/// <summary>
+	/// Called by ArrowGenerator, and Wait 10s to call RPC to tell everyone to Destory this gameobject.
+	/// </summary>
 	public void invokeDestroy() {
 		Invoke ("destroySelf", 10);
 	}

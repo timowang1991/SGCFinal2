@@ -18,7 +18,9 @@ public class ColliderDetectOnHero : MonoBehaviour {
 	void Update () {
 	
 	}
-
+	/// <summary>
+	/// Nothing doing here
+	/// </summary>
 	void onTriggerEnter(Collider other) {
 		GameObject objCollideWith = other.gameObject;
 		if(objCollideWith.layer == FlammableLayerID) { //collide with Flammable Object

@@ -69,6 +69,10 @@ public class MobileController : MonoBehaviour {
 		}
 
 	}
+
+	/// <summary>
+	/// Check the value is ok, then shoot the stone.
+	/// </summary>
 	private void StartShooting(){
 		if((Input.GetKeyDown(KeyCode.Space) || PhoneShooting()) && animator != null && cataCtrl.Stone_clone != null){
 			//photonView.RPC ("startShootingRPC",PhotonTargets.All,null);
@@ -77,6 +81,10 @@ public class MobileController : MonoBehaviour {
 		}
 	}
 
+
+	/// <summary>
+	/// Set the animator to play shoot state which cause the Stone to shoot
+	/// </summary>
 	[RPC]
 	public void startShootingRPC() {
 		Debug.Log ("shot");
@@ -91,6 +99,9 @@ public class MobileController : MonoBehaviour {
 			isShooting = false;
 		}
 	}
+	/// <summary>
+	/// if bigger than threshold, then shot it.
+	/// </summary>
 	private bool PhoneShooting(){
 		if(Input.gyro.rotationRateUnbiased.z > threshold)
 			return true;
