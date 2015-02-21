@@ -7,6 +7,9 @@ public class Stone_NetSync : Photon.MonoBehaviour {
 	private GameObject Stone_clone;
 	private CatapultsController cataCtrl;
 	// Use this for initialization
+	/// <summary>
+	/// Received the PhotonViewID from Instantiate function, and set the Tranform at the StonePosition and be the child of it.
+	/// </summary>
 	void Start () {
 		if (photonView.instantiationData != null) {
 			Stone_clone = gameObject;
@@ -19,15 +22,22 @@ public class Stone_NetSync : Photon.MonoBehaviour {
 		}
 	
 	}
-
+	/// <summary>
+	/// Called by CatapultsController, Destroy self after duration.
+	/// </summary>
 	public void invokeDestroySelfOverNet(float duration){
 		Invoke ("destroySelfOverNet", duration);
 	}
-
+	/// <summary>
+	/// Tell everyone self destory
+	/// </summary>
 	private void destroySelfOverNet() {
 		PhotonNetwork.Destroy (Stone_clone);
 	}
 
+	/// <summary>
+	/// Called by CatapultsController, just shoot the stone and calculate the velocity from the parameter "direction".
+	/// </summary>
 	[RPC]
 	public void shootSelfRPC(Vector3 direction) {
 		Debug.Log("shootSelfRPC");

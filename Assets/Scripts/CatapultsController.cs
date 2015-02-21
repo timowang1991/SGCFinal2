@@ -45,6 +45,9 @@ public class CatapultsController : Photon.MonoBehaviour {
 	[HideInInspector]
 	public GameObject Stone_clone;
 	private GameObject stoneClonedCache;
+	/// <summary>
+	/// Call RPC to tell everyone to shoot the stone at this direction. And tell the stone self destory after 10s.
+	/// </summary>
 	public void Shoot_Stone()//should be protected by isControllable
 	{
 		//if(photonView.isMine) {
@@ -60,7 +63,9 @@ public class CatapultsController : Photon.MonoBehaviour {
 
 	private Transform stonePlacedTrans = null;
 
-	// Use this for initialization
+	/// <summary>
+	/// Get the animation/Cam position/StonePosition.
+	/// </summary>
 	void Start () {
 		Catapults_animator = GetComponent<Animator>();
 		Cam = Camera.main.transform;
@@ -73,6 +78,9 @@ public class CatapultsController : Photon.MonoBehaviour {
 	// Update is called once per frame
 	private object[] parasArrayForStoneInit = new object[1];
 	
+	/// <summary>
+	/// Get the Catapult animation state: (1)if the animation is loaded state and there wasn't a stone, then instantiate one. (2) if the animation is playing LoadingleState, then ignore it and set isLoaded to false. (3)if Shoot_Stone is true and no one had create one invoke, then invoke it after "ShootTime". 
+	/// </summary>
 	void Update () {
 		//Debug.Log (Catapults_animator.GetCurrentAnimatorStateInfo (0).nameHash);
 
@@ -121,9 +129,15 @@ public class CatapultsController : Photon.MonoBehaviour {
 		}
 		//}
 	}
+	/// <summary>
+	/// no use for now
+	/// </summary>
 	void notToLoad_InSec(){
 		notToLoad = false;
 	}
+	/// <summary>
+	/// no use for now
+	/// </summary>
 	float Distance()
 	{
 		return Vector3.Distance(this.transform.position, player.transform.position);

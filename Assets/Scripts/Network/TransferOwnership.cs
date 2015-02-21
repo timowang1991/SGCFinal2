@@ -2,7 +2,9 @@
 using System.Collections;
 
 public class TransferOwnership : Photon.MonoBehaviour {
-
+	/// <summary>
+	/// no one has this?
+	/// </summary>
 	public void OnOwnershipRequest(object[] viewAndPlayer)
 	{
 		PhotonView view = viewAndPlayer[0] as PhotonView;

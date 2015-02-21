@@ -21,7 +21,9 @@ public class CharacterNetSync2 : Photon.MonoBehaviour //enable it to access Game
 		netCtrl = GetComponent<HeroCtrl_Net2>();
 	}
 	
-	// Update is called once per frame
+	/// <summary>
+	/// If this is controlled by other players, then just lerp it to correct position.
+	/// </summary>
 	void Update()
 	{
 		if (!photonView.isMine)
@@ -33,7 +35,10 @@ public class CharacterNetSync2 : Photon.MonoBehaviour //enable it to access Game
 			netCtrl.mX = Mathf.Lerp(netCtrl.mX, this.currentRecv_mX, Time.deltaTime * 5);
 		}
 	}
-	
+
+	/// <summary>
+	/// Using isWriting to determine is sending data or receiving data.
+	/// </summary>
 	void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
 	{
 		if (stream.isWriting)

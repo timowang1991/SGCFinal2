@@ -473,6 +473,7 @@ public class HeroCtrl_Net2 : Photon.MonoBehaviour
 		}
 		
 		// Combat Stance / Out
+		// if is self then create a rpc to tell everyone
 		else if(doCombat && canDrawHolster)
 		{
 			if(photonView.isMine) {
@@ -1931,6 +1932,7 @@ public class HeroCtrl_Net2 : Photon.MonoBehaviour
 		// Combat Stance / Out
 		if(doCombat && canDrawHolster)
 		{
+			//if is self then create a rpc to tell everyone
 			if(photonView.isMine) {
 				//Debug.Log("Call");
 				photonView.RPC("doCombatRPC", PhotonTargets.All, (int)BaseState.Base);

@@ -24,7 +24,9 @@ public class GiantNetSync : Photon.MonoBehaviour //enable it to access GameObjec
 	public Quaternion[] correctBodyPartRotations = null;
 
 	//bool startToUpdate;
-
+	/// <summary>
+	/// Calculate how many parts to sync and 
+	/// </summary>
 	void Awake() {
 		//startToUpdate = false;
 		int numBodyPartNames = bodyPartNames.Length;
@@ -33,10 +35,12 @@ public class GiantNetSync : Photon.MonoBehaviour //enable it to access GameObjec
 		correctBodyPartPositions = new Vector3[totalNumBodyParts];
 		correctBodyPartRotations = new Quaternion[totalNumBodyParts];
 		int numCurrentlyCollectedBodyParts = 0;
+		//get all children
 		Transform[] allDescendants = gameObject.GetComponentsInChildren<Transform>();
 		foreach(Transform childTransform in allDescendants) {
 			//Debug.Log(childTransform.name);
 			for(int i = 0;i < numBodyPartNames;i++) {
+				//if it contain in the bodyPartNames, then add it to array.
 				if(childTransform.name.Contains(bodyPartNames[i])) {
 					Debug.Log ("getBodyParts In GiantNetSync:" + childTransform.name);
 					bodyPartTransforms[numCurrentlyCollectedBodyParts] = childTransform;
@@ -52,13 +56,18 @@ public class GiantNetSync : Photon.MonoBehaviour //enable it to access GameObjec
 		}
 
 	}
-
+	/// <summary>
+	/// platform
+	/// </summary>
 	void Start() {
 		platform = GameObject.Find("PlatformManager").GetComponent<PlatformIndicator>().platform;
 	}
 
 	
 	// Update is called once per frame
+	/// <summary>
+	/// if player is not Giant, then get the data from received array and lerp it to correct position.
+	/// </summary>
 	void Update()
 	{
 		if (platform != Platform.PC_Giant)//Need Identify
@@ -71,6 +80,10 @@ public class GiantNetSync : Photon.MonoBehaviour //enable it to access GameObjec
 		}
 	}
 	
+	//Called every 'network-update' when observed by PhotonView.
+	/// <summary>
+	/// Using isWriting to determine is sending data or receiving data.
+	/// </summary>
 	void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
 	{
 		if (stream.isWriting)

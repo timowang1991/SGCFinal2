@@ -35,7 +35,9 @@ public class ArrowGenerator : Photon.MonoBehaviour {
 
 	GameObject Arrow_clone;
 	private object[] parasArrayForClonedArrow = new object[1];
-	// Update is called once per frame
+	/// <summary>
+	/// Check every state is ok for shooting a Arrow, then instantiate the arrow and shoot it after "ShootTime".
+	/// </summary>
 	void Update () {
 		if (this.GetComponent<HeroCtrl_Net2> ().baseState == HeroCtrl_Net2.BaseState.Combat && a.GetBool ("Attack1") && isLoadArrow == false && Arrow_clone==null) {
 			Debug.Log("Attack");
@@ -47,6 +49,9 @@ public class ArrowGenerator : Photon.MonoBehaviour {
 			Invoke("Shoot_Arrow",ShootTime);
 		}
 	}
+	/// <summary>
+	/// shoot Arrow now and using RPC to tell everyone which direction.
+	/// </summary>
 	public void Shoot_Arrow()
 	{
 		Vector3 direction =  camTrans.forward;
