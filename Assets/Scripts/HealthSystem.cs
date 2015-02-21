@@ -27,7 +27,9 @@ public class HealthSystem : MonoBehaviour {
 	}
 
 	private bool isDead = false;
-
+	/// <summary>
+	/// Check if is the Giant layer and hurt the value which set in the Inspector
+	/// </summary>
 	void OnCollisionEnter(Collision collision) {
 		Debug.Log (collision.gameObject.layer);
 		if (collision.gameObject.layer.Equals(10)) { //this layer hurt value = 10
@@ -39,6 +41,9 @@ public class HealthSystem : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Check if the player is dead or just hurt, then play the animation and destory itself if is dead(No RPC - so it won't tell everyone).
+	/// </summary>
 	public void damage(int hurtValue) {
 		int tmp = Health_UI.GetComponent<EnergyBar> ().valueCurrent - hurtValue;
 		

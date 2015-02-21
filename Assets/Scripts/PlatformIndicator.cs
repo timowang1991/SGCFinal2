@@ -12,6 +12,7 @@ public class PlatformIndicator : MonoBehaviour {
 	[HideInInspector]
 	public Platform platform;
 
+	//if find then which platform is it, please ensure everyone has this.
 	void Awake() {
 		if (GameObject.FindGameObjectWithTag ("CNC")) { //phone
 			Debug.Log ("mobile phone");

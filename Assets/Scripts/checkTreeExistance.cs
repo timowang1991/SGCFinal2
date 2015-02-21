@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+//locate below the treeGenPoints.
 public class checkTreeExistance : Photon.MonoBehaviour {
 
 	[HideInInspector]
@@ -9,7 +9,9 @@ public class checkTreeExistance : Photon.MonoBehaviour {
 	//private BigLittleGameLogic gameLogic;//Need Identify
 	private Platform platform;
 
-	// Use this for initialization
+	/// <summary>
+	/// Know the tag name and set treeBeSet to null and wait for generator to collide.
+	/// </summary>
 	void Awake () {
 		GameConfig config = GameObject.Find ("ConfigManager").GetComponent<GameConfig>();
 		treeTag = config.treeObject.tag;
@@ -26,13 +28,18 @@ public class checkTreeExistance : Photon.MonoBehaviour {
 	void Update () {
 		//Debug.Log(platform);
 	}
-
+	/// <summary>
+	/// [Collider call from system] check if it is the tree's tag, then debug print 
+	/// </summary>
 	void OnTriggerEnter(Collider other) {
 		if(other.tag == treeTag) {
 			Debug.Log ("tree entered:" + other.name);
 		}
 	}
 
+	/// <summary>
+	/// [Collider call from system] check is it the tree this class belong and take off by the giant. 
+	/// </summary>
 	void OnTriggerExit(Collider other) {
 		if(other.tag == treeTag && other.gameObject == treeBeSet) {
 			Debug.Log ("be set tree exited");
@@ -45,6 +52,10 @@ public class checkTreeExistance : Photon.MonoBehaviour {
 		}
 	}
 
+
+	/// <summary>
+	/// No one call this for now, maybe because we sync the tree's position.
+	/// </summary>
 	[RPC]
 	public void setTreeToNull() {
 		Debug.Log ("Be Set Tree is null in RPC");
