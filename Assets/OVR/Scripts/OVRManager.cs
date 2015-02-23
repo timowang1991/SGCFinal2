@@ -351,7 +351,7 @@ public class OVRManager : MonoBehaviour
             return;
         }
 
-#if !UNITY_ANDROID && !UNITY_EDITOR
+#if UNITY_ANDROID && !UNITY_EDITOR
 		Application.targetFrameRate = 60;
 		// don't allow the app to run in the background
 		Application.runInBackground = false;
