@@ -16,7 +16,7 @@ public class BigLittleGameLogic : Photon.MonoBehaviour {
 		//never do this in Awake, it's the most suitable to do this start.
 		platform = GameObject.Find("PlatformManager").GetComponent<PlatformIndicator>().platform;
 		if(Giant == null) {
-			Giant = GameObject.Find ("Giant_Net");
+			Giant = GameObject.Find (GameConfig.giantGameObjectName);
 		}
 	}
 
@@ -29,7 +29,7 @@ public class BigLittleGameLogic : Photon.MonoBehaviour {
 		{
 			giantID = PhotonNetwork.player.ID;
 			if(Giant == null) {
-				Giant = GameObject.Find ("Giant_Net");
+				Giant = GameObject.Find (GameConfig.giantGameObjectName);
 			}
 			giantPhotonView = Giant.GetComponent<PhotonView>(); 
 			giantHealth = Giant.GetComponent<GiantHealth>();

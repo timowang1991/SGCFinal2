@@ -3,7 +3,7 @@ using System.Collections;
 //[Giant Only] locate in NetworkManager
 public class TreesGeneratorNet : Photon.MonoBehaviour {
 	
-	private const int numMaxGenPoints = 10;
+	private const int numMaxGenPoints = 0;
 	public GameObject[] treeGenPoints = new GameObject[numMaxGenPoints];
 	private int numGenPoints = 0;
 	private float timerForCheckingTreeNum;
@@ -40,7 +40,7 @@ public class TreesGeneratorNet : Photon.MonoBehaviour {
 		}
 	}
 	//the lowest num of the tree
-	private const int treesExistingLowerBoundInScene = 3;
+	private const int treesExistingLowerBoundInScene = 0;
 	//check time
 	private const float timeIntervalForChecking = 10;
 	

@@ -75,7 +75,7 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 						GameObject.FindGameObjectWithTag ("OVR").GetComponent<OculusFollower> ().setOculusFollower ();
 
 						//to request ownership - no matter which setting the PhotonView has.
-						GameObject.Find ("Giant_Net").GetComponent<PhotonView> ().RequestOwnership ();
+						GameObject.Find ("52bangd-T-Pose").GetComponent<PhotonView> ().RequestOwnership ();
 						GetComponent<TreesGeneratorNet> ().enabled = true;
 				} else if (platform == Platform.PC_Miniature) {
 
