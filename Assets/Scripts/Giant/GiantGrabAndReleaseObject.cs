@@ -37,7 +37,7 @@ public class GiantGrabAndReleaseObject : Photon.MonoBehaviour {
 		recordPosition ();
 		computeVelocity ();
 		throwObjects ();
-		Debug.Log("Giant grabbed Object List Count : " + grabbedObjectList.Count);
+//		Debug.Log("Giant grabbed Object List Count : " + grabbedObjectList.Count);
 	}
 	
 	void recordPosition(){
@@ -86,7 +86,7 @@ public class GiantGrabAndReleaseObject : Photon.MonoBehaviour {
 		   objectGrabAndRelease.GrabObjectByGameObject(gameObject)){
 			photonView.RPC ("RPCGiantDidGrabObject", PhotonTargets.All, null);
 			grabbedObjectList.Add(gObject);
-			Debug.Log("grabbedObjectList Added new Object : " + gObject.name);
+//			Debug.Log("grabbedObjectList Added new Object : " + gObject.name);
 		}
 	}
 

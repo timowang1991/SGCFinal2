@@ -15,14 +15,9 @@ public class ObjectGrabPositionCalibration : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
-
-	void OnTriggerStay(Collider other){
-//		Debug.Log("OnTriggerStay : " + other.gameObject.name);
-		if (other.gameObject.tag == grabbedBodyPartTag) {
-			transform.position = other.transform.position + positionOffset;
-//			transform.localRotation = other.transform.localRotation + localRotationOffset;
+		if(transform.parent != null && transform.parent.gameObject.tag == grabbedBodyPartTag){
+			transform.position = transform.parent.position + positionOffset;
+			transform.localRotation = localRotationOffset;
 		}
 	}
 }
