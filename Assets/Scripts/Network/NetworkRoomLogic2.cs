@@ -19,6 +19,7 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 	private Platform platform;
 
 	private const float highestYCoordinateInScene = 245;
+	public bool testingMagician = false;
 
 	void Awake() {
 		Random.seed = (int)(Time.realtimeSinceStartup + PhotonNetwork.GetPing() * Random.value);
@@ -78,11 +79,18 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 						GameObject.Find ("52bangd-T-Pose").GetComponent<PhotonView> ().RequestOwnership ();
 						GetComponent<TreesGeneratorNet> ().enabled = true;
 				} else if (platform == Platform.PC_Miniature) {
-
-						//if is web, then instantiate a ninga_net2
-						GameObject currPlayer = PhotonNetwork.Instantiate ("Ninja_Net2_noCollider", startPoint.position, Quaternion.identity, 0);
+						GameObject currPlayer;
+						if(testingMagician)
+						{
+							currPlayer = PhotonNetwork.Instantiate ("Magician", startPoint.position, Quaternion.identity, 0);	
+						}
+						else
+						{
+							currPlayer = PhotonNetwork.Instantiate ("Ninja_Net2_noCollider", startPoint.position, Quaternion.identity, 0);
+							currPlayer.GetComponent<ArrowGenerator>().enabled = true;
+						}
 						currPlayer.GetComponent<HealthSystem>().enabled = true;
-						currPlayer.GetComponent<ArrowGenerator>().enabled = true;
+						
 						//currPlayer.GetComponent<CharacterNetSyncAlias>().correctPlayerPos = startPoint.position;
 						HeroCtrlAlias netCtrl = currPlayer.GetComponent<HeroCtrlAlias> ();
 						//isControllable is hide for inspector, and set to false by default
