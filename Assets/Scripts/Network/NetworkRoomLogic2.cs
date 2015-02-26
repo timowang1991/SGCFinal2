@@ -83,19 +83,33 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 						if(testingMagician)
 						{
 							currPlayer = PhotonNetwork.Instantiate ("Magician", startPoint.position, Quaternion.identity, 0);	
+							
+							//currPlayer.GetComponent<CharacterNetSyncAlias>().correctPlayerPos = startPoint.position;
+							MagicianNet_Ctrl netCtrl = currPlayer.GetComponent<MagicianNet_Ctrl> ();
+							//isControllable is hide for inspector, and set to false by default
+							netCtrl.isControllable = true;
+							gameLogic.currPlayerCharCtrlMagician= netCtrl;
+
+							//init complete and tell everyone which weapon to take
+							gameLogic.initVarsByRPC (netCtrl, PhotonTargets.Others);
 						}
 						else
 						{
 							currPlayer = PhotonNetwork.Instantiate ("Ninja_Net2_noCollider", startPoint.position, Quaternion.identity, 0);
 							currPlayer.GetComponent<ArrowGenerator>().enabled = true;
+							
+							//currPlayer.GetComponent<CharacterNetSyncAlias>().correctPlayerPos = startPoint.position;
+							HeroCtrlAlias netCtrl = currPlayer.GetComponent<HeroCtrlAlias> ();
+							//isControllable is hide for inspector, and set to false by default
+							netCtrl.isControllable = true;
+							gameLogic.currPlayerCharCtrl = netCtrl;
+
+							//init complete and tell everyone which weapon to take
+							gameLogic.initVarsByRPC (netCtrl, PhotonTargets.Others);
 						}
+
 						currPlayer.GetComponent<HealthSystem>().enabled = true;
 						
-						//currPlayer.GetComponent<CharacterNetSyncAlias>().correctPlayerPos = startPoint.position;
-						HeroCtrlAlias netCtrl = currPlayer.GetComponent<HeroCtrlAlias> ();
-						//isControllable is hide for inspector, and set to false by default
-						netCtrl.isControllable = true;
-						gameLogic.currPlayerCharCtrl = netCtrl;
 						//add a HeroCamera_New to currPlayer (HeroCamera_New to fine the head position of the player)
 						HeroCamAlias cameraLogic = currPlayer.GetComponent<HeroCamAlias> ();
 						if (cameraLogic == null) {
@@ -112,8 +126,7 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 						cameraLogic.cam = mainCam.transform;
 						cameraLogic.enabled = true;
 						mainCam.transform.parent = currPlayer.transform;
-						//init complete and tell everyone which weapon to take
-						gameLogic.initVarsByRPC (netCtrl, PhotonTargets.Others);
+						
 				} 
 				//if is the phone
 				else if (platform == Platform.Phone) {
