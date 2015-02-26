@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GiantGrabAndReleaseScript : MonoBehaviour {
+public class MagicianNet_Ctrl : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
