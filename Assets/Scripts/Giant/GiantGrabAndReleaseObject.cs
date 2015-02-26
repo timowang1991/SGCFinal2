@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class GiantGrabAndReleaseObject : Photon.MonoBehaviour {
 
-	public float speedValveToThrow = 350.0f;
+	public float speedValveToThrow = 100.0f;
 	
 	public float ratioForDisplacement = 2.0f;
 	
@@ -67,7 +67,7 @@ public class GiantGrabAndReleaseObject : Photon.MonoBehaviour {
 	}
 	
 	void OnTriggerExit(Collider other){
-		Debug.Log("Giant OnTriggerExit : object " + other.gameObject.name);
+//		Debug.Log("Giant OnTriggerExit : object " + other.gameObject.name);
 		if(grabbedObjectList.Contains(other.gameObject)){
 			grabbedObjectList.Remove(other.gameObject);
 			other.gameObject.GetComponent<ObjectGrabAndRelease>().ReleaseObject();
