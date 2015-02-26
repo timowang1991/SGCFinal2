@@ -4,14 +4,18 @@ using System.Collections.Generic;
 
 public class ObjectGrabAndRelease : Photon.MonoBehaviour {
 
-	public List<string> grabbableBodyPartTags;
+	public List<string> grabbableBodyPartTagList;
+	HashSet<string> grabbableBodyPartTagSet;
 	
 	GameObject parentGameObject;
 	
-	
 	// Use this for initialization
 	void Start () {
-		
+		grabbableBodyPartTagSet = new HashSet<string>();
+		foreach (string tagString in grabbableBodyPartTagList){
+			grabbableBodyPartTagSet.Add(tagString);
+		}
+		grabbableBodyPartTagList = null;
 	}
 	
 	// Update is called once per frame
@@ -33,7 +37,7 @@ public class ObjectGrabAndRelease : Photon.MonoBehaviour {
 
 	void OnCollisionEnter(Collision collision){
 //		Debug.Log("ObjectGrabAndRelease OnCollisionEnter " + collision.gameObject.name);
-		if(grabbableBodyPartTags.Contains(collision.gameObject.tag) && parentGameObject == null){
+		if(grabbableBodyPartTagSet.Contains(collision.gameObject.tag) && parentGameObject == null){
 			parentGameObject = collision.gameObject;
 			photonView.RPC ("RPCAttachPoint", PhotonTargets.All, null);
 		}
@@ -57,6 +61,12 @@ public class ObjectGrabAndRelease : Photon.MonoBehaviour {
 		collider.isTrigger = false;
 	}
 
+//	public void GrabObjectByGameObject(GameObject gObject){
+//		if(){
+//
+//		}
+//	}
+
 	public void ReleaseObject(){
 		if(parentGameObject != null){
 			photonView.RPC ("RPCDetachPoint", PhotonTargets.All, null);
@@ -65,7 +75,7 @@ public class ObjectGrabAndRelease : Photon.MonoBehaviour {
 	}
 
 	public bool isGrabbableToGameObject(GameObject gObject){
-		if(grabbableBodyPartTags.Contains(gObject.tag) && parentGameObject == null){
+		if(grabbableBodyPartTagSet.Contains(gObject.tag)){ //&& parentGameObject == null){
 			return true;
 		} else {
 			return false;

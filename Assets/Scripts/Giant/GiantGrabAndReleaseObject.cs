@@ -37,6 +37,7 @@ public class GiantGrabAndReleaseObject : Photon.MonoBehaviour {
 		recordPosition ();
 		computeVelocity ();
 		throwObjects ();
+//		Debug.Log("Giant grabbed Object List Count : " + grabbedObjectList.Count);
 	}
 	
 	void recordPosition(){
@@ -48,8 +49,8 @@ public class GiantGrabAndReleaseObject : Photon.MonoBehaviour {
 	
 	void computeVelocity(){
 		displacement = transform.position - positions[0];
-		//		Debug.Log ("displacement : " + displacement);
-		//		Debug.Log ("displacement magnitude : " + displacement.magnitude);
+//		Debug.Log ("displacement : " + displacement);
+//		Debug.Log ("displacement magnitude : " + displacement.magnitude);
 	}
 	
 	void OnCollisionEnter(Collision collision){
@@ -68,11 +69,11 @@ public class GiantGrabAndReleaseObject : Photon.MonoBehaviour {
 	}
 	
 	void OnTriggerEnter(Collider other){
-//		Debug.Log ("Giant OnTriggerEnter : object " + other.gameObject.name);
+		Debug.Log ("Giant OnTriggerEnter : object " + other.gameObject.name);
 	}
 	
 	void OnTriggerExit(Collider other){
-//		Debug.Log("Giant OnTriggerExit : object " + other.gameObject.name);
+		Debug.Log("Giant OnTriggerExit : object " + other.gameObject.name);
 		grabbedObjectList.Remove(other.gameObject);
 
 		if (grabbedObjectList.Count == 0){
@@ -87,6 +88,7 @@ public class GiantGrabAndReleaseObject : Photon.MonoBehaviour {
 		if(displacement.magnitude >= speedValveToThrow &&
 		   displacement.y < 0 &&
 		   displacement.z > 0){
+//			Debug.Log("displacement.magnitude = " + displacement.magnitude);
 			foreach(GameObject gObject in grabbedObjectList){
 				gObject.GetComponent<ObjectGrabAndRelease>().ReleaseObject();
 
