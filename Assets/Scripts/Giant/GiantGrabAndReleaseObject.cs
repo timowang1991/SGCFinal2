@@ -2,20 +2,17 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GiantGrabAndReleaseScript : MonoBehaviour {
+public class GiantGrabAndReleaseObject : Photon.MonoBehaviour {
 
-	
 	public float speedValveToThrow = 350.0f;
 	
-	public float ratio = 2.0f;
+	public float ratioForDisplacement = 2.0f;
 	
 	public float ratioForHandToEyeTarget = 1000.0f;
 	
 	public int maxNumOfObjectsOnHand = 1;
-	
-	string grabbableLayerName = "Grabbable";
-	
-	List<Collider> colliderList = new List<Collider>();
+
+	List<GameObject> grabbedObjectList = new List<GameObject>();
 	
 	List<Vector3> positions = new List<Vector3> ();
 	
@@ -37,9 +34,10 @@ public class GiantGrabAndReleaseScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-//		recordPosition ();
-//		computeVelocity ();
-//		throwObjects ();
+		recordPosition ();
+		computeVelocity ();
+		throwObjects ();
+//		Debug.Log("Giant grabbed Object List Count : " + grabbedObjectList.Count);
 	}
 	
 	void recordPosition(){
@@ -51,53 +49,58 @@ public class GiantGrabAndReleaseScript : MonoBehaviour {
 	
 	void computeVelocity(){
 		displacement = transform.position - positions[0];
-		//		Debug.Log ("displacement : " + displacement);
-		//		Debug.Log ("displacement magnitude : " + displacement.magnitude);
+//		Debug.Log ("displacement : " + displacement);
+//		Debug.Log ("displacement magnitude : " + displacement.magnitude);
 	}
-
+	
 	void OnCollisionEnter(Collision collision){
-		Debug.Log("Giant OnCollisionEnter : object " + collision.gameObject.name);
-		collider.isTrigger = true;
+//		Debug.Log("Giant OnCollisionEnter : object " + collision.gameObject.name);
+		ObjectGrabAndRelease objectGrabAndRelease = collision.gameObject.GetComponent<ObjectGrabAndRelease>();
+		if(objectGrabAndRelease != null &&
+		   objectGrabAndRelease.isGrabbableToGameObject(gameObject) &&
+		   grabbedObjectList.Count < maxNumOfObjectsOnHand){
+			photonView.RPC ("RPCGiantDidGrabObject", PhotonTargets.All, null);
+			grabbedObjectList.Add(collision.gameObject);
+		}
 	}
-
+	
 	void OnCollisionExit(Collision collision){
-		Debug.Log("Giant OnCollisionExit : object " + collision.gameObject.name);
+//		Debug.Log("Giant OnCollisionExit : object " + collision.gameObject.name);
 	}
-
+	
 	void OnTriggerEnter(Collider other){
 		Debug.Log ("Giant OnTriggerEnter : object " + other.gameObject.name);
 	}
 	
-	
 	void OnTriggerExit(Collider other){
 		Debug.Log("Giant OnTriggerExit : object " + other.gameObject.name);
-		collider.isTrigger = false;
+		grabbedObjectList.Remove(other.gameObject);
+
+		if (grabbedObjectList.Count == 0){
+			photonView.RPC ("RPCGiantDidReleaseAllObjects", PhotonTargets.All, null);
+		}
 	}
 	
 	void throwObjects(){
-		if (colliderList.Count == 0)
+		if (grabbedObjectList.Count == 0)
 			return;
 		
 		if(displacement.magnitude >= speedValveToThrow &&
 		   displacement.y < 0 &&
 		   displacement.z > 0){
-			foreach(Collider collider in colliderList){
-				if(collider.gameObject.tag == "BigTreeTrunk")
-				{
-					collider.gameObject.GetComponent<TreeLifeCycle>().DetachPoint();
-				}
-				//colliderList.Remove (collider);
-				collider.rigidbody.useGravity = true;
-				collider.rigidbody.isKinematic = false;
-				//				collider.rigidbody.velocity = displacement * ratio;
-				
+//			Debug.Log("displacement.magnitude = " + displacement.magnitude);
+			foreach(GameObject gObject in grabbedObjectList){
+				gObject.GetComponent<ObjectGrabAndRelease>().ReleaseObject();
+
 				Vector3 handToEyeTarget = Vector3.up;
 				if(getHandToEyeTargetDirection(ref handToEyeTarget)){
-					collider.rigidbody.AddForce(handToEyeTarget * ratioForHandToEyeTarget * displacement.magnitude);
+					gObject.rigidbody.AddForce(handToEyeTarget * ratioForHandToEyeTarget * displacement.magnitude);
 				} else {
-					collider.rigidbody.AddForce(displacement * ratio);
+					gObject.rigidbody.AddForce(displacement * ratioForDisplacement);
+//					gObject.rigidbody.velocity = displacement * ratio;
 				}
 			}
+
 		}
 	}
 	
@@ -116,5 +119,15 @@ public class GiantGrabAndReleaseScript : MonoBehaviour {
 		}
 		
 		return false;
+	}
+	
+	[RPC]
+	public void RPCGiantDidGrabObject(){
+		collider.isTrigger = true;
+	}
+	
+	[RPC]
+	public void RPCGiantDidReleaseAllObjects(){
+		collider.isTrigger = false;
 	}
 }
