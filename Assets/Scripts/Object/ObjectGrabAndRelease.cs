@@ -17,31 +17,6 @@ public class ObjectGrabAndRelease : Photon.MonoBehaviour {
 		}
 		grabbableBodyPartTagList = null;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-	void OnTriggerEnter(Collider other){
-
-	}
-
-	void OnTriggerExit(Collider other){
-
-	}
-	
-	void OnCollisionExit(Collision collision){
-
-	}
-
-	void OnCollisionEnter(Collision collision){
-//		Debug.Log("ObjectGrabAndRelease OnCollisionEnter " + collision.gameObject.name);
-		if(grabbableBodyPartTagSet.Contains(collision.gameObject.tag) && parentGameObject == null){
-			parentGameObject = collision.gameObject;
-			photonView.RPC ("RPCAttachPoint", PhotonTargets.All, null);
-		}
-	}
 
 	[RPC]
 	public void RPCAttachPoint()
@@ -49,7 +24,7 @@ public class ObjectGrabAndRelease : Photon.MonoBehaviour {
 		transform.parent = parentGameObject.transform;
 		rigidbody.isKinematic = true;
 		rigidbody.useGravity = false;
-		collider.isTrigger = true;
+//		collider.isTrigger = true;
 	}
 
 	[RPC]
@@ -58,14 +33,16 @@ public class ObjectGrabAndRelease : Photon.MonoBehaviour {
 		transform.parent = null;
 		rigidbody.isKinematic = false;
 		rigidbody.useGravity = true;
-		collider.isTrigger = false;
+//		collider.isTrigger = false;
 	}
 
-//	public void GrabObjectByGameObject(GameObject gObject){
-//		if(){
-//
-//		}
-//	}
+	public bool GrabObjectByGameObject(GameObject gObject){
+		if(!IsGrabbableToGameObject(gObject)) return false;
+
+		parentGameObject = gObject;
+		photonView.RPC ("RPCAttachPoint", PhotonTargets.All, null);
+		return true;
+	}
 
 	public void ReleaseObject(){
 		if(parentGameObject != null){
@@ -74,8 +51,8 @@ public class ObjectGrabAndRelease : Photon.MonoBehaviour {
 		}
 	}
 
-	public bool isGrabbableToGameObject(GameObject gObject){
-		if(grabbableBodyPartTagSet.Contains(gObject.tag)){ //&& parentGameObject == null){
+	public bool IsGrabbableToGameObject(GameObject gObject){
+		if(grabbableBodyPartTagSet.Contains(gObject.tag) && parentGameObject == null){
 			return true;
 		} else {
 			return false;

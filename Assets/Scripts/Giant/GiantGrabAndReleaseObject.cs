@@ -37,7 +37,7 @@ public class GiantGrabAndReleaseObject : Photon.MonoBehaviour {
 		recordPosition ();
 		computeVelocity ();
 		throwObjects ();
-//		Debug.Log("Giant grabbed Object List Count : " + grabbedObjectList.Count);
+		Debug.Log("Giant grabbed Object List Count : " + grabbedObjectList.Count);
 	}
 	
 	void recordPosition(){
@@ -54,14 +54,7 @@ public class GiantGrabAndReleaseObject : Photon.MonoBehaviour {
 	}
 	
 	void OnCollisionEnter(Collision collision){
-//		Debug.Log("Giant OnCollisionEnter : object " + collision.gameObject.name);
-		ObjectGrabAndRelease objectGrabAndRelease = collision.gameObject.GetComponent<ObjectGrabAndRelease>();
-		if(objectGrabAndRelease != null &&
-		   objectGrabAndRelease.isGrabbableToGameObject(gameObject) &&
-		   grabbedObjectList.Count < maxNumOfObjectsOnHand){
-			photonView.RPC ("RPCGiantDidGrabObject", PhotonTargets.All, null);
-			grabbedObjectList.Add(collision.gameObject);
-		}
+		GrabAnObjectOfGameObject(collision.gameObject);
 	}
 	
 	void OnCollisionExit(Collision collision){
@@ -69,18 +62,34 @@ public class GiantGrabAndReleaseObject : Photon.MonoBehaviour {
 	}
 	
 	void OnTriggerEnter(Collider other){
-		Debug.Log ("Giant OnTriggerEnter : object " + other.gameObject.name);
+//		Debug.Log ("Giant OnTriggerEnter : object " + other.gameObject.name);
+		GrabAnObjectOfGameObject(other.gameObject);
 	}
 	
 	void OnTriggerExit(Collider other){
 		Debug.Log("Giant OnTriggerExit : object " + other.gameObject.name);
-		grabbedObjectList.Remove(other.gameObject);
+		if(grabbedObjectList.Contains(other.gameObject)){
+			grabbedObjectList.Remove(other.gameObject);
+			other.gameObject.GetComponent<ObjectGrabAndRelease>().ReleaseObject();
+		}
 
 		if (grabbedObjectList.Count == 0){
 			photonView.RPC ("RPCGiantDidReleaseAllObjects", PhotonTargets.All, null);
 		}
 	}
-	
+
+	void GrabAnObjectOfGameObject(GameObject gObject){
+		ObjectGrabAndRelease objectGrabAndRelease = gObject.GetComponent<ObjectGrabAndRelease>();
+
+		if(objectGrabAndRelease != null &&
+		   grabbedObjectList.Count < maxNumOfObjectsOnHand &&
+		   objectGrabAndRelease.GrabObjectByGameObject(gameObject)){
+			photonView.RPC ("RPCGiantDidGrabObject", PhotonTargets.All, null);
+			grabbedObjectList.Add(gObject);
+			Debug.Log("grabbedObjectList Added new Object : " + gObject.name);
+		}
+	}
+
 	void throwObjects(){
 		if (grabbedObjectList.Count == 0)
 			return;

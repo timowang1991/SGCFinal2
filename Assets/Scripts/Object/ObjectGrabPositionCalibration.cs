@@ -17,11 +17,11 @@ public class ObjectGrabPositionCalibration : MonoBehaviour {
 	void Update () {
 		
 	}
-	
-	void OnCollisionEnter(Collision collision){
+
+	void OnTriggerStay(Collider other){
 //		Debug.Log("OnTriggerStay : " + other.gameObject.name);
-		if (collision.gameObject.tag == grabbedBodyPartTag) {
-			transform.position = collision.transform.position + positionOffset;
+		if (other.gameObject.tag == grabbedBodyPartTag) {
+			transform.position = other.transform.position + positionOffset;
 //			transform.localRotation = other.transform.localRotation + localRotationOffset;
 		}
 	}
