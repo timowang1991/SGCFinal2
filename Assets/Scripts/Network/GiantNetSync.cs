@@ -95,6 +95,7 @@ public class GiantNetSync : Photon.MonoBehaviour //enable it to access GameObjec
 		}
 		else
 		{
+			Debug.Log("reading");
 			for(int i = 0;i < totalNumBodyParts;i++) {
 				correctBodyPartPositions[i] = (Vector3)stream.ReceiveNext();
 				correctBodyPartRotations[i] = (Quaternion)stream.ReceiveNext();

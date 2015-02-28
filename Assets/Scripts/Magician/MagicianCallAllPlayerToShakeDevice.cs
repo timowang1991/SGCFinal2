@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MagicianCallAllPlayerToShakeDevice : Photon.MonoBehaviour {
 
-	public float CostMP = 50;
+	public int CostMP = 50;
 
 	public void CastSpell()
 	{

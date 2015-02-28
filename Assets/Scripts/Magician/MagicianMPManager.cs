@@ -3,9 +3,13 @@ using System.Collections;
 
 public class MagicianMPManager : MonoBehaviour {
 
-	public float initMPvalue = 100;
-	public float currentValue;
+	public int initMPvalue = 100;
+	public int currentValue;
 	private MagicianUIManager UI;
+
+	private float currentCountTime = 0;
+	public float intervalRefreshMP = 1;
+	public int HowManyMpAdd = 1;
 
 	// Use this for initialization
 	void Start () {
@@ -15,7 +19,20 @@ public class MagicianMPManager : MonoBehaviour {
 			Debug.LogError("UIManager not loaded");	
 		}
 	}
-	public bool UseMP (float value)
+
+	void Update()
+	{
+		currentCountTime += Time.deltaTime;
+
+		if(currentCountTime >= intervalRefreshMP)
+		{
+			currentCountTime = 0;
+			currentValue += HowManyMpAdd;
+			UI.UpdateUI(true);
+		}
+	}
+
+	public bool UseMP (int value)
 	{
 		if (currentValue - value < 0) {
 			UI.UpdateUI(false);
