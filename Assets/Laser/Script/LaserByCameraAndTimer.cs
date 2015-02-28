@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LaserByCameraAndTimer : MonoBehaviour {
+public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 	public GameObject laserHitBurst;
 	public Camera cam;
 
@@ -12,6 +12,9 @@ public class LaserByCameraAndTimer : MonoBehaviour {
 	
 	LineRenderer line;
 	Light light;
+
+	RaycastHit hit;
+	Ray ray;
 	
 	public float TimerToUseLaser {
 		get{return timerToUseLaser;}
@@ -39,8 +42,7 @@ public class LaserByCameraAndTimer : MonoBehaviour {
 	}
 
 	IEnumerator FireLaser(){
-		line.enabled = true;
-		light.enabled = true;
+		photonView.RPC ("RPCLaserLightsOn", PhotonTargets.All, null);
 		
 		while(timerToUseLaser > 0){
 			timerToUseLaser -= Time.deltaTime;
@@ -48,17 +50,32 @@ public class LaserByCameraAndTimer : MonoBehaviour {
 			yield return null;
 		}
 		
-		light.enabled = false;
-		line.enabled = false;
+		photonView.RPC ("RPCLaserLightsOff", PhotonTargets.All, null);
 	}
 
 	void shootLaser(){
-		RaycastHit hitInfo = new RaycastHit();
-
 		// add more methods in here if want to add more features when hit
-		if(RenderLaserAndGetLaserHitInfo(ref hitInfo)){
-			InstantiateHitEffect(hitInfo);
-			CreateHitForce(hitInfo);
+		if(RenderLaserAndGetLaserHitInfo()){
+			photonView.RPC ("RPCInstantiateHitEffect", PhotonTargets.All, null);
+			photonView.RPC ("RPCCreateHitForce", PhotonTargets.All, null);
+		}
+	}
+
+	bool RenderLaserAndGetLaserHitInfo(){
+		Vector3 laserStartTipToCamRayHit = Vector3.forward;
+		
+		if(GetLaserStartTipToCameraRayHitVector(ref laserStartTipToCamRayHit)){
+			ray = new Ray(transform.position, laserStartTipToCamRayHit);
+		} else {
+			ray = new Ray(transform.position, cam.transform.forward);
+		}
+		
+		if(Physics.Raycast(ray, out hit, rayDistance)){
+			photonView.RPC ("RPCRenderLaserOnHit", PhotonTargets.All, null);
+			return true;
+		} else {
+			photonView.RPC ("RPCRenderLaserOnMiss", PhotonTargets.All, null);
+			return false;
 		}
 	}
 
@@ -75,28 +92,32 @@ public class LaserByCameraAndTimer : MonoBehaviour {
 		return false;
 	}
 
-	bool RenderLaserAndGetLaserHitInfo(ref RaycastHit laserHitInfo){
-		Vector3 laserStartTipToCamRayHit = Vector3.forward;
-		Ray ray;
-
-		if(GetLaserStartTipToCameraRayHitVector(ref laserStartTipToCamRayHit)){
-			ray = new Ray(transform.position, laserStartTipToCamRayHit);
-		} else {
-			ray = new Ray(transform.position, cam.transform.forward);
-		}
-
-		line.SetPosition(0, ray.origin);
-
-		if(Physics.Raycast(ray, out laserHitInfo, rayDistance)){
-			line.SetPosition(1, laserHitInfo.point);
-			return true;
-		} else {
-			line.SetPosition(1, ray.GetPoint(rayDistance));
-			return false;
-		}
+	[RPC]
+	public void RPCLaserLightsOn(){
+		line.enabled = true;
+		light.enabled = true;
 	}
 
-	void InstantiateHitEffect(RaycastHit hit){
+	[RPC]
+	public void RPCLaserLightsOff(){
+		light.enabled = false;
+		line.enabled = false;
+	}
+
+	[RPC]
+	public void RPCRenderLaserOnHit(){
+		line.SetPosition(0, ray.origin);
+		line.SetPosition(1, hit.point);
+	}
+
+	[RPC]
+	public void RPCRenderLaserOnMiss(){
+		line.SetPosition(0, ray.origin);
+		line.SetPosition(1, ray.GetPoint(rayDistance));
+	}
+
+	[RPC]
+	public void RPCInstantiateHitEffect(){
 		if(laserHitBurst == null)
 			return;
 
@@ -107,7 +128,8 @@ public class LaserByCameraAndTimer : MonoBehaviour {
 		Destroy(gObject, laserHitEffectTimerToDisappear);
 	}
 
-	void CreateHitForce(RaycastHit hit){
+	[RPC]
+	public void RPCCreateHitForce(){
 		if(hit.rigidbody){
 			hit.rigidbody.AddForceAtPosition(cam.transform.forward * addForceRatio, hit.point);
 		}
