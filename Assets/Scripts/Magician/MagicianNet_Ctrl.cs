@@ -20,6 +20,7 @@ public class MagicianNet_Ctrl : Photon.MonoBehaviour {
 	public float jumpHeight = 4.0f;
 	public float groundedDistance = 1.5f; // from capsule center
 	public float setFloatDampTime = 0.15f;
+	public int magicNumber= 50;
 	
 	// Double Tap ----------------------- //
 	public bool canEvade = true;
@@ -219,7 +220,7 @@ public class MagicianNet_Ctrl : Photon.MonoBehaviour {
 			{false,false,false,false,false,false,false,false,true}
 		};
 		
-		weaponState = WeaponState.Bow; //may be random later
+		weaponState = WeaponState.Torch; //may be random later
 		setWeaponRenderersRPC((int)weaponState);
 	}
 	
@@ -319,9 +320,7 @@ public class MagicianNet_Ctrl : Photon.MonoBehaviour {
 		
 		if(a)
 		{
-			grounded = Physics.Raycast (hero.position + hero.up * col.center.y,
-			                            hero.up * -1, out groundHit, groundedDistance, groundLayers);
-			
+			grounded = Physics.Raycast (hero.position + hero.up * col.center.y * magicNumber, hero.up * -1, out groundHit, groundedDistance, groundLayers);
 			// Set Animator parameters
 			a.SetFloat ("AxisY", v, setFloatDampTime, Time.deltaTime);
 			a.SetFloat("MouseX", mX, setFloatDampTime * 4, Time.deltaTime);
