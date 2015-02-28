@@ -5,6 +5,7 @@ public class MagicianChangeHand : MonoBehaviour {
 
 	private PhotonView giant;
 	public int CostMP;
+	public int HowLongItLast = 10;
 
 	// Use this for initialization
 	void Start () {
@@ -17,7 +18,7 @@ public class MagicianChangeHand : MonoBehaviour {
 	public void CastSpell()
 	{
 		if (this.gameObject.GetComponent<MagicianMPManager> ().UseMP (CostMP)) {
-			giant.RPC ("ChanageHands", PhotonTargets.MasterClient, true);
+			giant.RPC ("ChanageHands", PhotonTargets.MasterClient, HowLongItLast);
 		}
 	}
 }

@@ -28,6 +28,10 @@ public class MagicianMPManager : MonoBehaviour {
 		{
 			currentCountTime = 0;
 			currentValue += HowManyMpAdd;
+			if(currentValue >100)
+			{
+				currentValue =100;
+			}
 			UI.UpdateUI(true);
 		}
 	}
