@@ -2,7 +2,7 @@
 using System.Collections;
 
 [RequireComponent(typeof(AudioSource))]
-public class HealthSystem : MonoBehaviour {
+public class HealthSystem : Photon.MonoBehaviour {
 
 	public int HealthPosition;
 	public GameObject Health_UI;
@@ -70,5 +70,18 @@ public class HealthSystem : MonoBehaviour {
 	void DestroySelf()
 	{
 		PhotonNetwork.Destroy(this.gameObject);
+	}
+	[RPC]
+	void RecoverHP (int DefaultRecoveryHPvalue)
+	{
+		int TotalHP = HealthPosition + DefaultRecoveryHPvalue;
+		if ( TotalHP > 100) {
+			this.SetHealthValue(100);
+		}
+		else
+		{
+			this.SetHealthValue(TotalHP);
+		}
+
 	}
 }
