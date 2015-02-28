@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MagicianThrowFireBall : Photon.MonoBehaviour {
 
-	public float CostMP = 10; 
+	public int CostMP = 10; 
 
 	public void CastSpell(int photonViewId)
 	{

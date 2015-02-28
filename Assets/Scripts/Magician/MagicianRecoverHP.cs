@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MagicianRecoverHP : MonoBehaviour {
 	
-	public float CostMP = 10;
+	public int CostMP = 10;
 	public int DefaultRecoveryHPvalue = 5;
 
 	// Use this for initialization

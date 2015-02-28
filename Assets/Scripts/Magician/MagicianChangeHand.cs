@@ -4,7 +4,7 @@ using System.Collections;
 public class MagicianChangeHand : MonoBehaviour {
 
 	private PhotonView giant;
-	public float CostMP;
+	public int CostMP;
 
 	// Use this for initialization
 	void Start () {
