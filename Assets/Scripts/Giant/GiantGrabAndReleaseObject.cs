@@ -139,4 +139,17 @@ public class GiantGrabAndReleaseObject : Photon.MonoBehaviour {
 	public void RPCGiantDidReleaseAllObjects(){
 		collider.isTrigger = false;
 	}
+
+	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+	{
+		if (stream.isWriting)
+		{
+			stream.SendNext(this.transform.position);
+		}
+		else
+		{	
+			this.transform.position = (Vector3)stream.ReceiveNext();
+
+		}
+	}
 }
