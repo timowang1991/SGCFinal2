@@ -134,4 +134,6 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 			hit.rigidbody.AddForceAtPosition(cam.transform.forward * addForceRatio, hit.point);
 		}
 	}
+
+	void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info){}
 }
