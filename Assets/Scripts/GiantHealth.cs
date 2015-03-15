@@ -47,10 +47,10 @@ public class GiantHealth : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(GetComponent<Animator> ().enabled == true)
-		{
-			this.gameObject.transform.parent.gameObject.transform.position = Vector3.Lerp(this.gameObject.transform.parent.gameObject.transform.position, new Vector3(250,40,-100),  Time.deltaTime*1.5f);
-		}
+//		if(GetComponent<Animator> ().enabled == true)
+//		{
+//			this.gameObject.transform.parent.gameObject.transform.position = Vector3.Lerp(this.gameObject.transform.parent.gameObject.transform.position, new Vector3(250,40,-100),  Time.deltaTime*1.5f);
+//		}
 	}
 
 
@@ -83,7 +83,7 @@ public class GiantHealth : MonoBehaviour {
 	/// Enable animation (Giant)
 	/// </summary>
 	void death(){
-		GetComponent<Animator> ().enabled = true;
+		//GetComponent<Animator> ().enabled = true;
 	}
 	
 	// int valus 1=Weak 2=Weaker 3=Weakest

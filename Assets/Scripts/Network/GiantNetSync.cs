@@ -9,8 +9,8 @@ using System;
 
 public class GiantNetSync : Photon.MonoBehaviour //enable it to access GameObject's PhotonView
 {
-	private string[] bodyPartNames = new string[]{"Hips","Shoulder","Arm","ForeArm"};
-	private const int numNonDuplicateBodyParts = 1; //prefix not left or right
+	private string[] bodyPartNames = new string[]{"Clavicle","Arm","Forearm"};
+	private const int numNonDuplicateBodyParts = 0; //prefix not left or right
 	private int totalNumBodyParts;
 	//public BigLittleGameLogic gameLogic;//Need Identify
 
@@ -42,7 +42,7 @@ public class GiantNetSync : Photon.MonoBehaviour //enable it to access GameObjec
 			for(int i = 0;i < numBodyPartNames;i++) {
 				//if it contain in the bodyPartNames, then add it to array.
 				if(childTransform.name.Contains(bodyPartNames[i])) {
-					Debug.Log ("getBodyParts In GiantNetSync:" + childTransform.name);
+					Debug.Log ( i + " - getBodyParts In GiantNetSync:" + childTransform.name);
 					bodyPartTransforms[numCurrentlyCollectedBodyParts] = childTransform;
 					correctBodyPartPositions[numCurrentlyCollectedBodyParts] = childTransform.position;
 					correctBodyPartRotations[numCurrentlyCollectedBodyParts] = childTransform.rotation;
@@ -89,6 +89,7 @@ public class GiantNetSync : Photon.MonoBehaviour //enable it to access GameObjec
 		if (stream.isWriting)
 		{
 			for(int i = 0;i < totalNumBodyParts;i++) {
+				Debug.Log("bodypart:"+bodyPartTransforms[i].position);
 				stream.SendNext(bodyPartTransforms[i].position);
 				stream.SendNext(bodyPartTransforms[i].rotation);
 			}
