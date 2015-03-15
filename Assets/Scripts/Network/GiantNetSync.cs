@@ -74,8 +74,8 @@ public class GiantNetSync : Photon.MonoBehaviour //enable it to access GameObjec
 		{
 			//Debug.Log ("Giant is not mine");
 			for(int i = 0;i < totalNumBodyParts;i++) {
-				bodyPartTransforms[i].position = Vector3.Lerp (bodyPartTransforms[i].position,correctBodyPartPositions[i],Time.deltaTime * 5);
-				bodyPartTransforms[i].rotation = Quaternion.Lerp (bodyPartTransforms[i].rotation,correctBodyPartRotations[i],Time.deltaTime * 5);
+				bodyPartTransforms[i].position = Vector3.Lerp (bodyPartTransforms[i].position,correctBodyPartPositions[i],Time.deltaTime * 2);
+				bodyPartTransforms[i].rotation = Quaternion.Lerp (bodyPartTransforms[i].rotation,correctBodyPartRotations[i],Time.deltaTime * 2);
 			}
 		}
 	}
