@@ -84,5 +84,4 @@ public class HealthSystem : Photon.MonoBehaviour {
 		}
 
 	}
-	void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info){}
 }
