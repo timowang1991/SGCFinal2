@@ -9,7 +9,7 @@ using System;
 
 public class GiantNetSync : Photon.MonoBehaviour //enable it to access GameObject's PhotonView
 {
-	private string[] bodyPartNames = new string[]{"52bangd-T-Pose","Clavicle","Arm","Forearm"};
+	private string[] bodyPartNames = new string[]{"Pelvis","Clavicle","Arm","Forearm"};
 	private const int numNonDuplicateBodyParts = 1; //prefix not left or right
 	private int totalNumBodyParts;
 	//public BigLittleGameLogic gameLogic;//Need Identify
