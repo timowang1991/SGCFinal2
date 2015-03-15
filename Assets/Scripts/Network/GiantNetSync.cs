@@ -9,7 +9,7 @@ using System;
 
 public class GiantNetSync : Photon.MonoBehaviour //enable it to access GameObject's PhotonView
 {
-	private string[] bodyPartNames = new string[]{"Pelvis","Clavicle","Arm","Forearm"};
+	private string[] bodyPartNames = new string[]{"Spine1","Pelvis","Clavicle","Arm","Forearm"};
 	private const int numNonDuplicateBodyParts = 1; //prefix not left or right
 	private int totalNumBodyParts;
 	//public BigLittleGameLogic gameLogic;//Need Identify
@@ -63,7 +63,8 @@ public class GiantNetSync : Photon.MonoBehaviour //enable it to access GameObjec
 		platform = GameObject.Find("PlatformManager").GetComponent<PlatformIndicator>().platform;
 	}
 
-	
+	public float factor = 6;
+
 	// Update is called once per frame
 	/// <summary>
 	/// if player is not Giant, then get the data from received array and lerp it to correct position.
@@ -74,8 +75,8 @@ public class GiantNetSync : Photon.MonoBehaviour //enable it to access GameObjec
 		{
 			//Debug.Log ("Giant is not mine");
 			for(int i = 0;i < totalNumBodyParts;i++) {
-				bodyPartTransforms[i].position = Vector3.Lerp (bodyPartTransforms[i].position,correctBodyPartPositions[i],Time.deltaTime * 2);
-				bodyPartTransforms[i].rotation = Quaternion.Lerp (bodyPartTransforms[i].rotation,correctBodyPartRotations[i],Time.deltaTime * 2);
+				bodyPartTransforms[i].position = Vector3.Lerp (bodyPartTransforms[i].position,correctBodyPartPositions[i],Time.deltaTime * factor);
+				bodyPartTransforms[i].rotation = Quaternion.Lerp (bodyPartTransforms[i].rotation,correctBodyPartRotations[i],Time.deltaTime * factor);
 			}
 		}
 	}
