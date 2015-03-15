@@ -8,8 +8,10 @@ public class OculusCamRefScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		oculusCam = transform.parent.gameObject;
 		platform = GameObject.Find("PlatformManager").GetComponent<PlatformIndicator>().platform;
+		if (platform == Platform.PC_Giant) {
+			oculusCam = transform.parent.gameObject;
+		}
 	}
 	
 	// Update is called once per frame

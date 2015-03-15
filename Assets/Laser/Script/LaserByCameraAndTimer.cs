@@ -16,7 +16,9 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 
 	RaycastHit hit;
 	Ray ray;
-	
+
+	Platform platform;
+
 	public float TimerToUseLaser {
 		get{return timerToUseLaser;}
 		set{
@@ -28,6 +30,7 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		platform = GameObject.Find("PlatformManager").GetComponent<PlatformIndicator>().platform;
 		line = GetComponent<LineRenderer>();
 		line.enabled = false;
 		
@@ -37,7 +40,7 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetButtonDown("Fire1")){
+		if(Input.GetButtonDown("Fire1") && platform == Platform.PC_Giant){
 			TimerToUseLaser = 3.0f;
 		}
 	}
@@ -47,18 +50,23 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 		
 		while(timerToUseLaser > 0){
 			timerToUseLaser -= Time.deltaTime;
-			shootLaser();						
+//			shootLaser();	
+			photonView.RPC ("shootLaser", PhotonTargets.All, null);
 			yield return null;
 		}
 		
 		photonView.RPC ("RPCLaserLightsOff", PhotonTargets.All, null);
 	}
 
+	[RPC]
 	void shootLaser(){
 		// add more methods in here if want to add more features when hit
 		if(RenderLaserAndGetLaserHitInfo()){
-			photonView.RPC ("RPCInstantiateHitEffect", PhotonTargets.All, null);
-			photonView.RPC ("RPCCreateHitForce", PhotonTargets.All, null);
+//			photonView.RPC ("RPCInstantiateHitEffect", PhotonTargets.All, null);
+//			photonView.RPC ("RPCCreateHitForce", PhotonTargets.All, null);
+			RPCInstantiateHitEffect();
+			RPCCreateHitForce();
+
 		}
 	}
 
@@ -72,10 +80,12 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 		}
 		
 		if(Physics.Raycast(ray, out hit, rayDistance)){
-			photonView.RPC ("RPCRenderLaserOnHit", PhotonTargets.All, null);
+//			photonView.RPC ("RPCRenderLaserOnHit", PhotonTargets.All, null);
+			RPCRenderLaserOnHit();
 			return true;
 		} else {
-			photonView.RPC ("RPCRenderLaserOnMiss", PhotonTargets.All, null);
+//			photonView.RPC ("RPCRenderLaserOnMiss", PhotonTargets.All, null);
+			RPCRenderLaserOnMiss();
 			return false;
 		}
 	}
@@ -107,6 +117,7 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 
 	[RPC]
 	public void RPCRenderLaserOnHit(){
+		Debug.Log ("RPCRenderLaserOnHit");
 		line.SetPosition(0, ray.origin);
 		line.SetPosition(1, hit.point);
 	}
