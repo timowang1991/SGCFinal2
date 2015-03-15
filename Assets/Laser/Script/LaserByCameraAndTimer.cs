@@ -3,7 +3,8 @@ using System.Collections;
 
 public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 	public GameObject laserHitBurst;
-	public Camera cam;
+//	public Camera cam;
+	public GameObject oculusCamRef;
 
 	public float rayDistance = 100.0f;
 	public float addForceRatio = 5.0f;
@@ -67,7 +68,7 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 		if(GetLaserStartTipToCameraRayHitVector(ref laserStartTipToCamRayHit)){
 			ray = new Ray(transform.position, laserStartTipToCamRayHit);
 		} else {
-			ray = new Ray(transform.position, cam.transform.forward);
+			ray = new Ray(transform.position, oculusCamRef.transform.forward);
 		}
 		
 		if(Physics.Raycast(ray, out hit, rayDistance)){
@@ -80,11 +81,11 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 	}
 
 	bool GetLaserStartTipToCameraRayHitVector(ref Vector3 laserStartTipToCamRayHit){
-		if(cam == null)
+		if(oculusCamRef == null)
 			return false;
 
 		RaycastHit hit;
-		if(Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity)){
+		if(Physics.Raycast(oculusCamRef.transform.position, oculusCamRef.transform.forward, out hit, Mathf.Infinity)){
 			laserStartTipToCamRayHit = (hit.point - transform.position).normalized;
 			return true;
 		}
@@ -131,7 +132,7 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 	[RPC]
 	public void RPCCreateHitForce(){
 		if(hit.rigidbody){
-			hit.rigidbody.AddForceAtPosition(cam.transform.forward * addForceRatio, hit.point);
+			hit.rigidbody.AddForceAtPosition(oculusCamRef.transform.forward * addForceRatio, hit.point);
 		}
 	}
 
