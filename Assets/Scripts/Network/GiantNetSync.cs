@@ -10,7 +10,7 @@ using System;
 public class GiantNetSync : Photon.MonoBehaviour //enable it to access GameObject's PhotonView
 {
 	private string[] bodyPartNames = new string[]{"Spine1","Pelvis","Clavicle","Arm","Forearm"};
-	private const int numNonDuplicateBodyParts = 1; //prefix not left or right
+	private const int numNonDuplicateBodyParts = 2; //prefix not left or right
 	private int totalNumBodyParts;
 	//public BigLittleGameLogic gameLogic;//Need Identify
 
