@@ -7,7 +7,10 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 	public GameObject oculusCamRef;
 
 	public float rayDistance = 100.0f;
-	public float addForceRatio = 5.0f;
+	public float explosionForceRadius = 10.0f;
+	public float explosionForce = 10.0f;
+	public float explosionForceUpwardModifier = 0.0f;
+//	public float addForceRatio = 5.0f;
 	public float timerToUseLaser = 5.0f;
 	public float laserHitEffectTimerToDisappear = 7.0f;
 	
@@ -50,23 +53,18 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 		
 		while(timerToUseLaser > 0){
 			timerToUseLaser -= Time.deltaTime;
-//			shootLaser();	
-			photonView.RPC ("shootLaser", PhotonTargets.All, null);
+			shootLaser();
 			yield return null;
 		}
 		
 		photonView.RPC ("RPCLaserLightsOff", PhotonTargets.All, null);
 	}
-
-	[RPC]
+	
 	void shootLaser(){
 		// add more methods in here if want to add more features when hit
 		if(RenderLaserAndGetLaserHitInfo()){
-//			photonView.RPC ("RPCInstantiateHitEffect", PhotonTargets.All, null);
-//			photonView.RPC ("RPCCreateHitForce", PhotonTargets.All, null);
-			RPCInstantiateHitEffect();
-			RPCCreateHitForce();
-
+			photonView.RPC ("RPCInstantiateHitEffect", PhotonTargets.All, hit.point);
+			photonView.RPC ("RPCCreateHitForce", PhotonTargets.All, hit.point);
 		}
 	}
 
@@ -80,12 +78,10 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 		}
 		
 		if(Physics.Raycast(ray, out hit, rayDistance)){
-//			photonView.RPC ("RPCRenderLaserOnHit", PhotonTargets.All, null);
-			RPCRenderLaserOnHit();
+			photonView.RPC ("RPCRenderLaserOnHit", PhotonTargets.All, hit.point);
 			return true;
 		} else {
-//			photonView.RPC ("RPCRenderLaserOnMiss", PhotonTargets.All, null);
-			RPCRenderLaserOnMiss();
+			photonView.RPC ("RPCRenderLaserOnMiss", PhotonTargets.All, null);
 			return false;
 		}
 	}
@@ -116,34 +112,44 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 	}
 
 	[RPC]
-	public void RPCRenderLaserOnHit(){
-		Debug.Log ("RPCRenderLaserOnHit");
-		line.SetPosition(0, ray.origin);
-		line.SetPosition(1, hit.point);
+	public void RPCRenderLaserOnHit(Vector3 hitPoint){
+		line.SetPosition(0, transform.position);
+		line.SetPosition(1, hitPoint);
+//		Debug.Log("hit.point = " + hit.point);
+
 	}
 
 	[RPC]
 	public void RPCRenderLaserOnMiss(){
-		line.SetPosition(0, ray.origin);
-		line.SetPosition(1, ray.GetPoint(rayDistance));
+		line.SetPosition(0, transform.position);
+		line.SetPosition(1, oculusCamRef.transform.position + oculusCamRef.transform.forward.normalized * rayDistance);
+//		Debug.Log("ray.GetPoint = " + ray.GetPoint(rayDistance));
+//		Debug.Log("transform calculation = " +
+//		          (oculusCamRef.transform.position + oculusCamRef.transform.forward.normalized * rayDistance));
 	}
 
 	[RPC]
-	public void RPCInstantiateHitEffect(){
+	public void RPCInstantiateHitEffect(Vector3 hitPoint){
 		if(laserHitBurst == null)
 			return;
 
-		GameObject gObject = Instantiate(laserHitBurst, hit.point, Quaternion.FromToRotation(Vector3.forward, hit.normal)) as GameObject;
-		if(hit.transform){
-			gObject.transform.parent = hit.transform;
-		}
+		GameObject gObject = Instantiate(laserHitBurst, hitPoint, Quaternion.FromToRotation(Vector3.forward, Vector3.up)) as GameObject;
+//		if(hit.transform){
+//			gObject.transform.parent = hit.transform;
+//		}
 		Destroy(gObject, laserHitEffectTimerToDisappear);
 	}
 
 	[RPC]
-	public void RPCCreateHitForce(){
-		if(hit.rigidbody){
-			hit.rigidbody.AddForceAtPosition(oculusCamRef.transform.forward * addForceRatio, hit.point);
+	public void RPCCreateHitForce(Vector3 hitPoint){
+//		if(hit.rigidbody){
+//			hit.rigidbody.AddForceAtPosition(oculusCamRef.transform.forward * addForceRatio, hit.point);
+//		}
+		Collider [] colliders = Physics.OverlapSphere(hitPoint, explosionForceRadius);
+		foreach(Collider collider in colliders){
+			if(collider && collider.rigidbody){
+				collider.rigidbody.AddExplosionForce(explosionForce, hitPoint, explosionForceRadius, explosionForceUpwardModifier);
+			}
 		}
 	}
 
