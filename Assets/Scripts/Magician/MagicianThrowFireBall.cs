@@ -6,6 +6,8 @@ public class MagicianThrowFireBall : Photon.MonoBehaviour {
 	public int CostMP = 10; 
 	public string FireBall_Prefab = "FireBall_Magician_Net";
 	private Transform camTrans;
+	public Transform MagicianPosition;
+	public Transform FireBallRef;
 
 	void Start()
 	{
@@ -13,6 +15,7 @@ public class MagicianThrowFireBall : Photon.MonoBehaviour {
 			Debug.LogError("NO FireBall_Prefab Loaded");
 		}
 		camTrans = Camera.main.transform;
+		Debug.Log ("CamName:" + camTrans.name);
 	}
 
 	public void CastSpell()
@@ -22,13 +25,14 @@ public class MagicianThrowFireBall : Photon.MonoBehaviour {
 			this.photonView.RPC("FireTheFireBall",PhotonTargets.All);
 		}
 	}
+
+	public float factor = 200;
 	[RPC]
 	void FireTheFireBall()
 	{
 		CapsuleCollider cc = this.gameObject.collider as CapsuleCollider;
-		Vector3 v3 = camTrans.forward / camTrans.forward.magnitude;
-		GameObject fireBall = PhotonNetwork.Instantiate (FireBall_Prefab, this.gameObject.transform.position, Quaternion.identity, 0);
-		fireBall.transform.LookAt ( camTrans.position,Vector3.forward);
+		GameObject fireBall = PhotonNetwork.Instantiate (FireBall_Prefab, MagicianPosition.position,Quaternion.identity, 0);
+		fireBall.transform.LookAt ( FireBallRef ,FireBallRef.up);
 		Debug.Log(this.photonView.viewID + " is Firing the Fire ball");
 	}
 
