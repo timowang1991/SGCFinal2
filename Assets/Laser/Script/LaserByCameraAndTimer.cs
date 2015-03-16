@@ -64,7 +64,7 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 		// add more methods in here if want to add more features when hit
 		if(RenderLaserAndGetLaserHitInfo()){
 			photonView.RPC ("RPCInstantiateHitEffect", PhotonTargets.All, hit.point);
-			photonView.RPC ("RPCCreateHitForce", PhotonTargets.All, hit.point);
+			hitObjectBehavior(hit.point);
 		}
 	}
 
@@ -115,7 +115,6 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 	public void RPCRenderLaserOnHit(Vector3 hitPoint){
 		line.SetPosition(0, transform.position);
 		line.SetPosition(1, hitPoint);
-//		Debug.Log("hit.point = " + hit.point);
 
 	}
 
@@ -123,9 +122,6 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 	public void RPCRenderLaserOnMiss(){
 		line.SetPosition(0, transform.position);
 		line.SetPosition(1, oculusCamRef.transform.position + oculusCamRef.transform.forward.normalized * rayDistance);
-//		Debug.Log("ray.GetPoint = " + ray.GetPoint(rayDistance));
-//		Debug.Log("transform calculation = " +
-//		          (oculusCamRef.transform.position + oculusCamRef.transform.forward.normalized * rayDistance));
 	}
 
 	[RPC]
@@ -140,17 +136,26 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 		Destroy(gObject, laserHitEffectTimerToDisappear);
 	}
 
-	[RPC]
-	public void RPCCreateHitForce(Vector3 hitPoint){
+	public void hitObjectBehavior(Vector3 hitPoint){
 //		if(hit.rigidbody){
 //			hit.rigidbody.AddForceAtPosition(oculusCamRef.transform.forward * addForceRatio, hit.point);
 //		}
 		Collider [] colliders = Physics.OverlapSphere(hitPoint, explosionForceRadius);
 		foreach(Collider collider in colliders){
+			PhotonView pView = collider.transform.root.gameObject.GetComponent<PhotonView>();
+			if(!pView) continue;
+
 			if(collider && collider.rigidbody){
-				collider.rigidbody.AddExplosionForce(explosionForce, hitPoint, explosionForceRadius, explosionForceUpwardModifier);
+				photonView.RPC("RPCCreateHitForce", PhotonTargets.All, pView.viewID, hitPoint);
 			}
 		}
 	}
 
+	[RPC]
+	public void RPCCreateHitForce(int viewID, Vector3 hitPoint){
+		GameObject hitObject = PhotonView.Find(viewID).gameObject;
+		if(!hitObject) return;
+
+		hitObject.rigidbody.AddExplosionForce(explosionForce, hitPoint, explosionForceRadius, explosionForceUpwardModifier);
+	}
 }
