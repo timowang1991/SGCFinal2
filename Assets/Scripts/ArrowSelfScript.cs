@@ -37,31 +37,32 @@ public class ArrowSelfScript : MonoBehaviour {
 		{
 			Debug.Log ("Arrow: " + other.gameObject.tag);
 			GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().HurtGiant(1,this.gameObject.tag);
-			AttachToCollisionPoint(other.contacts[0]);
+			AttachToCollisionPoint(other);
 		}
 		else if(other.gameObject.tag == "Weaker")
 		{
 			Debug.Log ("Arrow: " + other.gameObject.tag);
 			GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().HurtGiant(2,this.gameObject.tag);
-			AttachToCollisionPoint(other.contacts[0]);
+			AttachToCollisionPoint(other);
 		}
 		else if(other.gameObject.tag == "Weakest")
 		{
 			Debug.Log ("Arrow: " + other.gameObject.tag);
 			GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().HurtGiant(3,this.gameObject.tag);
-			AttachToCollisionPoint(other.contacts[0]);
+			AttachToCollisionPoint(other);
 		}
 	}
 	/// <summary>
 	/// Stay at the point, and should be a child of the giant's body. This time just stay at the global position. (BUG)
 	/// </summary>
-	void AttachToCollisionPoint(ContactPoint Point)
+	void AttachToCollisionPoint(Collision collision)
 	{
-		gameObject.transform.position = Point.point;
+		//gameObject.transform.position = Point.point;
 		gameObject.rigidbody.isKinematic = true;
 		state = ArrowSelfScript.ArrowState.touched;
 
-		GameObject obj = (GameObject)Instantiate (BloodFX, Point.point, Quaternion.identity);
+		GameObject obj = (GameObject)Instantiate (BloodFX, collision.contacts[0].point, Quaternion.identity);
+		obj.transform.parent = collision.gameObject.transform;
 		Destroy(obj,10);
 	}
 }
