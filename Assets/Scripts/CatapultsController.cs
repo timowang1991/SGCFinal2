@@ -56,7 +56,8 @@ public class CatapultsController : Photon.MonoBehaviour {
 			Stone_clone = null;
 			Vector3 direction =  TargetPoint.transform.position - Cam.position;
 			stoneClonedCache.GetComponent<PhotonView> ().RPC ("shootSelfRPC", PhotonTargets.All, direction);
-			stoneClonedCache.GetComponent<Stone_NetSync>().invokeDestroySelfOverNet (10);
+			stoneClonedCache.GetComponent<Stone_NetSync>().invokeDestroySelfOverNet (3);
+			Camera.main.transform.parent = stoneClonedCache.transform;
 			//Stone_clone = null;
 		//}
 	}
@@ -87,7 +88,8 @@ public class CatapultsController : Photon.MonoBehaviour {
 		//if(isControllable) { //use enable/disable mechanism
 		if (Catapults_animator.GetCurrentAnimatorStateInfo (0).nameHash == LoadedState && isLoaded == false && Stone_clone==null) {
 			parasArrayForStoneInit[0] = photonView.viewID;
-			Stone_clone =  PhotonNetwork.Instantiate ("Stone_Net", stonePlacedTrans.position , transform.rotation , 0, parasArrayForStoneInit);
+			Stone_clone = PhotonNetwork.Instantiate ("Stone_Net", stonePlacedTrans.position , transform.rotation , 0, parasArrayForStoneInit);
+			Stone_clone.GetComponent<StoneSelfScript>().initCamTransform = transform.FindChild("CamToPut");
 			Stone_clone.GetComponent<StoneSelfScript>().CatapultPhotonView = photonView;
 			isLoaded=true;
 		} 

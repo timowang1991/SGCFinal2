@@ -50,13 +50,19 @@ public class HealthSystem : Photon.MonoBehaviour {
 		if(tmp<=0 && !isDead)
 		{
 			isDead = true;
-			a.SetBool("Die",true);
+			if(gameObject.tag != "Catapult")
+			{
+				a.SetBool("Die",true);
+			}
 			SetHealthValue(0);
 			Invoke("DestroySelf",10);
 		}
 		else
 		{
-			a.SetTrigger("Gothit");
+			if(gameObject.tag != "Catapult")
+			{
+				a.SetTrigger("Gothit");
+			}
 			SetHealthValue(tmp);
 		}
 	}

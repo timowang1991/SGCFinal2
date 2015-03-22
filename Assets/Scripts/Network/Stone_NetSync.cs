@@ -32,6 +32,7 @@ public class Stone_NetSync : Photon.MonoBehaviour {
 	/// Tell everyone self destory
 	/// </summary>
 	private void destroySelfOverNet() {
+		GetComponent<StoneSelfScript> ().ChangeCameraBack ();
 		PhotonNetwork.Destroy (Stone_clone);
 	}
 
