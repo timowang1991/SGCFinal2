@@ -109,6 +109,10 @@ public class GiantHealth : MonoBehaviour {
 		{
 			loseHealthPoint(minHurtPoint * HurtWeakLevel);
 		}
+		else if(Thing == "FireBall")
+		{
+			loseHealthPoint(minHurtPoint * HurtWeakLevel);
+		}
 	}
 
 }
