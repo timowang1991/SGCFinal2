@@ -596,9 +596,8 @@ public class MagicianNet_Ctrl : Photon.MonoBehaviour {
 				if(doAtk1Down && !st.IsName("PunchCombo.Punch1"))
 				{
 					Debug.Log("Attack2222");
-					//simulate here
+					//simulate her
 					transform.GetComponent<MagicianThrowFireBall>().CastSpell();
-
 
 					a.SetBool("Attack1", true);
 					a.SetBool("Walking", false); // RESET
