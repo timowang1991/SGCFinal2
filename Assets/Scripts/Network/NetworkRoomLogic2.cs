@@ -145,7 +145,7 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 						targetPointTrans.parent = Camera.main.transform;
 						MobileController mCtrl = Camera.main.GetComponent<MobileController>();
 						//mCtrl.isControllable = true;
-						
+			Debug.Log(myCatapult.name);
 						//let the MC know which Catapult is controllable
 						mCtrl.setCatapult(myCatapult);
 

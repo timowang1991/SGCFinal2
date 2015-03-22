@@ -9,7 +9,7 @@ public class MagicianChangeHand : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		giant = GameObject.Find ("52bangd-T-Pose").GetComponent<PhotonView>();
+		giant = GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<PhotonView>();
 		if (giant == null) {
 			Debug.LogError("Giant canoot find");
 		}
