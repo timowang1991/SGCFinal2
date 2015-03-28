@@ -25,6 +25,8 @@ public class AvatarController : MonoBehaviour
 	
 	// Slerp smooth factor
 	public float smoothFactor = 5f;
+
+	public bool stopMove = false;
 	
 	
 //	// Public variables that will get matched to bones. If empty, the Kinect will simply not track it.
@@ -135,7 +137,7 @@ public class AvatarController : MonoBehaviour
 	// Update the avatar each frame.
     public void UpdateAvatar(Int64 UserID)
     {	
-		if(!transform.gameObject.activeInHierarchy) 
+		if(!transform.gameObject.activeInHierarchy || stopMove) 
 			return;
 
 		// Get the KinectManager instance
