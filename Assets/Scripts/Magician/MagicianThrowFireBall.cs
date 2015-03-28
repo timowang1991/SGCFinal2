@@ -20,18 +20,20 @@ public class MagicianThrowFireBall : Photon.MonoBehaviour {
 	public void CastSpell()
 	{
 
-		if ( photonView.isMine &&this.gameObject.GetComponent<MagicianMPManager> ().UseMP (CostMP)) {
-			this.photonView.RPC("FireTheFireBall",PhotonTargets.All);
+		if ( photonView.isMine && this.gameObject.GetComponent<MagicianMPManager> ().UseMP (CostMP)) {
+			//this.photonView.RPC("FireTheFireBall",PhotonTargets.All);
+			GameObject fireBall = PhotonNetwork.Instantiate (FireBall_Prefab, MagicianPosition.position,camTrans.rotation, 0);
 		}
 	}
 
-	public float factor = 200;
-	[RPC]
-	void FireTheFireBall()
-	{
-		CapsuleCollider cc = this.gameObject.collider as CapsuleCollider;
-		GameObject fireBall = PhotonNetwork.Instantiate (FireBall_Prefab, MagicianPosition.position,camTrans.rotation, 0);
-		Debug.Log(this.photonView.viewID + " is Firing the Fire ball");
-	}
+//	public float factor = 200;
+//	[RPC]
+//	void FireTheFireBall()
+//	{
+//		CapsuleCollider cc = this.gameObject.collider as CapsuleCollider;
+//
+//		
+//		Debug.Log(this.photonView.viewID + " is Firing the Fire ball");
+//	}
 
 }
