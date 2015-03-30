@@ -1,4 +1,4 @@
-#if !UNITY_IOS
+
 using UnityEngine;
 //using Windows.Kinect;
 
@@ -86,7 +86,7 @@ public class AvatarController : MonoBehaviour
 	private bool OffsetCalibrated = false;
 	private float XOffset, YOffset, ZOffset;
 	//private Quaternion originalRotation;
-	
+	#if !UNITY_IOS
 	// private instance of the KinectManager
 	private KinectManager kinectManager;
 
@@ -622,7 +622,6 @@ public class AvatarController : MonoBehaviour
 		{25, new List<KinectInterop.JointType> {KinectInterop.JointType.ShoulderRight, KinectInterop.JointType.SpineShoulder} },
 		{26, new List<KinectInterop.JointType> {KinectInterop.JointType.ShoulderLeft, KinectInterop.JointType.SpineShoulder} },
 	};
-	
+	#endif
 }
 
-#endif
