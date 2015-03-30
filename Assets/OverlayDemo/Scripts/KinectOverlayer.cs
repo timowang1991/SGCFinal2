@@ -1,3 +1,4 @@
+#if !UNITY_IOS
 using UnityEngine;
 using System.Collections;
 //using Windows.Kinect;
@@ -81,3 +82,4 @@ public class KinectOverlayer : MonoBehaviour
 		}
 	}
 }
+#endif

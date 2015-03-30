@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if !UNITY_IOS
+using UnityEngine;
 using System.Collections;
 
 public class GiantFreeze : MonoBehaviour {
@@ -28,3 +29,4 @@ public class GiantFreeze : MonoBehaviour {
 		}
 	}
 }
+#endif

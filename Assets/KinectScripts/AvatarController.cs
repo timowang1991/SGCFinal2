@@ -1,3 +1,4 @@
+#if !UNITY_IOS
 using UnityEngine;
 //using Windows.Kinect;
 
@@ -624,3 +625,4 @@ public class AvatarController : MonoBehaviour
 	
 }
 
+#endif

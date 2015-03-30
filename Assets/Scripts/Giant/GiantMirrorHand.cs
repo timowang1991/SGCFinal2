@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if !UNITY_IOS
+using UnityEngine;
 using System.Collections;
 
 public class GiantMirrorHand : Photon.MonoBehaviour {
@@ -23,3 +24,4 @@ public class GiantMirrorHand : Photon.MonoBehaviour {
 		con.mirroredMovement = false;
 	}
 }
+#endif

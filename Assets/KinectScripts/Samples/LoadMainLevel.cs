@@ -1,3 +1,4 @@
+#if !UNITY_IOS
 using UnityEngine;
 using System.Collections;
 
@@ -18,3 +19,4 @@ public class LoadMainLevel : MonoBehaviour
 	}
 	
 }
+#endif
