@@ -113,6 +113,10 @@ public class GiantHealth : MonoBehaviour {
 		{
 			loseHealthPoint(minHurtPoint * HurtWeakLevel);
 		}
+		else if(Thing == "Tornado")
+		{
+			loseHealthPoint(minHurtPoint * HurtWeakLevel);
+		}
 	}
 
 }

@@ -597,7 +597,7 @@ public class MagicianNet_Ctrl : Photon.MonoBehaviour {
 				{
 					Debug.Log("Attack2222");
 					//simulate her
-					transform.GetComponent<MagicianRecoverHP>().CastSpell();
+					transform.GetComponent<MagicianThrowTornado>().CastSpell();
 
 					a.SetBool("Attack1", true);
 					a.SetBool("Walking", false); // RESET
