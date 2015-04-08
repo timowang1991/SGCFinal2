@@ -168,7 +168,7 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 		//if is the phone, magician, ninja, catapult
 		else if (platform == Platform.Phone) {
 
-			heroType type =  heroType.magician;//(heroType)Random.Range(0,2);
+			heroType type = heroType.ninja;//(heroType)Random.Range(0,2);
 
 			GameObject currPlayer;
 			HeroCamAlias cameraLogic;
