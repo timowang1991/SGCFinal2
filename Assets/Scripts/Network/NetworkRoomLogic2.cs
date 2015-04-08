@@ -5,6 +5,14 @@ using HeroCamAlias = HeroCamera_New;
 using CharacterNetSyncAlias = CharacterNetSync2;
 public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 
+
+	private enum heroType
+	{
+		ninja,
+		magician,
+		catapult,
+	}
+
 	//private PhotonView ScenePhotonView;
 	//private PhotonView playerPhotonView;
 	//private string roomName = "bigLittleBattle";
@@ -19,7 +27,7 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 	private Platform platform;
 
 	private const float highestYCoordinateInScene = 245;
-	public bool testingMagician = false;
+	//public bool testingMagician = false;
 
 	void Awake() {
 		Random.seed = (int)(Time.realtimeSinceStartup + PhotonNetwork.GetPing() * Random.value);
@@ -70,85 +78,194 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 		Debug.Log("joined room");
 
 		if (platform == Platform.PC_Giant) {//Need Identify
-						//init as giant
-						//Vector3 giantPos = new Vector3(250,-70,119);
-						//GameObject currPlayer = PhotonNetwork.Instantiate("Giant_Net", giantPos, Quaternion.identity, 0);
-						GameObject.FindGameObjectWithTag ("OVR").GetComponent<OculusFollower> ().setOculusFollower ();
+			//init as giant
+			//Vector3 giantPos = new Vector3(250,-70,119);
+			//GameObject currPlayer = PhotonNetwork.Instantiate("Giant_Net", giantPos, Quaternion.identity, 0);
+			GameObject.FindGameObjectWithTag ("OVR").GetComponent<OculusFollower> ().setOculusFollower ();
 
-						//to request ownership - no matter which setting the PhotonView has.
-						GameObject.Find ("52bangd-T-Pose").GetComponent<PhotonView> ().RequestOwnership ();
-						GetComponent<TreesGeneratorNet> ().enabled = true;
-				} else if (platform == Platform.PC_Miniature) {
-						GameObject currPlayer;
-						if(testingMagician)
-						{
-							currPlayer = PhotonNetwork.Instantiate ("Magician", startPoint.position, Quaternion.identity, 0);	
-							
-							//currPlayer.GetComponent<CharacterNetSyncAlias>().correctPlayerPos = startPoint.position;
-							MagicianNet_Ctrl netCtrl = currPlayer.GetComponent<MagicianNet_Ctrl> ();
-							//isControllable is hide for inspector, and set to false by default
-							netCtrl.isControllable = true;
-							gameLogic.currPlayerCharCtrlMagician= netCtrl;
+			//to request ownership - no matter which setting the PhotonView has.
+			GameObject.Find ("52bangd-T-Pose").GetComponent<PhotonView> ().RequestOwnership ();
+			GetComponent<TreesGeneratorNet> ().enabled = true;
+		} else if (platform == Platform.PC_Miniature) {//only be magician and Ninja
 
-							//init complete and tell everyone which weapon to take
-							gameLogic.initVarsByRPC (netCtrl, PhotonTargets.Others);
-						}
-						else
-						{
-							currPlayer = PhotonNetwork.Instantiate ("Ninja_Net2_noCollider", startPoint.position, Quaternion.identity, 0);
-							currPlayer.GetComponent<ArrowGenerator>().enabled = true;
-							
-							//currPlayer.GetComponent<CharacterNetSyncAlias>().correctPlayerPos = startPoint.position;
-							HeroCtrlAlias netCtrl = currPlayer.GetComponent<HeroCtrlAlias> ();
-							//isControllable is hide for inspector, and set to false by default
-							netCtrl.isControllable = true;
-							gameLogic.currPlayerCharCtrl = netCtrl;
+			heroType type = (heroType)Random.Range(0,1);
+			GameObject currPlayer;
 
-							//init complete and tell everyone which weapon to take
-							gameLogic.initVarsByRPC (netCtrl, PhotonTargets.Others);
-						}
+			switch(type)
+			{
+				case heroType.magician:
+					MagicianNet_Ctrl netCtrl;
+					currPlayer = PhotonNetwork.Instantiate ("Magician", startPoint.position, Quaternion.identity, 0);	
+					
+					//currPlayer.GetComponent<CharacterNetSyncAlias>().correctPlayerPos = startPoint.position;
+					netCtrl = currPlayer.GetComponent<MagicianNet_Ctrl> ();
+					//isControllable is hide for inspector, and set to false by default
+					netCtrl.isControllable = true;
+					gameLogic.currPlayerCharCtrlMagician= netCtrl;
+					
+					//init complete and tell everyone which weapon to take
+					gameLogic.initVarsByRPC (netCtrl, PhotonTargets.Others);
 
-						currPlayer.GetComponent<HealthSystem>().enabled = true;
-						
-						//add a HeroCamera_New to currPlayer (HeroCamera_New to fine the head position of the player)
-						HeroCamAlias cameraLogic = currPlayer.GetComponent<HeroCamAlias> ();
-						if (cameraLogic == null) {
-								currPlayer.AddComponent<HeroCamAlias> ();
-								cameraLogic = currPlayer.GetComponent<HeroCamAlias> ();
-						}
-						//Camera.main == The first enabled camera tagged "MainCamera" (Read Only).
-						Camera mainCam = Camera.main;
-						if (mainCam == null) {
-								mainCam = new Camera ();
-								mainCam.tag = "MainCamera";
-						}
-						//set the transform of the camera
-						cameraLogic.cam = mainCam.transform;
-						cameraLogic.enabled = true;
-						mainCam.transform.parent = currPlayer.transform;
-						
-				} 
-				//if is the phone
-				else if (platform == Platform.Phone) {
-						//Instantiate Catapult_Net at a appropriate position.
-						GameObject myCatapult =PhotonNetwork.Instantiate("Catapult_Net",getPuttableCataPos(),Quaternion.identity,0);
-						myCatapult.GetComponent<CatapultsController>().enabled = true;
-						Transform camToPutTrans = myCatapult.transform.FindChild("CamToPut");
-						Transform targetPointTrans = myCatapult.transform.Find("initialTargetPoint/TargetPoint");
-						//Transform initTargetPointTrans = myCatapult.transform.FindChild("initialTargetPoint");
-						//targetPointTrans.transform.position = initTargetPointTrans.position;
-						
-						//set camera position
-						Camera.main.transform.position = camToPutTrans.position;
-						Camera.main.transform.rotation = camToPutTrans.rotation;
-						Camera.main.transform.parent = myCatapult.transform;
-						targetPointTrans.parent = Camera.main.transform;
-						MobileController mCtrl = Camera.main.GetComponent<MobileController>();
-						//mCtrl.isControllable = true;
-						//let the MC know which Catapult is controllable
-						mCtrl.setCatapult(myCatapult);
+					currPlayer.GetComponent<HealthSystem>().enabled = true;
+					
+					//add a HeroCamera_New to currPlayer (HeroCamera_New to fine the head position of the player)
+					HeroCamAlias cameraLogic = currPlayer.GetComponent<HeroCamAlias> ();
+					if (cameraLogic == null) {
+						currPlayer.AddComponent<HeroCamAlias> ();
+						cameraLogic = currPlayer.GetComponent<HeroCamAlias> ();
+					}
+					//Camera.main == The first enabled camera tagged "MainCamera" (Read Only).
+					Camera mainCam = Camera.main;
+					if (mainCam == null) {
+						mainCam = new Camera ();
+						mainCam.tag = "MainCamera";
+					}
+					//set the transform of the camera
+					cameraLogic.cam = mainCam.transform;
+					cameraLogic.enabled = true;
+					mainCam.transform.parent = currPlayer.transform;
 
-				}
+					break;
+				case heroType.ninja:
+					HeroCtrlAlias netCtrl_2;
+					currPlayer = PhotonNetwork.Instantiate ("Ninja_Net2_noCollider", startPoint.position, Quaternion.identity, 0);
+					currPlayer.GetComponent<ArrowGenerator>().enabled = true;
+					
+					//currPlayer.GetComponent<CharacterNetSyncAlias>().correctPlayerPos = startPoint.position;
+					netCtrl_2 = currPlayer.GetComponent<HeroCtrlAlias> ();
+					//isControllable is hide for inspector, and set to false by default
+					netCtrl_2.isControllable = true;
+					gameLogic.currPlayerCharCtrl = netCtrl_2;
+					
+					//init complete and tell everyone which weapon to take
+					gameLogic.initVarsByRPC (netCtrl_2, PhotonTargets.Others);
+
+					currPlayer.GetComponent<HealthSystem>().enabled = true;
+					
+					//add a HeroCamera_New to currPlayer (HeroCamera_New to fine the head position of the player)
+					HeroCamAlias cameraLogic2 = currPlayer.GetComponent<HeroCamAlias> ();
+					if (cameraLogic2 == null) {
+						currPlayer.AddComponent<HeroCamAlias> ();
+						cameraLogic2 = currPlayer.GetComponent<HeroCamAlias> ();
+					}
+					//Camera.main == The first enabled camera tagged "MainCamera" (Read Only).
+					Camera mainCam2 = Camera.main;
+					if (mainCam2 == null) {
+						mainCam2 = new Camera ();
+						mainCam2.tag = "MainCamera";
+					}
+					//set the transform of the camera
+					cameraLogic2.cam = mainCam2.transform;
+					cameraLogic2.enabled = true;
+					mainCam2.transform.parent = currPlayer.transform;
+
+					break;
+			}
+
+
+				
+		} 
+		//if is the phone, magician, ninja, catapult
+		else if (platform == Platform.Phone) {
+
+			heroType type =  heroType.magician;//(heroType)Random.Range(0,2);
+
+			GameObject currPlayer;
+			HeroCamAlias cameraLogic;
+			switch(type){
+				case heroType.catapult:
+					//Instantiate Catapult_Net at a appropriate position.
+					GameObject myCatapult =PhotonNetwork.Instantiate("Catapult_Net",getPuttableCataPos(),Quaternion.identity,0);
+					myCatapult.GetComponent<CatapultsController>().enabled = true;
+					Transform camToPutTrans = myCatapult.transform.FindChild("CamToPut");
+					Transform targetPointTrans = myCatapult.transform.Find("initialTargetPoint/TargetPoint");
+					//Transform initTargetPointTrans = myCatapult.transform.FindChild("initialTargetPoint");
+					//targetPointTrans.transform.position = initTargetPointTrans.position;
+					
+
+//					Camera.main.GetComponent<CharacterController>().enabled = true;
+//					Camera.main.GetComponent<MobileController>().enabled = true;
+					//set camera position
+					Camera.main.transform.position = camToPutTrans.position;
+					Camera.main.transform.rotation = camToPutTrans.rotation;
+					Camera.main.transform.parent = myCatapult.transform;
+					targetPointTrans.parent = Camera.main.transform;
+					MobileController mCtrl = Camera.main.GetComponent<MobileController>();
+					//mCtrl.isControllable = true;
+					//let the MC know which Catapult is controllable
+					mCtrl.setCatapult(myCatapult);
+					break;
+				case heroType.magician:
+					
+					currPlayer = PhotonNetwork.Instantiate ("Magician", startPoint.position, Quaternion.identity, 0);	
+					
+					//currPlayer.GetComponent<CharacterNetSyncAlias>().correctPlayerPos = startPoint.position;
+					MagicianNet_Ctrl netCtrl = currPlayer.GetComponent<MagicianNet_Ctrl> ();
+					//isControllable is hide for inspector, and set to false by default
+					netCtrl.isControllable = true;
+					gameLogic.currPlayerCharCtrlMagician= netCtrl;
+					
+					//init complete and tell everyone which weapon to take
+					gameLogic.initVarsByRPC (netCtrl, PhotonTargets.Others);
+					
+					currPlayer.GetComponent<HealthSystem>().enabled = true;
+				
+					//add a HeroCamera_New to currPlayer (HeroCamera_New to fine the head position of the player)
+					cameraLogic = currPlayer.GetComponent<HeroCamAlias> ();
+					if (cameraLogic == null) {
+						currPlayer.AddComponent<HeroCamAlias> ();
+						cameraLogic = currPlayer.GetComponent<HeroCamAlias> ();
+					}
+					//Camera.main == The first enabled camera tagged "MainCamera" (Read Only).
+					Camera mainCam = Camera.main;
+					if (mainCam == null) {
+						mainCam = new Camera ();
+						mainCam.tag = "MainCamera";
+					}
+					mainCam.GetComponent<CharacterController>().enabled = false;
+					mainCam.GetComponent<MobileController>().enabled = false;
+					//set the transform of the camera
+					cameraLogic.cam = mainCam.transform;
+					cameraLogic.enabled = true;
+					mainCam.transform.parent = currPlayer.transform;
+					break;
+				case heroType.ninja:
+					currPlayer = PhotonNetwork.Instantiate ("Ninja_Net2_noCollider", startPoint.position, Quaternion.identity, 0);
+					currPlayer.GetComponent<ArrowGenerator>().enabled = true;
+					
+					//currPlayer.GetComponent<CharacterNetSyncAlias>().correctPlayerPos = startPoint.position;
+					HeroCtrlAlias netCtrl_2 = currPlayer.GetComponent<HeroCtrlAlias> ();
+					//isControllable is hide for inspector, and set to false by default
+					netCtrl_2.isControllable = true;
+					gameLogic.currPlayerCharCtrl = netCtrl_2;
+					
+					//init complete and tell everyone which weapon to take
+					gameLogic.initVarsByRPC (netCtrl_2, PhotonTargets.Others);
+					currPlayer.GetComponent<HealthSystem>().enabled = true;
+					
+					//add a HeroCamera_New to currPlayer (HeroCamera_New to fine the head position of the player)
+					cameraLogic = currPlayer.GetComponent<HeroCamAlias> ();
+					if (cameraLogic == null) {
+						currPlayer.AddComponent<HeroCamAlias> ();
+						cameraLogic = currPlayer.GetComponent<HeroCamAlias> ();
+					}
+					//Camera.main == The first enabled camera tagged "MainCamera" (Read Only).
+					Camera mainCam2 = Camera.main;
+					if (mainCam2 == null) {
+						mainCam2 = new Camera ();
+						mainCam2.tag = "MainCamera";
+					}
+					mainCam2.GetComponent<CharacterController>().enabled = false;
+					mainCam2.GetComponent<MobileController>().enabled = false;
+					//set the transform of the camera
+					cameraLogic.cam = mainCam2.transform;
+					cameraLogic.enabled = true;
+					mainCam2.transform.parent = currPlayer.transform;
+					break;
+			}
+
+
+		}
     }
 
 	public float spaceBetweenCatapult;

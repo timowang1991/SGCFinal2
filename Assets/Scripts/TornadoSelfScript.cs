@@ -10,7 +10,7 @@ public class TornadoSelfScript : Photon.MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//Debug.Log("start");
-		heading = this.gameObject.transform.position -PlayerPosition.transform.position;
+		heading = this.gameObject.transform.position - PlayerPosition.transform.position;
 		Invoke ("destroyself", timelimited);
 	}
 	

@@ -18,6 +18,11 @@ public class HeroCamera_New : MonoBehaviour
 	public float fpsCamDist = -0.15f;
 	
 	public bool useIdleOrbit = true;
+
+	#if UNITY_IOS || UNITY_ANDROID
+	public CNAbstractController Right_RotateJoystick;
+	public CNAbstractController Left_RotateJoystick;
+	#endif
 	
 	public enum CameraState
 	{
@@ -129,6 +134,11 @@ public class HeroCamera_New : MonoBehaviour
 		cam.camera.fieldOfView = 70.0f;
 		camState = CameraState.ThirdPerson;
 		oldCamState = camState;
+
+		#if UNITY_IOS || UNITY_ANDROID
+		Left_RotateJoystick = GameObject.FindGameObjectWithTag ("Left_Joystick").GetComponent<CNJoystick>();
+		Right_RotateJoystick = GameObject.FindGameObjectWithTag ("Right_Joystick").GetComponent<CNJoystick>();
+		#endif
     }
 	//=================================================================================================================o
 	void IdleOrbit ()
@@ -159,9 +169,22 @@ public class HeroCamera_New : MonoBehaviour
 		//camInput.doOrbit = Input.GetKeyDown ("2");
 		camInput.do3rdP = Input.GetKeyDown ("3");
 		camInput.doLShift = Input.GetKey (KeyCode.LeftShift);
-		camInput.mX = Input.GetAxis ("Mouse X");
-		camInput.mY = Input.GetAxis ("Mouse Y");
-		camInput.mSW = Input.GetAxis ("Mouse ScrollWheel");
+
+
+		#if UNITY_IOS || UNITY_ANDROID
+//		camInput.mX = Right_RotateJoystick.GetAxis("Horizontal");
+//		camInput.mY = Right_RotateJoystick.GetAxis("Vertical");
+//		camInput.mSW = Right_RotateJoystick.GetAxis("Vertical");
+		#else
+			camInput.mX = Input.GetAxis("Mouse X");
+			camInput.mY = Input.GetAxis("Mouse Y");	
+			camInput.mSW = Input.GetAxis ("Mouse ScrollWheel");
+		#endif
+
+//		Debug.Log(camInput.mX + ";"+camInput.mY);
+//		camInput.mX = Input.GetAxis ("Mouse X");
+//		camInput.mY = Input.GetAxis ("Mouse Y");
+		//camInput.mSW = Input.GetAxis ("Mouse ScrollWheel");
 		
 		
 		
@@ -282,11 +305,20 @@ public class HeroCamera_New : MonoBehaviour
 		// Left shift = no y rotation
 		if(!camInput.doLShift)
 		{
+			//Debug.Log("doLShift");
 			// Apply Y-mouse axis
 			if(invertMouseY)
-			    yAngl += Input.GetAxis ("Mouse Y") * ySpeed * 0.02f;
+				#if UNITY_IOS || UNITY_ANDROID
+				yAngl += Right_RotateJoystick.GetAxis("Vertical") * ySpeed * 0.002f;
+				#else
+				yAngl += Input.GetAxis ("Mouse Y") * ySpeed * 0.02f;
+				#endif
 			else
-			    yAngl -= Input.GetAxis ("Mouse Y") * ySpeed * 0.02f;
+				#if UNITY_IOS || UNITY_ANDROID
+				yAngl -= Right_RotateJoystick.GetAxis("Vertical") * ySpeed * 0.002f;
+				#else
+				yAngl -= Input.GetAxis ("Mouse Y") * ySpeed * 0.02f;
+				#endif
 		}
 		
 		

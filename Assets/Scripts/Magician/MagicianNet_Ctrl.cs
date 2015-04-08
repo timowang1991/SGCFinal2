@@ -33,6 +33,11 @@ public class MagicianNet_Ctrl : Photon.MonoBehaviour {
 	
 	// WallRun ----------------------- //
 	public bool canWallRun = true;
+
+	#if UNITY_IOS || UNITY_ANDROID
+	public CNAbstractController Right_RotateJoystick;
+	public CNAbstractController Left_RotateJoystick;
+	#endif
 	
 	
 	public enum BaseState
@@ -263,7 +268,10 @@ public class MagicianNet_Ctrl : Photon.MonoBehaviour {
 		liftVector = new Vector3 (0, 2.0f, 0);
 		// Enable correct weapon setup
 		//StartCoroutine(NextWeapon());
-		
+		#if UNITY_IOS || UNITY_ANDROID
+		Left_RotateJoystick = GameObject.FindGameObjectWithTag ("Left_Joystick").GetComponent<CNJoystick>();
+		Right_RotateJoystick = GameObject.FindGameObjectWithTag ("Right_Joystick").GetComponent<CNJoystick>();
+		#endif
 	}
 	//=================================================================================================================o
 	
@@ -284,19 +292,42 @@ public class MagicianNet_Ctrl : Photon.MonoBehaviour {
 		if(isControllable) {
 			// Grab Input each frame --- Handy for your custom input setting and AI
 			doLShift = Input.GetKey(KeyCode.LeftShift);
-			mX = doLShift ? 0 : Input.GetAxis("Mouse X"); // Mouse X is 0 if leftShift is held down
-			h = Input.GetAxis("Horizontal");
-			v = Input.GetAxis("Vertical");	
+
+
+
+
+			#if UNITY_IOS || UNITY_ANDROID
+				h = Left_RotateJoystick.GetAxis("Horizontal");
+				v = Left_RotateJoystick.GetAxis("Vertical");
+				mX = doLShift ? 0 : Right_RotateJoystick.GetAxis("Horizontal");
+				//mX = Right_RotateJoystick.GetAxis("Vertical");
+				doFwd = Input.GetKeyDown(KeyCode.W);
+				doBack = Input.GetKeyDown(KeyCode.S);
+				doLeft = Input.GetKeyDown(KeyCode.A);
+				doRight = Input.GetKeyDown(KeyCode.D);
+				doAtk1Down = false;
+				doAtk1 = false;
+				doAtk2Down = false;
+				doAtk2 = false;
+
+			#else
+				mX = doLShift ? 0 : Input.GetAxis("Mouse X"); // Mouse X is 0 if leftShift is held down
+				h = Input.GetAxis("Horizontal");
+				v = Input.GetAxis("Vertical");
+				doFwd = Input.GetKeyDown(KeyCode.W);
+				doBack = Input.GetKeyDown(KeyCode.S);
+				doLeft = Input.GetKeyDown(KeyCode.A);
+				doRight = Input.GetKeyDown(KeyCode.D);
+				doAtk1Down = Input.GetMouseButtonDown(0);
+				doAtk1 = Input.GetMouseButton(0);
+				doAtk2Down = Input.GetMouseButtonDown(1);
+				doAtk2 = Input.GetMouseButton(1);
+
+			#endif
+
 			doJumpDown = Input.GetButtonDown("Jump");
 			//doJump = Input.GetButton("Jump");
-			doAtk1Down = Input.GetMouseButtonDown(0);
-			doAtk1 = Input.GetMouseButton(0);
-			doAtk2Down = Input.GetMouseButtonDown(1);
-			doAtk2 = Input.GetMouseButton(1);
-			doFwd = Input.GetKeyDown(KeyCode.W);
-			doBack = Input.GetKeyDown(KeyCode.S);
-			doLeft = Input.GetKeyDown(KeyCode.A);
-			doRight = Input.GetKeyDown(KeyCode.D);
+
 			doNextWeapon = Input.GetKeyDown(KeyCode.Q);
 			doCombat = Input.GetKeyDown(KeyCode.C);
 			doFly = Input.GetKeyDown(KeyCode.Z);

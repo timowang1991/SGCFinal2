@@ -31,7 +31,6 @@ public class HealthSystem : Photon.MonoBehaviour {
 	/// Check if is the Giant layer and hurt the value which set in the Inspector
 	/// </summary>
 	void OnCollisionEnter(Collision collision) {
-		Debug.Log (collision.gameObject.layer);
 		if (collision.gameObject.layer.Equals(10)) { //this layer hurt value = 10
 			if(clip != null) {
 				audio.Play();
