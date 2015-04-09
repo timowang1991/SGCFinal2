@@ -27,6 +27,8 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 	private Platform platform;
 
 	private const float highestYCoordinateInScene = 245;
+
+	public GameObject magicianFunctionUIPrefab;
 	//public bool testingMagician = false;
 
 	void Awake() {
@@ -168,7 +170,7 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 		//if is the phone, magician, ninja, catapult
 		else if (platform == Platform.Phone) {
 
-			heroType type = heroType.ninja;//(heroType)Random.Range(0,2);
+			heroType type = heroType.magician;//(heroType)Random.Range(0,2);
 
 			GameObject currPlayer;
 			HeroCamAlias cameraLogic;
@@ -228,6 +230,9 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 					cameraLogic.cam = mainCam.transform;
 					cameraLogic.enabled = true;
 					mainCam.transform.parent = currPlayer.transform;
+
+					GameObject UIobj = (GameObject)Instantiate(magicianFunctionUIPrefab);
+					UIobj.GetComponent<MagicianFunctionalUI>().MainplayerID = currPlayer.GetPhotonView().viewID;
 					break;
 				case heroType.ninja:
 					currPlayer = PhotonNetwork.Instantiate ("Ninja_Net2_noCollider", startPoint.position, Quaternion.identity, 0);
