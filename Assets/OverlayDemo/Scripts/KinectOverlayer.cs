@@ -1,4 +1,3 @@
-#if !UNITY_IOS
 using UnityEngine;
 using System.Collections;
 //using Windows.Kinect;
@@ -7,7 +6,10 @@ using System.Collections;
 public class KinectOverlayer : MonoBehaviour 
 {
 	public GUITexture backgroundImage;
+#if UNITY_IOS || UNITY_ANDROID
+#else
 	public KinectInterop.JointType trackedJoint = KinectInterop.JointType.HandRight;
+#endif
 	public GameObject overlayObject;
 	public float smoothFactor = 5f;
 	
@@ -26,6 +28,8 @@ public class KinectOverlayer : MonoBehaviour
 	
 	void Update () 
 	{
+		#if UNITY_IOS || UNITY_ANDROID
+		#else
 		KinectManager manager = KinectManager.Instance;
 		
 		if(manager && manager.IsInitialized())
@@ -70,7 +74,11 @@ public class KinectOverlayer : MonoBehaviour
 							
 							if(overlayObject)
 							{
-								Vector3 vPosOverlay = Camera.main.ViewportToWorldPoint(new Vector3(xNorm, yNorm, distanceToCamera));
+//								Vector3 vPosOverlay = Camera.main.ViewportToWorldPoint(new Vector3(xNorm, yNorm, distanceToCamera));
+//								Debug.Log("vPosOverlay = " + vPosOverlay);
+//								overlayObject.transform.position = Vector3.Lerp(overlayObject.transform.position, vPosOverlay, smoothFactor * Time.deltaTime);
+
+								Vector3 vPosOverlay = Camera.main.ViewportToScreenPoint(new Vector3(xNorm, yNorm, distanceToCamera));
 								overlayObject.transform.position = Vector3.Lerp(overlayObject.transform.position, vPosOverlay, smoothFactor * Time.deltaTime);
 							}
 						}
@@ -80,6 +88,7 @@ public class KinectOverlayer : MonoBehaviour
 			}
 			
 		}
+		#endif
 	}
+
 }
-#endif
