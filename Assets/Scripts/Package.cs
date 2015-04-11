@@ -19,12 +19,23 @@ public class Package : MonoBehaviour {
 		print (col.gameObject.tag);
 		if (col.gameObject.tag == "Player") {
 			print (col.gameObject.name);
-			//add HP by sending negative value to damage function
-			col.gameObject.GetComponent<HealthSystem>().damage(-addHP);
-			//PhotonView.Destroy(gameObject);
-			PhotonNetwork.Destroy(gameObject);
+			if(col.gameObject.GetComponent<PhotonView>().isMine)
+			{
+				//add HP by sending negative value to damage function
+				col.gameObject.GetComponent<HealthSystem>().damage(-addHP);
+				this.GetComponent<PhotonView>().RPC("tellMasterToDestory",this.GetComponent<PhotonView>().owner);
+				//PhotonNetwork.Destroy(gameObject);
+			}
+
+
 		}
 		
+	}
+
+	[RPC]
+	void tellMasterToDestory()
+	{
+		PhotonNetwork.Destroy(gameObject);
 	}
 
 
