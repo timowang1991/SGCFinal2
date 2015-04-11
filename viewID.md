@@ -1,0 +1,14 @@
+giantnet 2
+networkmana 8
+tree2 5
+tree1 6
+tree3 7
+tree4 9
+tree5 1
+52T 10
+lasr 3
+lasr 11
+bipL 4
+bipR 12
+cata 13
+oculuscam 14
