@@ -26,7 +26,7 @@ public class MagicianDetectBlowFromUser : MonoBehaviour {
 		}
 
 		float y = audio.GetSpectrumData (128, 0, FFTWindow.BlackmanHarris) [64] * 1000000;
-		Debug.Log (y);
+		//Debug.Log (y);
 
 		if(y>800 && Time.time > nextThrow)
 		{
