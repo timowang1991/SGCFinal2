@@ -18,7 +18,7 @@ public class HeroCamera : MonoBehaviour
 	public float fpsCamDist = -0.15f;
 	
 	public bool useIdleOrbit = true;
-	
+		
 	public enum CameraState
 	{
 		FirstPerson,
