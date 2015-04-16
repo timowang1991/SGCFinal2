@@ -72,7 +72,6 @@ public class CatapultsController : Photon.MonoBehaviour {
 		Cam = Camera.main.transform;
 		//player = GameObject.FindGameObjectWithTag("Player");
 		stonePlacedTrans = transform.Find ("Catapult_Bone_Main/Catapult_Bone_03/StonePosition");
-		GameObject.FindGameObjectWithTag ("Right_Joystick").SetActive (false);
 	}
 	//[HideInInspector]
 	//public bool isControllable = false;

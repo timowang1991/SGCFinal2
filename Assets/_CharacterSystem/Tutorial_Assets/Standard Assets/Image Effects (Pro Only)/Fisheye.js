@@ -3,7 +3,7 @@
 
 @script ExecuteInEditMode
 @script RequireComponent (Camera)
-@script AddComponentMenu ("Image Effects/Fisheye")
+@script AddComponentMenu ("Image Effects/Displacement/Fisheye")
 
 class Fisheye extends PostEffectsBase {
 	public var strengthX : float = 0.05f;
@@ -12,11 +12,6 @@ class Fisheye extends PostEffectsBase {
 	public var fishEyeShader : Shader = null;
 	private var fisheyeMaterial : Material = null;	
 	
-	function OnDisable()
-	{
-	    if (fisheyeMaterial)
-	        DestroyImmediate(fisheyeMaterial);
-	}
 	function CheckResources () : boolean {	
 		CheckSupport (false);
 		fisheyeMaterial = CheckShaderAndCreateMaterial(fishEyeShader,fisheyeMaterial);

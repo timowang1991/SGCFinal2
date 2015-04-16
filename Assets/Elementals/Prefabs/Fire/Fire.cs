@@ -75,7 +75,7 @@ public class Fire : MonoBehaviour {
 		onFireTimer = 0.0f;
 		particleSystem.Play ();
 		if(healthSys != null) {
-			healthSys.damage(fireDamageOnHero);	
+			healthSys.damage(GameConfig.fireDamageVal);	
 		}
 	}
 }

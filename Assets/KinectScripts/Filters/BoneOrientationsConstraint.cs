@@ -1,5 +1,4 @@
-﻿#if !UNITY_IOS
-using UnityEngine;
+﻿using UnityEngine;
 
 using System;
 using System.Collections;
@@ -292,4 +291,3 @@ public class BoneOrientationsConstraint
 	}
 	
 }
-#endif

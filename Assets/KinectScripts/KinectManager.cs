@@ -1,4 +1,3 @@
-#if !UNITY_IOS
 using UnityEngine;
 //using Windows.Kinect;
 
@@ -2313,4 +2312,3 @@ public class KinectManager : MonoBehaviour
 	
 }
 
-#endif

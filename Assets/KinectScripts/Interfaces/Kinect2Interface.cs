@@ -1,5 +1,4 @@
-﻿#if !UNITY_IOS
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using Windows.Kinect;
 using System.Runtime.InteropServices;
@@ -590,4 +589,3 @@ public class Kinect2Interface : DepthSensorInterface
 	}
 	
 }
-#endif

@@ -2,84 +2,141 @@
 using System.Collections;
 
 [RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(IDamagedBehaviour))]
 public class HealthSystem : Photon.MonoBehaviour {
 
-	public int HealthPosition;
+	public int HealthVal; //the health value
 	public GameObject Health_UI;
-	public AudioClip clip;
-	public int damageIncurredByGiantHand;
-	Animator a;
+	private EnergyBar energyBar;
+	[HideInInspector]
+	private IDamagedBehaviour damagable;
 
 	void Awake() {
-		audio.clip = clip;
+		if (Health_UI == null) {
+			Health_UI = GameObject.FindWithTag("HP_UI");
+		}
 	}
 
 	// Use this for initialization
 	void Start () {
-		Health_UI = GameObject.FindWithTag("HP_UI");
-		SetHealthValue (100);
-		a = GetComponent<Animator>();
-	}
-	
-	// Update is called once per frame
-	void FixedUpdate () {
-
+		/*
+		if (HealthVal > 0) {
+			SetHealthValue (HealthVal);
+		} else {
+			SetHealthValue (100);
+		}
+		*/
+		damagable = (IDamagedBehaviour) GetComponent (typeof(IDamagedBehaviour));
 	}
 
 	private bool isDead = false;
-	/// <summary>
-	/// Check if is the Giant layer and hurt the value which set in the Inspector
-	/// </summary>
-	void OnCollisionEnter(Collision collision) {
-		if (collision.gameObject.layer.Equals(10)) { //this layer hurt value = 10
-			if(clip != null) {
-				audio.Play();
-			}
 
-			damage(damageIncurredByGiantHand);
+	void OnCollisionEnter(Collision collision) {
+		firstDamage (collision.gameObject);
+	}
+	
+	void OnTriggerEnter(Collider collider) {
+		firstDamage (collider.gameObject);
+	}
+	
+	void OnCollisionStay(Collision collision) {
+		continuousDamage (collision.gameObject);
+	}
+	
+	void OnTriggerStay(Collider collider) {
+		continuousDamage (collider.gameObject);
+	}
+
+	void firstDamage(GameObject objCausingDamage) {
+
+		IDamageOthersBehaviour damagingBehaviour = (IDamageOthersBehaviour)objCausingDamage.GetComponent(typeof(IDamageOthersBehaviour));
+		if(damagingBehaviour != null) {
+			this.damage (objCausingDamage);	
 		}
+
+	}
+	
+	void continuousDamage(GameObject objCausingDamage) {
+
+		IDamageOthersBehaviour damagingBehaviour = (IDamageOthersBehaviour)objCausingDamage.GetComponent(typeof(IDamageOthersBehaviour));
+		if(damagingBehaviour != null && damagingBehaviour.isContinuousDamage(damagable)) {
+			this.damage(objCausingDamage);
+		}
+
 	}
 
 	/// <summary>
 	/// Check if the player is dead or just hurt, then play the animation and destory itself if is dead(No RPC - so it won't tell everyone).
 	/// </summary>
-	public void damage(int hurtValue) {
-		int tmp = Health_UI.GetComponent<EnergyBar> ().valueCurrent - hurtValue;
+	public void damage (GameObject objCausingDamage) {
+		if (isDead) {
+			return;
+		}
+		IDamageOthersBehaviour damagingBehaviour = (IDamageOthersBehaviour)objCausingDamage.GetComponent(typeof(IDamageOthersBehaviour));
+
+		damagingBehaviour.beforeDamaging (damagable);
 		
-		if(tmp<=0 && !isDead)
-		{
+		int tmp = Health_UI.GetComponent<EnergyBar> ().valueCurrent - (int)damagingBehaviour.getDamageVal(damagable);
+		if (tmp > 0) { 
+			damagable.damaged (damagingBehaviour, tmp);
+			SetHealthValue (tmp);
+		} 
+		else if(!isDead){
 			isDead = true;
-			if(gameObject.tag != "Catapult")
-			{
-				a.SetBool("Die",true);
-			}
-			SetHealthValue(0);
-			Invoke("DestroySelf",10);
+			damagable.dying (damagingBehaviour);
+			SetHealthValue (0);
 		}
-		else
-		{
-			if(gameObject.tag != "Catapult")
-			{
-				a.SetTrigger("Gothit");
-			}
-			SetHealthValue(tmp);
-		}
+		
+		damagingBehaviour.afterDamaging (damagable);
+		
 	}
-	
-	void SetHealthValue(int Value)
+
+	public void damage(int hurtValue) {
+		if (isDead) {
+			return;
+		}
+
+		int tmp = Health_UI.GetComponent<EnergyBar> ().valueCurrent - hurtValue;
+
+		if (tmp > 0) { 
+				damagable.damaged (null, tmp);
+				SetHealthValue (tmp);
+		} else if (!isDead) {
+				isDead = true;
+				damagable.dying (null);
+				SetHealthValue (0);
+		}
+
+	}
+
+	//it should be only use in initialization
+	public void initHP(int value) {
+		HealthVal = value;
+		if (energyBar == null) {
+			energyBar = Health_UI.GetComponent<EnergyBar> ();
+		}
+		energyBar.valueCurrent = value;
+		energyBar.valueMax = value;
+	}
+
+	public void SetHealthValue(int Value)
 	{
-		HealthPosition = Value;
-		Health_UI.GetComponent<EnergyBar> ().valueCurrent = Value;
+		HealthVal = Value;
+		if (energyBar == null) {
+			energyBar = Health_UI.GetComponent<EnergyBar> ();
+		}
+		energyBar.valueCurrent = Value;
 	}
 
 	void DestroySelf()
 	{
 		PhotonNetwork.Destroy(this.gameObject);
 	}
+
 	[RPC]
 	void RecoverHP (int DefaultRecoveryHPvalue)
 	{
-		int TotalHP = HealthPosition + DefaultRecoveryHPvalue;
+		int TotalHP = HealthVal + DefaultRecoveryHPvalue;
 		if ( TotalHP > 100) {
 			this.SetHealthValue(100);
 		}

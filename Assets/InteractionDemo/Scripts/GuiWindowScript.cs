@@ -1,4 +1,3 @@
-#if !UNITY_IOS
 using UnityEngine;
 using System.Collections;
 
@@ -32,4 +31,3 @@ public class GuiWindowScript : MonoBehaviour
 	}
 	
 }
-#endif

@@ -1,4 +1,3 @@
-#if !UNITY_IOS
 using UnityEngine;
 using System.Collections;
 
@@ -78,4 +77,3 @@ public interface DepthSensorInterface
 	// returns the next joint in the hierarchy, as to the given joint
 	KinectInterop.JointType GetNextJoint(KinectInterop.JointType joint);
 }
-#endif

@@ -1,5 +1,4 @@
-﻿#if !UNITY_IOS
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Runtime.InteropServices;
 using System;
@@ -1013,4 +1012,3 @@ public class Kinect1Interface : DepthSensorInterface
 	}
 	
 }
-#endif

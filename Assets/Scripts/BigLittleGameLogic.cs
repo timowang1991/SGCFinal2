@@ -61,12 +61,13 @@ public class BigLittleGameLogic : Photon.MonoBehaviour {
 		int weaponIdx = (int)netCtrl.weaponState;
 		netCtrl.photonView.RPC ("initVars",player,weaponIdx,netCtrl.renderersSet[weaponIdx-1,0].enabled,netCtrl.renderersSet[weaponIdx-1,1].enabled); //init current player's state
 	}
+	
 	/// <summary>
 	/// (Basiclly Called by NetworkRoomLogin2.cs and telling Others)Set which weapon is going to render, and render the next weapon.
 	/// </summary>
 	public void initVarsByRPC(MagicianNet_Ctrl netCtrl,PhotonTargets target) {
 		//Function in  HeroCtrl_Net2(which is inherit from Photon.MonoBehaviour), set which weapon is going to render.
-		netCtrl.photonView.RPC ("setWeaponRenderersRPC",target,MagicianNet_Ctrl.WeaponState.None); //init
+		netCtrl.photonView.RPC ("setWeaponRenderersRPC",target,HeroCtrl_Net2.WeaponState.None); //init
 		int weaponIdx = (int)netCtrl.weaponState;
 		
 		//Function to use when player want to change weapon
@@ -76,35 +77,33 @@ public class BigLittleGameLogic : Photon.MonoBehaviour {
 	/// Called by self, send the info to all (? but why need everyone to tell this new player?)
 	/// </summary>
 	public void initVarsByRPC(MagicianNet_Ctrl netCtrl,PhotonPlayer player) {
-		netCtrl.photonView.RPC ("setWeaponRenderersRPC",player,MagicianNet_Ctrl.WeaponState.None); //init
+		netCtrl.photonView.RPC ("setWeaponRenderersRPC",player,HeroCtrl_Net2.WeaponState.None); //init
 		int weaponIdx = (int)netCtrl.weaponState;
 		netCtrl.photonView.RPC ("initVars",player,weaponIdx,netCtrl.renderersSet[weaponIdx-1,0].enabled,netCtrl.renderersSet[weaponIdx-1,1].enabled); //init current player's state
 	}
 
-
-
-
-
 	/// <summary>
-	/// Call when a new client add(the new client won't call this)
+	/// each time a player connected, 
+	/// every player in the same room(including this latest player) would call this function
 	/// </summary>
-	public void OnPhotonPlayerConnected(PhotonPlayer player) //every player enter would call this
-	{
+	public void OnPhotonPlayerConnected(PhotonPlayer player) { 
 		Debug.Log("OnPhotonPlayerConnected: " + player);
 		
 		// when new players join, we send "who's it" to let them know
 		// only one player will do this: the "master"
-		if (platform == Platform.PC_Giant) { //if this client is Giant, it will tell others its HP.
+		if (platform == Platform.PC_Giant) { //if this client is Giant, it will tell the latest client its HP.
 			giantPhotonView.RPC ("setInitialHP",player,giantHealth.healthPoint);
 		}
 
-
-			if ((platform == Platform.PC_Miniature || platform == Platform.Phone) && currPlayerCharCtrlMagician != null && !player.isLocal) { 
+		if (testingMagician) { //set the state variables for charactor controller
+			if (platform == Platform.PC_NonGiant && currPlayerCharCtrlMagician != null && !player.isLocal) { 
 				initVarsByRPC(currPlayerCharCtrlMagician, player);
 			}
-		else if ((platform == Platform.PC_Miniature || platform == Platform.Phone) && currPlayerCharCtrl != null && !player.isLocal) { 
+		} else {
+			if (platform == Platform.PC_NonGiant && currPlayerCharCtrl != null && !player.isLocal) { 
 				initVarsByRPC(currPlayerCharCtrl, player);
 			}
+		}
 	}
 	/// <summary>
 	/// Use OthersBuffered to tell who is giant (which can be told the clients who joind later)

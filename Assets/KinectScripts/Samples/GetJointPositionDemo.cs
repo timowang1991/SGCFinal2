@@ -1,5 +1,4 @@
-﻿#if !UNITY_IOS
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 //using Windows.Kinect;
 
@@ -30,4 +29,3 @@ public class GetJointPositionDemo : MonoBehaviour
 		}
 	}
 }
-#endif

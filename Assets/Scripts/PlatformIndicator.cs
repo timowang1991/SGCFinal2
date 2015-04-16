@@ -3,8 +3,8 @@ using System.Collections;
 
 public enum Platform{
 	Phone,
-	PC_Miniature,
-	PC_Giant
+	PC_NonGiant,
+	PC_Giant,
 };
 
 public class PlatformIndicator : MonoBehaviour {
@@ -14,17 +14,17 @@ public class PlatformIndicator : MonoBehaviour {
 
 	//if find then which platform is it, please ensure everyone has this.
 	void Awake() {
-		if (GameObject.FindGameObjectWithTag ("CNC")) { //phone
+		if (GameObject.FindGameObjectWithTag (GameConfig.PhoneTag)) {
 			Debug.Log ("mobile phone");
 			platform = Platform.Phone;
 		} 
-		else if (GameObject.FindGameObjectWithTag ("OVR")) {//Giant
-			Debug.Log ("Giant in PC");
+		else if (GameObject.FindGameObjectWithTag (GameConfig.PCGiantTag)) {
+			Debug.Log ("Giant PC");
 			platform = Platform.PC_Giant;
-		} 
+		}
 		else {
-			Debug.Log ("Miniature in PC");
-			platform = Platform.PC_Miniature;
+			Debug.Log ("Non-Giant PC");
+			platform = Platform.PC_NonGiant;
 		}
 	}
 

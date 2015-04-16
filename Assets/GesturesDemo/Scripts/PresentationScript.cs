@@ -1,4 +1,3 @@
-#if !UNITY_IOS
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -171,4 +170,3 @@ public class PresentationScript : MonoBehaviour
 	
 	
 }
-#endif
