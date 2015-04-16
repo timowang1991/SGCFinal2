@@ -88,6 +88,7 @@ public class Demo : MonoBehaviour {
 			}
 			
 			if (Input.GetMouseButton(0)) {
+				Debug.Log(strokeId);
 				points.Add(new Point(virtualKeyPosition.x, -virtualKeyPosition.y, strokeId));
 
 				currentGestureLineRenderer.SetVertexCount(++vertexCount);
