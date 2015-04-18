@@ -18,6 +18,16 @@ public class CircularBarWithTimer : MonoBehaviour {
 
 	float completion = 0.0f;
 	
+
+	public delegate void Enter100PercentNotifier();
+	public event Enter100PercentNotifier OnEnter100PercentNotifier;
+
+	public delegate void Exit100PercentNotifier();
+	public event Exit100PercentNotifier OnExit100PercentNotifier;
+
+	public delegate void FadeCompleteNotifier();
+	public event FadeCompleteNotifier OnFadeCompleteNotifier;
+
 	void Start(){
 		CircleImage.type = Image.Type.Filled;
 		CircleImage.fillMethod = Image.FillMethod.Radial360;
@@ -25,13 +35,14 @@ public class CircularBarWithTimer : MonoBehaviour {
 	}
 	
 	void Update(){
-		if(Input.GetButtonDown("Fire1")){
-			RestartLoading();
-		} else if(Input.GetButtonDown("Fire2")){
-			PauseLoading();
-		} else if(Input.GetButtonDown("Jump")){
-			UnLoad(0);
-		}
+	
+//		if(Input.GetButtonDown("Fire1")){
+//			RestartLoading();
+//		} else if(Input.GetButtonDown("Fire2")){
+//			PauseLoading();
+//		} else if(Input.GetButtonDown("Jump")){
+//			UnLoad(0);
+//		}
 	}
 
 	public void RestartLoading(){
@@ -72,10 +83,17 @@ public class CircularBarWithTimer : MonoBehaviour {
 	}
 
 	public void UnLoad(float timeToUnloadFromComplete, float targetCompletion){
-		if(completion <= targetCompletion || completion >= 1) return;
+//		if(completion <= targetCompletion || completion >= 1) return;
+		if(completion == 1.0f && OnExit100PercentNotifier != null)
+			OnExit100PercentNotifier();
+		if(completion <= targetCompletion) return;
 		StopCoroutine("Unloading");
 		StopCoroutine("Loading");
 		StartCoroutine("Unloading", targetCompletion);
+	}
+
+	public void Fade(){
+		StartCoroutine("Fading");
 	}
 
 	IEnumerator Loading(){
@@ -87,7 +105,10 @@ public class CircularBarWithTimer : MonoBehaviour {
 			current = Color.Lerp(start, end, completion);
 			yield return null;
 		}
-		StartCoroutine("Fading");
+//		StartCoroutine("Fading");
+		if(OnEnter100PercentNotifier != null){
+			OnEnter100PercentNotifier();
+		}
 	}
 
 	IEnumerator Fading(){
@@ -105,6 +126,9 @@ public class CircularBarWithTimer : MonoBehaviour {
 			Color c = CircleImage.color;
 			c.a = 0;
 			CircleImage.color = c;
+		}
+		if(OnFadeCompleteNotifier != null){
+			OnFadeCompleteNotifier();
 		}
 	}
 
