@@ -234,7 +234,10 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 				mainCam.transform.parent = currPlayer.transform;
 
 				GameObject UIobj = (GameObject)Instantiate(magicianFunctionUIPrefab);
+				UIobj.GetComponent<MagicianMobileGesture>().controlledMagician = currPlayer;
 				UIobj.GetComponent<MagicianFunctionalUI>().MainplayerID = currPlayer.GetPhotonView().viewID;
+
+				Destroy(Camera.main.GetComponent<CharacterController>());
 
 				break;
 			case heroType.ninja:
@@ -269,6 +272,7 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 				cameraLogic.cam = mainCam2.transform;
 				cameraLogic.enabled = true;
 				mainCam2.transform.parent = currPlayer.transform;
+				Destroy(Camera.main.GetComponent<CharacterController>());
 				break;
 			}
 

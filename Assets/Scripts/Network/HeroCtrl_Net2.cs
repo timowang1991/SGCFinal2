@@ -339,10 +339,10 @@ public class HeroCtrl_Net2 : Photon.MonoBehaviour
 			//doJump = Input.GetButton("Jump");
 
 			//doJump = Input.GetButton("Jump");
-			doAtk1Down = Input.GetMouseButtonDown(0);
-			doAtk1 = Input.GetMouseButton(0);
-			doAtk2Down = Input.GetMouseButtonDown(1);
-			doAtk2 = Input.GetMouseButton(1);
+//			doAtk1Down = Input.GetMouseButtonDown(0);
+//			doAtk1 = Input.GetMouseButton(0);
+//			doAtk2Down = Input.GetMouseButtonDown(1);
+//			doAtk2 = Input.GetMouseButton(1);
 			doFwd = Input.GetKeyDown(KeyCode.W);
 			doBack = Input.GetKeyDown(KeyCode.S);
 			doLeft = Input.GetKeyDown(KeyCode.A);
