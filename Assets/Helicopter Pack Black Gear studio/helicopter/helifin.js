@@ -212,7 +212,7 @@ function Update() {
     if (rightjoystick.position.y != 0.0) {
         rotor_Velocity += rightjoystick.position.y * RotorSpeedIncreaseConstant * 0.001;
     } else {
-        rotor_Velocity = Mathf.Lerp(rotor_Velocity, hover_Rotor_Velocity, Time.deltaTime * Time.deltaTime * );
+        rotor_Velocity = Mathf.Lerp(rotor_Velocity, hover_Rotor_Velocity, Time.deltaTime * Time.deltaTime);
     }
     #endif
     

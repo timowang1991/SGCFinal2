@@ -60,6 +60,10 @@ public var isInSpark: boolean = false;
 
 function Awake() {
     helifin = this;
+    
+    Wind.SetActive(false);
+    dust.particleEmitter.emit = false;
+    leave.particleEmitter.emit = false;
 }
 
 function FixedUpdate() { //Main physics forces section

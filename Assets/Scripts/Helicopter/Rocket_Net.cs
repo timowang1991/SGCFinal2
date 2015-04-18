@@ -27,7 +27,10 @@ public class Rocket_Net : Photon.MonoBehaviour,IDamageOthersBehaviour {
 //			isCollided = true;
 //			photonView.RPC ("rocketExplodeAndDestroy", PhotonTargets.All, contact.normal, contact.point);
 //		}
-		rocketExplodeAndDestroy (contact.normal, contact.point);
+		if (!isCollided) {
+			isCollided = true;
+			rocketExplodeAndDestroy (contact.normal, contact.point);
+		}
 	}
 
 	//[RPC]
@@ -38,8 +41,13 @@ public class Rocket_Net : Photon.MonoBehaviour,IDamageOthersBehaviour {
 		detonatorObj.rotation = Quaternion.FromToRotation (Vector3.up, contactNormal);
 
 		//damage
+		Invoke ("despawnSelf", 2);
 
-		PoolManager.Pools [poolName].Despawn (gameObject.transform); //remove rocket	
+	}
+
+	void despawnSelf() {
+		PoolManager.Pools [poolName].Despawn (gameObject.transform); //remove rocket
+		isCollided = false;
 	}
 
 
