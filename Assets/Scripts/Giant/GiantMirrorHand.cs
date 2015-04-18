@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+﻿#if !UNITY_IOS
+using UnityEngine;
 using System.Collections;
 
 public class GiantMirrorHand : Photon.MonoBehaviour {
-
-	#if !UNITY_IOS
+	
 	private AvatarController con;
 
 	// Use this for initialization
@@ -23,5 +23,5 @@ public class GiantMirrorHand : Photon.MonoBehaviour {
 	{
 		con.mirroredMovement = false;
 	}
-	#endif
 }
+#endif

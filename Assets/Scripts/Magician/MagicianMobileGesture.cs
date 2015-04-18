@@ -22,6 +22,7 @@ public class MagicianMobileGesture : MonoBehaviour {
 	private float nextThrow = 1.0f;
 	private Rect drawArea;
 
+	public GameObject controlledMagician;
 	// Use this for initialization
 	void Start () {
 		platform = Application.platform;
@@ -71,11 +72,11 @@ public class MagicianMobileGesture : MonoBehaviour {
 			Debug.Log(gestureResult.GestureClass);
 			if(gestureResult.GestureClass == "H" && gestureResult.Score > 0.5f)
 			{
-				this.GetComponent<MagicianRecoverHP>().CastSpell();
+				controlledMagician.GetComponent<MagicianRecoverHP>().CastSpell();
 			}
 			else if(gestureResult.GestureClass == "X" && gestureResult.Score > 0.5f)
 			{
-				this.GetComponent<MagicianThrowFireBall>().CastSpell();
+				controlledMagician.GetComponent<MagicianThrowFireBall>().CastSpell();
 			}
 
 			strokeId = -1;

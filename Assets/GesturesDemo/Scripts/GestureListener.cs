@@ -1,3 +1,4 @@
+#if !UNITY_IOS
 using UnityEngine;
 using System.Collections;
 using System;
@@ -118,3 +119,4 @@ public class GestureListener : MonoBehaviour, KinectGestures.GestureListenerInte
 	}
 	
 }
+#endif

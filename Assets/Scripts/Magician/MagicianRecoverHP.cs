@@ -7,10 +7,19 @@ public class MagicianRecoverHP : MonoBehaviour {
 	public int DefaultRecoveryHPvalue = 5;
 	private MagicianHPPlayersIsInRange HPRange;
 	public GameObject RecoverHPFX;
+	public GameObject HPInRangePrefab;
 
 	// Use this for initialization
 	void Start () {
-		HPRange = transform.Find("HPHealthRange").GetComponent<MagicianHPPlayersIsInRange>();
+
+		GameObject magicianParent = new GameObject ("magicianParent");
+
+		this.gameObject.transform.parent = magicianParent.transform;
+
+		GameObject HP = (GameObject)Instantiate (HPInRangePrefab);
+		HP.transform.parent = magicianParent.transform;
+
+		HPRange = HP.GetComponent<MagicianHPPlayersIsInRange>();
 	}
 	
 	public void CastSpell()
