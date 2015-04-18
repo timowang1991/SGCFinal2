@@ -171,7 +171,7 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 //				//let the MC know which Catapult is controllable
 //				mCtrl.setCatapult(myCatapult);
 			
-			heroType type =  heroType.magician;//(heroType)Random.Range(0,2);
+			heroType type =  heroType.ninja;//(heroType)Random.Range(0,2);
 			
 			GameObject currPlayer;
 			HeroCamAlias cameraLogic;
