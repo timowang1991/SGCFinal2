@@ -1,16 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GiantCircularProgressAndHandOverlapMgr : MonoBehaviour {
+public class GiantCircularProgressEventCreator : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+	
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
-
 }
