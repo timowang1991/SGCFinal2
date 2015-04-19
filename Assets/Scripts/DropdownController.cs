@@ -2,11 +2,11 @@
 using System.Collections;
 
 public class DropdownController : Photon.MonoBehaviour {
-	public Vector3 minPosition;
-	public Vector3 maxPosition;
+	public Vector3 minPosition = new Vector3(100,200,100);
+	public Vector3 maxPosition = new Vector3(400,200,400);
 
-	public float minInterval;
-	public float maxInterval;
+	public float minInterval = 5.0f;
+	public float maxInterval = 10.0f;
 
 	//public Transform packagePrefab;
 	public string packagePrefab = "Package";
@@ -16,6 +16,7 @@ public class DropdownController : Photon.MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		platform = GameObject.Find("PlatformManager").GetComponent<PlatformIndicator>().platform;
+		StartCoroutine("DropPackageInRandomTimeInterval");
 	}
 	
 	// Update is called once per frame
@@ -26,7 +27,12 @@ public class DropdownController : Photon.MonoBehaviour {
 		}
 	}
 
-
+	IEnumerator DropPackageInRandomTimeInterval(){
+		while(true){
+			yield return new WaitForSeconds(Random.Range(minInterval,maxInterval));
+			Drop();
+		}
+	}
 
 	void Drop(){
 		Vector3 packagePosition = new Vector3 (Random.Range (minPosition.x, maxPosition.x),
