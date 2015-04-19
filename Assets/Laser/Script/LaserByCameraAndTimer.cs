@@ -151,8 +151,9 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 				photonView.RPC("RPCCreateHitForce", PhotonTargets.All, pView.viewID, hitPoint);
 			}
 
-			HealthSystem healthSystem = PhotonView.Find(pView.viewID).gameObject.GetComponent<HealthSystem>();
-			if(healthSystem != null){
+//			HealthSystem healthSystem = PhotonView.Find(pView.viewID).gameObject.GetComponent<HealthSystem>();
+			if(collider.transform.root.gameObject.tag == "Player"){
+				Debug.Log("hurtByLaser call to "+ pView.viewID);
 				pView.RPC("hurtByLaser",pView.owner);
 			}
 		}
