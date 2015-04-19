@@ -8,12 +8,14 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 
 	public float rayDistance = 100.0f;
 	public float explosionForceRadius = 10.0f;
-	public float explosionForce = 10.0f;
+	public float explosionForce = 30.0f;
 	public float explosionForceUpwardModifier = 0.0f;
 //	public float addForceRatio = 5.0f;
 	public float timerToUseLaser = 5.0f;
 	public float laserHitEffectTimerToDisappear = 7.0f;
-	
+
+	public int healthDamage = 30;
+
 	LineRenderer line;
 	Light light;
 
@@ -148,6 +150,11 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 			if(collider && collider.rigidbody){
 				photonView.RPC("RPCCreateHitForce", PhotonTargets.All, pView.viewID, hitPoint);
 			}
+
+			HealthSystem healthSystem = PhotonView.Find(pView.viewID).gameObject.GetComponent<HealthSystem>();
+			if(healthSystem != null){
+				pView.RPC("hurtByLaser",pView.owner);
+			}
 		}
 	}
 
@@ -158,4 +165,7 @@ public class LaserByCameraAndTimer : Photon.MonoBehaviour {
 
 		hitObject.rigidbody.AddExplosionForce(explosionForce, hitPoint, explosionForceRadius, explosionForceUpwardModifier);
 	}
+
+//	[RPC]
+//	public void 
 }
