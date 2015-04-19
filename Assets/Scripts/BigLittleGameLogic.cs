@@ -10,7 +10,9 @@ public class BigLittleGameLogic : Photon.MonoBehaviour {
 	private GameObject Giant = null;
 	private GiantHealth giantHealth;
 	private PhotonView giantPhotonView;
-	public bool testingMagician = false;
+
+	private bool testingMagician = false;
+	private bool testingCopter = false;
 	
 	// Use this for initialization
 	public void Start()
@@ -20,6 +22,9 @@ public class BigLittleGameLogic : Photon.MonoBehaviour {
 		if(Giant == null) {
 			Giant = GameObject.Find (GameConfig.giantGameObjectName);
 		}
+		NetworkRoomLogic2 networkRoomLogic2 = GetComponent<NetworkRoomLogic2> ();
+		testingCopter = networkRoomLogic2.testingCopter;
+		testingMagician = networkRoomLogic2.testingMagician;
 	}
 
 	/// <summary>
@@ -99,7 +104,8 @@ public class BigLittleGameLogic : Photon.MonoBehaviour {
 			if (platform == Platform.PC_NonGiant && currPlayerCharCtrlMagician != null && !player.isLocal) { 
 				initVarsByRPC(currPlayerCharCtrlMagician, player);
 			}
-		} else {
+		} 
+		else if(!testingCopter){
 			if (platform == Platform.PC_NonGiant && currPlayerCharCtrl != null && !player.isLocal) { 
 				initVarsByRPC(currPlayerCharCtrl, player);
 			}
