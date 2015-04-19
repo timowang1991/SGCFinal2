@@ -20,7 +20,7 @@ public class HurtByLaser : MonoBehaviour {
 		{
 			this.GetComponent<HealthSystem>().damage(hurtValue);
 			this.GetComponent<Fire>().caughtFire();
-			nowTime = nowTime + timeInterval;
+			nowTime = Time.time + timeInterval;
 		}
 	}
 }
