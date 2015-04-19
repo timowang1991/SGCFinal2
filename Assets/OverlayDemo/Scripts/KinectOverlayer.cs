@@ -1,3 +1,4 @@
+#if !UNITY_IOS
 using UnityEngine;
 using System.Collections;
 //using Windows.Kinect;
@@ -9,7 +10,8 @@ public class KinectOverlayer : MonoBehaviour
 	public KinectInterop.JointType trackedJoint = KinectInterop.JointType.HandRight;
 	public GameObject overlayObject;
 	public float smoothFactor = 5f;
-	
+	public Camera cam;
+
 	public GUIText debugText;
 
 	private float distanceToCamera = 10f;
@@ -19,14 +21,15 @@ public class KinectOverlayer : MonoBehaviour
 	{
 		if(overlayObject)
 		{
-			distanceToCamera = (overlayObject.transform.position - Camera.main.transform.position).magnitude;
+			distanceToCamera = (overlayObject.transform.position - cam.transform.position).magnitude;
 		}
 	}
 	
 	void Update () 
 	{
 		KinectManager manager = KinectManager.Instance;
-		
+
+
 		if(manager && manager.IsInitialized())
 		{
 			//backgroundImage.renderer.material.mainTexture = manager.GetUsersClrTex();
@@ -50,7 +53,8 @@ public class KinectOverlayer : MonoBehaviour
 						// 3d position to depth
 						Vector2 posDepth = manager.MapSpacePointToDepthCoords(posJoint);
 						ushort depthValue = manager.GetDepthForPixel((int)posDepth.x, (int)posDepth.y);
-
+//						Debug.Log ("posDepth.x = " + posDepth.x + " posDepth.y = " + posDepth.y);
+//						Debug.Log("depthValue : " + depthValue);
 						if(depthValue > 0)
 						{
 							// depth pos to color pos
@@ -69,7 +73,7 @@ public class KinectOverlayer : MonoBehaviour
 							
 							if(overlayObject)
 							{
-								Vector3 vPosOverlay = Camera.main.ViewportToWorldPoint(new Vector3(xNorm, yNorm, distanceToCamera));
+								Vector3 vPosOverlay = cam.ViewportToWorldPoint(new Vector3(xNorm, yNorm, distanceToCamera));
 								overlayObject.transform.position = Vector3.Lerp(overlayObject.transform.position, vPosOverlay, smoothFactor * Time.deltaTime);
 							}
 						}
@@ -81,3 +85,4 @@ public class KinectOverlayer : MonoBehaviour
 		}
 	}
 }
+#endif

@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 378fbd089f6070c44aae99f7c5655297
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - circularProgessCanvas: {fileID: 109120, guid: c836ddafacfb4aa469eab1bee80d0f14,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

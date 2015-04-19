@@ -1,3 +1,4 @@
+#if !UNITY_IOS
 using UnityEngine;
 //using Windows.Kinect;
 using System.Collections;
@@ -101,3 +102,4 @@ public class SimpleGestureListener : MonoBehaviour, KinectGestures.GestureListen
 	}
 	
 }
+#endif

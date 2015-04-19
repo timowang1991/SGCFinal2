@@ -176,9 +176,9 @@ public class HeroCamera_New : MonoBehaviour
 //		camInput.mSW = Input.GetAxis ("Mouse ScrollWheel");
 		
 		#if UNITY_IOS || UNITY_ANDROID
-		//        camInput.mX = Right_RotateJoystick.GetAxis("Horizontal");
-		//        camInput.mY = Right_RotateJoystick.GetAxis("Vertical");
-		//        camInput.mSW = Right_RotateJoystick.GetAxis("Vertical");
+		camInput.mX = Right_RotateJoystick.GetAxis("Horizontal");
+		camInput.mY = Right_RotateJoystick.GetAxis("Vertical");
+		camInput.mSW = Right_RotateJoystick.GetAxis("Vertical");
 		#else
 		camInput.mX = Input.GetAxis("Mouse X");
 		camInput.mY = Input.GetAxis("Mouse Y");    
@@ -311,7 +311,7 @@ public class HeroCamera_New : MonoBehaviour
 			//Debug.Log("doLShift");
 			// Apply Y-mouse axis
 			if(invertMouseY){
-				yAngl += Input.GetAxis ("Mouse Y") * ySpeed * 0.02f;
+				//yAngl += Input.GetAxis ("Mouse Y") * ySpeed * 0.02f;
 			#if UNITY_IOS || UNITY_ANDROID
 			yAngl += Right_RotateJoystick.GetAxis("Vertical") * ySpeed * 0.002f;
 			#else
@@ -319,7 +319,7 @@ public class HeroCamera_New : MonoBehaviour
 			#endif
 			}
 			else{
-				yAngl -= Input.GetAxis ("Mouse Y") * ySpeed * 0.02f;
+				//yAngl -= Input.GetAxis ("Mouse Y") * ySpeed * 0.02f;
 			#if UNITY_IOS || UNITY_ANDROID
 			yAngl -= Right_RotateJoystick.GetAxis("Vertical") * ySpeed * 0.002f;
 			#else

@@ -1,3 +1,4 @@
+#if !UNITY_IOS
 using RootSystem = System;
 using System.Linq;
 using System.Collections.Generic;
@@ -99,3 +100,4 @@ namespace Windows.Kinect
     }
 
 }
+#endif
