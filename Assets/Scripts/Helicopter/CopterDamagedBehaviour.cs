@@ -86,8 +86,9 @@ public class CopterDamagedBehaviour : Photon.MonoBehaviour,IDamagedBehaviour {
 				break;
 		}
 
+		rigidbody.useGravity = true;
+
 		if (hpSys != null) {
-			rigidbody.useGravity = true;
 			rigidbody.AddForce (Vector3.down * 10000);
 			audio.pitch = Random.Range (0.1f, 0.6f);
 		}
