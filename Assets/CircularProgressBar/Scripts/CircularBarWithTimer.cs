@@ -17,7 +17,8 @@ public class CircularBarWithTimer : MonoBehaviour {
 	public float timeToUnloadFromComplete = 1.5f;
 
 	float completion = 0.0f;
-	
+
+	bool fadeComplete = false;
 
 	public delegate void Enter100PercentNotifier();
 	public event Enter100PercentNotifier OnEnter100PercentNotifier;
@@ -84,7 +85,7 @@ public class CircularBarWithTimer : MonoBehaviour {
 
 	public void UnLoad(float timeToUnloadFromComplete, float targetCompletion){
 //		if(completion <= targetCompletion || completion >= 1) return;
-		if(completion == 1.0f && OnExit100PercentNotifier != null)
+		if(completion >= 1.0f && OnExit100PercentNotifier != null)
 			OnExit100PercentNotifier();
 		if(completion <= targetCompletion) return;
 		StopCoroutine("Unloading");
@@ -94,6 +95,14 @@ public class CircularBarWithTimer : MonoBehaviour {
 
 	public void Fade(){
 		StartCoroutine("Fading");
+	}
+
+	public bool is100Complete(){
+		return (completion >= 1.0f);
+	}
+
+	public bool isFadeComplete(){
+		return fadeComplete;
 	}
 
 	IEnumerator Loading(){
@@ -106,7 +115,10 @@ public class CircularBarWithTimer : MonoBehaviour {
 			yield return null;
 		}
 //		StartCoroutine("Fading");
+
+//		Debug.Log("completion is >= 1");
 		if(OnEnter100PercentNotifier != null){
+//			Debug.Log("OnEnter100PercentNotifier");
 			OnEnter100PercentNotifier();
 		}
 	}
@@ -130,6 +142,7 @@ public class CircularBarWithTimer : MonoBehaviour {
 		if(OnFadeCompleteNotifier != null){
 			OnFadeCompleteNotifier();
 		}
+		fadeComplete = true;
 	}
 
 	IEnumerator Unloading(float targetCompletion){

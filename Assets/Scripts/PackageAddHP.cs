@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Package : MonoBehaviour {
+public class PackageAddHP : MonoBehaviour {
 
 	public float timeToDestroy = 10;
 	public int addHP = 10;
@@ -12,9 +12,9 @@ public class Package : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		
 	}
-
+	
 	void OnCollisionEnter(Collision col){
 		print (col.gameObject.tag);
 		if (col.gameObject.tag == "Player") {
@@ -27,13 +27,10 @@ public class Package : MonoBehaviour {
 			}
 		}
 	}
-
+	
 	[RPC]
 	void tellMasterToDestroy()
 	{
 		PhotonNetwork.Destroy(gameObject);
 	}
-
-
 }
-
