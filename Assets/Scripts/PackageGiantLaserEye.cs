@@ -11,12 +11,12 @@ public class PackageGiantLaserEye : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		Platform platform = GameObject.Find("PlatformManager").GetComponent<PlatformIndicator>().platform;
-
-		if(platform != Platform.PC_Giant)
-		{
-			this.enabled = false;
-		}
+//		Platform platform = GameObject.Find("PlatformManager").GetComponent<PlatformIndicator>().platform;
+//
+//		if(platform != Platform.PC_Giant)
+//		{
+//			this.enabled = false;
+//		}
 
 		circularProgressCanvas_LeftEye = GameObject.FindGameObjectWithTag("CircularProgressCanvas_LeftEye");
 		circularProgressCanvas_RightEye = GameObject.FindGameObjectWithTag("CircularProgressCanvas_RightEye");
