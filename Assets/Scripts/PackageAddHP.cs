@@ -16,9 +16,9 @@ public class PackageAddHP : MonoBehaviour {
 	}
 	
 	void OnCollisionEnter(Collision col){
-		print (col.gameObject.tag);
+//		print (col.gameObject.tag);
 		if (col.gameObject.tag == "Player") {
-			print (col.gameObject.name);
+//			print (col.gameObject.name);
 			if(col.gameObject.GetComponent<PhotonView>().isMine){
 				//add HP by sending negative value to damage function
 				col.gameObject.GetComponent<HealthSystem>().damage(-addHP);

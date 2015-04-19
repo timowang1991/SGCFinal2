@@ -41,8 +41,8 @@ public class PackageGiantLaserEye : MonoBehaviour {
 			GiantCircularProgressActivateLaser activateLaser = canvasLeftEye.GetComponent<GiantCircularProgressActivateLaser>();
 			activateLaser.activatingScript = true;
 
-			if(col.gameObject.GetComponent<PhotonView>().isMine){
-				this.GetComponent<PhotonView>().RPC ("tellMasterToDestroy", this.GetComponent<PhotonView>().owner);
+			if(this.GetComponent<PhotonView>().isMine){
+				tellMasterToDestroy();
 			}
 		}
 
@@ -50,8 +50,7 @@ public class PackageGiantLaserEye : MonoBehaviour {
 			Invoke("tellMasterToDestroy", timeToDestroyAfterTouchGround);
 		}
 	}
-
-	[RPC]
+	
 	void tellMasterToDestroy()
 	{
 		PhotonNetwork.Destroy(gameObject);
