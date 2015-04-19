@@ -99,7 +99,7 @@ public class CameraMotionBlur extends PostEffectsBase
 		CheckSupport (true, true); // depth & hdr needed
 		motionBlurMaterial = CheckShaderAndCreateMaterial (shader, motionBlurMaterial);
 
-		if (supportDX11 && filterType == MotionBlurFilter.ReconstructionDX11) {
+		if (filterType == MotionBlurFilter.ReconstructionDX11) {
 			dx11MotionBlurMaterial = CheckShaderAndCreateMaterial (dx11MotionBlurShader, dx11MotionBlurMaterial);
 		}
 	
