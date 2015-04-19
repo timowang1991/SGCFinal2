@@ -13,6 +13,8 @@ var labelPosition: Rect;
 var layer: LayerMask = 0;
 var refr: GameObject;
 
+public var maxHeight: float = 1000f;
+
 public var mainrotor_axis: int = 3;
 public var tailrotor_axis: int = 3;
 
@@ -30,7 +32,6 @@ private var turnAroundSpeedMultiplier: float = 2.5f;
 private var horVelAccMultiplier: int = 50; //accelerate helicopter's horizontal moving velocity
 private var RotorSpeedIncreaseConstant: float = 30;
 private var RestoringTorqueMultiplier: float = 4;
-private var maxHeight: float = 1000f;
 private var timer: float = 0f;
 private var cannotRestore: boolean = false;
 private var helifin: HelifinNet;
@@ -84,11 +85,27 @@ function FixedUpdate() { //Main physics forces section
 	    rigidbody.velocity += ((Vector3.ProjectOnPlane(transform.right,Vector3.up).normalized * horizon2 + 
 	    						Vector3.ProjectOnPlane(transform.forward,Vector3.up).normalized * -vertical1) * 
 	    						horVelAccMultiplier * Time.deltaTime);
+	    
+	    if (Mathf.Approximately(vertical1,0)) {
+	    	rigidbody.velocity.z = Mathf.Lerp(rigidbody.velocity.z, 0, Time.deltaTime /1.5);
+	    }
+	    
+	    if (Mathf.Approximately(horizon2,0)) {
+	    	rigidbody.velocity.x = Mathf.Lerp(rigidbody.velocity.x, 0, Time.deltaTime /1.5);
+	    }
 	    						
+	    																		
 	    if (main_Rotor_Active == true) {
 	        torqueValue += (controlTorque * max_Rotor_Force * rotor_Velocity);
-	        if (altitude < maxHeight) {
-	            rigidbody.AddForce(Vector3.up * max_Rotor_Force * rotor_Velocity);
+	    	
+	    	if(Mathf.Approximately(vertical2,0)) {
+	    		rigidbody.velocity.y = Mathf.Lerp(rigidbody.velocity.y, 0, Time.deltaTime * 3);
+	    	}
+	    	else if(vertical2 > 0 &&altitude < maxHeight) {
+			    rigidbody.velocity.y += vertical2 * rotor_Velocity * Time.deltaTime * 100;
+	        }
+	        else {
+	        	rigidbody.velocity.y += vertical2 * rotor_Velocity * Time.deltaTime * 100;
 	        }
 	    }
 	    
@@ -117,7 +134,6 @@ function FixedUpdate() { //Main physics forces section
 }
 
 function Start() {
-
 }
 
 function dead() {
@@ -176,34 +192,30 @@ function Update() {
         }
     }
         
-    var groundHit: RaycastHit;
-    Physics.Raycast(refr.transform.position, -Vector3.up, groundHit, 10000, layer);
-    altitude = groundHit.distance;
+    
     
     if(isControllable) {
-    
+    	var groundHit: RaycastHit;
+    	Physics.Raycast(refr.transform.position, -Vector3.up, groundHit, 10000, layer);
+    	altitude = groundHit.distance;
+    	
+    	//Debug.Log(altitude);
+    	
     	//rotor_Rotation += max_Rotor_Velocity * rotor_Velocity * Time.deltaTime;
     	//tail_rotor_Rotation += max_Tail_Rotor_Velocity * rotor_Velocity * Time.deltaTime;
     	var hover_Rotor_Velocity = (rigidbody.mass * Mathf.Abs(Physics.gravity.y) / max_Rotor_Force);
     	var hover_Tail_Rotor_Velocity = (max_Rotor_Force * rotor_Velocity) / max_tail_Rotor_Force;
     
-	    if (!Mathf.Approximately(vertical2,0)) {
-	        rotor_Velocity += vertical2 * RotorSpeedIncreaseConstant * 0.001;
+	    if (vertical2 > 0.0f) {
+	        rotor_Velocity += RotorSpeedIncreaseConstant * 0.001;
 	    }
 	    else {
 	        rotor_Velocity = Mathf.Lerp(rotor_Velocity, hover_Rotor_Velocity, Time.deltaTime * Time.deltaTime * 5 * Hover_Const);
 	    }
 	    
 	    //decrease height;
-	    if(vertical2 < 0) {
-	    	if(rotor_Velocity < 0.6) {
-	    		rotor_Velocity = 0.6;
-	    		rigidbody.velocity.y -= (20 * Time.deltaTime);
-	    		//Debug.Log(altitude);
-	    		if(altitude < 3) {
-	    			rotor_Velocity = hover_Rotor_Velocity;
-	    		}
-	    	}
+	    if(vertical2 < -0.01f) {
+	    	rigidbody.velocity.y -= (50 * hover_Rotor_Velocity * Time.deltaTime);
 	    }
 	    
 	    tail_rotor_Velocity = hover_Tail_Rotor_Velocity - horizon1 * turnAroundSpeedMultiplier;

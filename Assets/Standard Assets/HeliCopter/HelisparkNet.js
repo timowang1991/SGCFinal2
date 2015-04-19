@@ -44,8 +44,8 @@ function Update ()
 {
 	if(isControllable) {
 		if(rigidbody.velocity.y<FallImpactVel){
-			if(Helifin.altitude<2){
-				health+=1*rigidbody.velocity.y*DamageFactor;
+			if(Helifin.altitude < 2){
+				health += 1*rigidbody.velocity.y*DamageFactor;
 			}
 		}
 
