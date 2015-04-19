@@ -7,7 +7,7 @@ public class PackageAddHP : MonoBehaviour {
 	public int addHP = 10;
 	// Use this for initialization
 	void Start () {
-		Invoke ("selfDestroy", timeToDestroy);
+//		Invoke ("selfDestroy", timeToDestroy);
 	}
 	
 	// Update is called once per frame
@@ -17,11 +17,11 @@ public class PackageAddHP : MonoBehaviour {
 	
 	void OnCollisionEnter(Collision col){
 //		print (col.gameObject.tag);
-		if (col.gameObject.tag == "Player") {
+		if (col.transform.root.gameObject.tag == "Player") {
 //			print (col.gameObject.name);
-			if(col.gameObject.GetComponent<PhotonView>().isMine){
+			if(col.transform.root.gameObject.GetComponent<PhotonView>().isMine){
 				//add HP by sending negative value to damage function
-				col.gameObject.GetComponent<HealthSystem>().damage(-addHP);
+				col.transform.root.gameObject.GetComponent<HealthSystem>().damage(-addHP);
 				this.GetComponent<PhotonView>().RPC("tellMasterToDestroy",this.GetComponent<PhotonView>().owner);
 				//PhotonNetwork.Destroy(gameObject);
 			}
