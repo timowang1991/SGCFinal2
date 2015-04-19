@@ -38,5 +38,7 @@ public class PackageDropdownGiantLaserEyeController : Photon.MonoBehaviour {
 		                                       Random.Range (minPosition.y, maxPosition.y),
 		                                       Random.Range (minPosition.z, maxPosition.z));
 		GameObject package = PhotonNetwork.Instantiate (packagePrefab, packagePosition, Quaternion.identity, 0);
+		package.AddComponent<PackageGiantLaserEye>();
+			//GetComponent<PackageGiantLaserEye>().enabled = true;
 	}
 }
