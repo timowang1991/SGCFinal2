@@ -39,6 +39,9 @@ public class CopterCtrller : Photon.MonoBehaviour {
 	void Awake() {
 		helifin = gameObject.GetComponent<HelifinNet> ();
 		timer = 0;
+		missilesPool = PoolManager.Pools [GameConfig.CopterPoolName].GetPrefabPool (missileObj);
+		bulletsPool = PoolManager.Pools [GameConfig.CopterPoolName].GetPrefabPool (bulletObj);
+		detonatorPool = PoolManager.Pools [GameConfig.CopterPoolName].GetPrefabPool (detonatorObj);
 	}
 
 	//below code should only be run in local player
@@ -65,11 +68,8 @@ public class CopterCtrller : Photon.MonoBehaviour {
 		chMove.launchPoint = launchTrans;
 		chMove.enabled = true;
 
-		missilesPool = PoolManager.Pools [GameConfig.CopterPoolName].GetPrefabPool (missileObj);
-		bulletsPool = PoolManager.Pools [GameConfig.CopterPoolName].GetPrefabPool (bulletObj);
-		detonatorPool = PoolManager.Pools [GameConfig.CopterPoolName].GetPrefabPool (detonatorObj);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 
