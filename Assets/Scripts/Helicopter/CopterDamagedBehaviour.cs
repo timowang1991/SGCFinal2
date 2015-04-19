@@ -73,8 +73,7 @@ public class CopterDamagedBehaviour : Photon.MonoBehaviour,IDamagedBehaviour {
 	}
 
 	void falling() {
-		rigidbody.useGravity = true;
-		rigidbody.AddForce (Vector3.down * 10000);
+
 		switch(mainrotor_axis) {	
 			case 1:
 				rotor.transform.Rotate(1000*Random.value,0,0);
@@ -88,6 +87,8 @@ public class CopterDamagedBehaviour : Photon.MonoBehaviour,IDamagedBehaviour {
 		}
 
 		if (hpSys != null) {
+			rigidbody.useGravity = true;
+			rigidbody.AddForce (Vector3.down * 10000);
 			audio.pitch = Random.Range (0.1f, 0.6f);
 		}
 
