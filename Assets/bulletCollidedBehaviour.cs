@@ -19,14 +19,14 @@ public class bulletCollidedBehaviour : MonoBehaviour {
 	void OnCollisionExit(Collision collision) {
 		if (!isCollided) {
 			isCollided = true;
-			Invoke ("despawnSelf", 2);
+			Invoke ("despawnSelf", 1);
 		}
 	}
 
 	void OnTriggerExit(Collider collider) {
 		if (!isCollided) {
 			isCollided = true;
-			Invoke ("despawnSelf", 2);
+			Invoke ("despawnSelf", 1);
 		}
 	}
 	

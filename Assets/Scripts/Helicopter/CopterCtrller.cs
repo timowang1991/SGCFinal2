@@ -76,11 +76,12 @@ public class CopterCtrller : Photon.MonoBehaviour {
 			timer = 0;
 		} 
 
-		if (Input.GetButtonDown (MachineGunKeyName) &&
-			bulletsPool.spawned.Count < bulletsPool.limitAmount) {
+		if (Input.GetButtonDown (MachineGunKeyName)) {
 			//photonView.RPC ("FireMachineGun", PhotonTargets.All, launchTrans.position, (targetTrans.position - launchTrans.position));
 			muzzle.SetActive (true);
-			photonView.RPC ("FireMachineGun", PhotonTargets.All);
+			if(bulletsPool.spawned.Count < bulletsPool.limitAmount) {
+				photonView.RPC ("FireMachineGun", PhotonTargets.All);
+			}
 		}
 		else {
 			muzzle.SetActive (false);

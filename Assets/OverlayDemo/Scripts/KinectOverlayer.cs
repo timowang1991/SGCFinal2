@@ -1,4 +1,4 @@
-#if !UNITY_iOS
+#if !UNITY_IOS
 using UnityEngine;
 using System.Collections;
 //using Windows.Kinect;

@@ -1,5 +1,4 @@
-#if UNITY_IOS
-#else
+#if !UNITY_IOS
 using RootSystem = System;
 using System.Linq;
 using System.Collections.Generic;

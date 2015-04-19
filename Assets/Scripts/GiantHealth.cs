@@ -7,7 +7,7 @@ public class GiantHealth : MonoBehaviour {
 	public int healthPoint;
 	public float Factor;
 	public int minHurtPoint;
-	private static PhotonView GiantPhotonView;
+	private PhotonView GiantPhotonView;
 	private EnergyBar energyBar = null;
 	private Text leftTxt = null;
 	private Text rightTxt = null;
@@ -72,11 +72,11 @@ public class GiantHealth : MonoBehaviour {
 		{
 			energyBar.SetValueCurrent (healthPoint);
 		}
-		else if(leftTxt != null && rightTxt != null)
-		{
-			leftTxt.text = "HP "+healthPoint +"/1000";
-			rightTxt.text = "HP "+healthPoint +"/1000";
-		}
+//		else if(leftTxt != null && rightTxt != null)
+//		{
+//			leftTxt.text = "HP "+healthPoint +"/1000";
+//			rightTxt.text = "HP "+healthPoint +"/1000";
+//		}
 	}
 
 	/// <summary>

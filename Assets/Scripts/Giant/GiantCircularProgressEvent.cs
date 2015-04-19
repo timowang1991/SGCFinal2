@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if !UNITY_IOS
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -65,3 +66,4 @@ public class GiantCircularProgressEvent : MonoBehaviour {
 		
 	}
 }
+#endif

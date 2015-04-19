@@ -22,7 +22,9 @@ public class MagicianThrowFireBall : Photon.MonoBehaviour {
 
 		if ( photonView.isMine && this.gameObject.GetComponent<MagicianMPManager> ().UseMP (CostMP)) {
 			//this.photonView.RPC("FireTheFireBall",PhotonTargets.All);
-			GameObject fireBall = PhotonNetwork.Instantiate (FireBall_Prefab, MagicianPosition.position,camTrans.rotation, 0);
+			object[] data = new object[1];
+			data[0] = photonView.viewID;
+			GameObject fireBall = PhotonNetwork.Instantiate (FireBall_Prefab, MagicianPosition.position,camTrans.rotation, 0,data);
 		}
 	}
 

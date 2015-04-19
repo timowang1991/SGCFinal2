@@ -41,7 +41,7 @@ public class Rocket_Net : Photon.MonoBehaviour,IDamageOthersBehaviour {
 		detonatorObj.rotation = Quaternion.FromToRotation (Vector3.up, contactNormal);
 
 		//damage
-		Invoke ("despawnSelf", 2);
+		Invoke ("despawnSelf", 1);
 
 	}
 
