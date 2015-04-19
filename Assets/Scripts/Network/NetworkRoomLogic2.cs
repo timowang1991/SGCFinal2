@@ -286,6 +286,9 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 				cameraLogic.enabled = true;
 				mainCam2.transform.parent = currPlayer.transform;
 				Destroy(Camera.main.GetComponent<CharacterController>());
+
+				currPlayer.AddComponent<NinjaMobileGesture>();
+				currPlayer.GetComponent<NinjaMobileGesture>().controlledNinja = currPlayer;
 				break;
 			}
 

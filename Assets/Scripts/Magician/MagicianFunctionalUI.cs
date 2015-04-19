@@ -25,6 +25,12 @@ public class MagicianFunctionalUI : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		player = PhotonView.Find (MainplayerID).gameObject;
+
+		if(player.GetComponent<PhotonView>().isMine)
+		{
+			this.gameObject.AddComponent<MagicianMobileGesture>();
+			this.gameObject.GetComponent<MagicianMobileGesture>().controlledMagician = player;
+		}
 	}
 
 	public void ReceivedMessageFromUI(string name)
