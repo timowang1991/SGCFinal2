@@ -3,11 +3,11 @@ using System.Collections;
 
 public class Package : MonoBehaviour {
 
-	public float timeToDestory = 10;
+	public float timeToDestroy = 10;
 	public int addHP = 10;
 	// Use this for initialization
 	void Start () {
-		Invoke ("selfDestory", timeToDestory);
+		Invoke ("selfDestroy", timeToDestroy);
 	}
 	
 	// Update is called once per frame
@@ -19,21 +19,17 @@ public class Package : MonoBehaviour {
 		print (col.gameObject.tag);
 		if (col.gameObject.tag == "Player") {
 			print (col.gameObject.name);
-			if(col.gameObject.GetComponent<PhotonView>().isMine)
-			{
+			if(col.gameObject.GetComponent<PhotonView>().isMine){
 				//add HP by sending negative value to damage function
 				col.gameObject.GetComponent<HealthSystem>().damage(-addHP);
-				this.GetComponent<PhotonView>().RPC("tellMasterToDestory",this.GetComponent<PhotonView>().owner);
+				this.GetComponent<PhotonView>().RPC("tellMasterToDestroy",this.GetComponent<PhotonView>().owner);
 				//PhotonNetwork.Destroy(gameObject);
 			}
-
-
 		}
-		
 	}
 
 	[RPC]
-	void tellMasterToDestory()
+	void tellMasterToDestroy()
 	{
 		PhotonNetwork.Destroy(gameObject);
 	}

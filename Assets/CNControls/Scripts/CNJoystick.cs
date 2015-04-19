@@ -50,6 +50,8 @@ public class CNJoystick : CNAbstractController
     /// GameObject of a stick. Used for hiding
     /// </summary>
     private GameObject _baseGameObject;
+	[HideInInspector]
+	public bool currentlyTouched = false;
 
     /// <summary>
     /// Neat initialization method
@@ -126,9 +128,16 @@ public class CNJoystick : CNAbstractController
 
         Touch currentTouch;
         if (IsTouchCaptured(out currentTouch))
+		{
+			currentlyTouched = true;
             // Place joystick under the finger 
             // "No jumping" logic is also in this method
             PlaceJoystickBaseUnderTheFinger(currentTouch);
+		}
+		else
+		{
+			currentlyTouched = false;
+		}
     }
 
     /// <summary>

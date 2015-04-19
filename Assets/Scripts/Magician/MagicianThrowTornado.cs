@@ -21,8 +21,11 @@ public class MagicianThrowTornado : Photon.MonoBehaviour {
 		
 		if ( photonView.isMine && this.gameObject.GetComponent<MagicianMPManager> ().UseMP (CostMP)) {
 			//this.photonView.RPC("FireTheFireBall",PhotonTargets.All);
-			GameObject Tornado = PhotonNetwork.Instantiate (Tornado_Prefab, TornadoPosition.position,Quaternion.identity, 0);
-			Tornado.GetComponent<TornadoSelfScript>().PlayerPosition = this.transform;
+			object[] data = new object[1];
+			data[0] = photonView.viewID;
+			GameObject Tornado = PhotonNetwork.Instantiate (Tornado_Prefab, TornadoPosition.position,Quaternion.identity,0,data);
+//			Tornado.GetComponent<TornadoSelfScript>().PlayerPosition = this.transform;
+//			Tornado.GetComponent<TornadoSelfScript>().PlayerViewId = photonView.viewID;
 		}
 	}
 }

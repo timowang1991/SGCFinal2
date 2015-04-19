@@ -3,7 +3,8 @@ using System.Collections;
 
 public class DropdownController : Photon.MonoBehaviour {
 	public Vector3 minPosition = new Vector3(100,200,100);
-	public Vector3 maxPosition = new Vector3(400,200,400);
+	public Vector3 maxPosition = new Vector3(101,201,101);
+//	public Vector3 maxPosition = new Vector3(400,200,400);
 
 	public float minInterval = 5.0f;
 	public float maxInterval = 10.0f;

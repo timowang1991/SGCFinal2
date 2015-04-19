@@ -111,7 +111,8 @@ public class HeroCtrl_Net2 : Photon.MonoBehaviour
 	public float mX;
 	bool doJumpDown;
 	//bool doJump;
-	bool doAtk1Down;
+	[HideInInspector]
+	public bool doAtk1Down;
 	bool doAtk1;
 	bool doAtk2Down;
 	bool doAtk2;
@@ -315,7 +316,7 @@ public class HeroCtrl_Net2 : Photon.MonoBehaviour
 			doBack = Input.GetKeyDown(KeyCode.S);
 			doLeft = Input.GetKeyDown(KeyCode.A);
 			doRight = Input.GetKeyDown(KeyCode.D);
-			doAtk1Down = false;
+			//doAtk1Down = false;
 			doAtk1 = false;
 			doAtk2Down = false;
 			doAtk2 = false;
@@ -348,7 +349,12 @@ public class HeroCtrl_Net2 : Photon.MonoBehaviour
 			doLeft = Input.GetKeyDown(KeyCode.A);
 			doRight = Input.GetKeyDown(KeyCode.D);
 			doNextWeapon = Input.GetKeyDown(KeyCode.Q);
-			doCombat = Input.GetKeyDown(KeyCode.C);
+			//doCombat = Input.GetKeyDown(KeyCode.C);
+			if(baseState != BaseState.Combat)
+			{
+				doCombat = true;
+			}
+
 			doFly = Input.GetKeyDown(KeyCode.Z);
 			doClimb = Input.GetKeyDown(KeyCode.E);
 			doWalk = Input.GetKeyDown(KeyCode.X);
@@ -653,6 +659,7 @@ public class HeroCtrl_Net2 : Photon.MonoBehaviour
 			{
 				if(doAtk1Down && !st.IsName("PunchCombo.Punch1"))
 				{
+					doAtk1Down = false;
 					a.SetBool("Attack1", true);
 					a.SetBool("Walking", false); // RESET
 					a.SetBool("Sprinting", false); // RESET
@@ -1971,14 +1978,14 @@ public class HeroCtrl_Net2 : Photon.MonoBehaviour
 	void _Combat ()
 	{
 		// Combat Stance / Out
-		if(doCombat && canDrawHolster)
-		{
-			//if is self then create a rpc to tell everyone
-			if(photonView.isMine) {
-				//Debug.Log("Call");
-				photonView.RPC("doCombatRPC", PhotonTargets.All, (int)BaseState.Base);
-			}
-		}
+//		if(doCombat && canDrawHolster)
+//		{
+//			//if is self then create a rpc to tell everyone
+//			if(photonView.isMine) {
+//				//Debug.Log("Call");
+//				photonView.RPC("doCombatRPC", PhotonTargets.All, (int)BaseState.Base);
+//			}
+//		}
 		
 		// Double Tap - Evade takes tapSpeed & coolDown in seconds
 		if(canEvade)
@@ -2015,6 +2022,7 @@ public class HeroCtrl_Net2 : Photon.MonoBehaviour
 			// Punch, Kick
 			if(doAtk1Down && !st.IsTag("Attack1"))
 			{
+				doAtk1Down = false;
 				a.SetBool("Attack1", true);
 				a.SetBool("Walking", false); // RESET
 				a.SetBool("Sprinting", false); // RESET
