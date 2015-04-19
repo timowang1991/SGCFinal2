@@ -34,7 +34,10 @@ public class NinjaMobileGesture : MonoBehaviour {
 
 		if(currplatform == RuntimePlatform.Android || currplatform == RuntimePlatform.IPhonePlayer)
 		{
-			this.enabled = false;
+			if(!this.GetComponent<PhotonView>().isMine)
+			{
+				this.enabled = false;
+			}
 		}
 
 
