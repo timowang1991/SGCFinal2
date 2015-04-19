@@ -3,20 +3,20 @@ using System.Collections;
 
 public class FireBallSelfScript : Photon.MonoBehaviour {
 
-
+	public int PlayerViewId;
 	public float timeToDestory = 10;
 	// Use this for initialization
 	void Start () {
-		Invoke ("selfDestory", timeToDestory);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+		PlayerViewId = (int)photonView.instantiationData [0];
+		if(PhotonView.Find(PlayerViewId).isMine)
+		{
+			Invoke ("selfDestory", timeToDestory);
+		}
 	}
 	void selfDestory()
 	{
-		Destroy (this.gameObject);
+		PhotonNetwork.Destroy (this.gameObject);
 	}
 	void OnParticleCollision(GameObject other)
 	{

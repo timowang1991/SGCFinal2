@@ -11,15 +11,15 @@ public class MagicianRecoverHP : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		if(this.GetComponent<PhotonView>().isMine)
+		{
+			GameObject magicianParent = new GameObject ("magicianParent");
+			this.gameObject.transform.parent = magicianParent.transform;
+			GameObject HP = (GameObject)Instantiate (HPInRangePrefab);
+			HP.transform.parent = magicianParent.transform;
 
-		GameObject magicianParent = new GameObject ("magicianParent");
-
-		this.gameObject.transform.parent = magicianParent.transform;
-
-		GameObject HP = (GameObject)Instantiate (HPInRangePrefab);
-		HP.transform.parent = magicianParent.transform;
-
-		HPRange = HP.GetComponent<MagicianHPPlayersIsInRange>();
+			HPRange = HP.GetComponent<MagicianHPPlayersIsInRange>();
+		}
 	}
 	
 	public void CastSpell()
@@ -30,12 +30,18 @@ public class MagicianRecoverHP : MonoBehaviour {
 			{
 				Debug.Log(currentGameObject.name);
 				PhotonView pv = currentGameObject.GetPhotonView();
-				pv.RPC("RecoverHP", PhotonTargets.All, DefaultRecoveryHPvalue);
+				pv.RPC("RecoverHP", pv.owner, DefaultRecoveryHPvalue);
 			}
-			RecoverHPFX.SetActive(true);
-			Invoke("TurnOffHPFX",3);
-			this.gameObject.GetPhotonView().RPC("RecoverHP", PhotonTargets.All, DefaultRecoveryHPvalue);
+			this.gameObject.GetPhotonView().RPC("ShowFX", PhotonTargets.All);
+			this.gameObject.GetPhotonView().RPC("RecoverHP", this.gameObject.GetPhotonView().owner, DefaultRecoveryHPvalue);
+
 		}
+	}
+	[RPC]
+	void ShowFX()
+	{
+		RecoverHPFX.SetActive(true);
+		Invoke("TurnOffHPFX",3);
 	}
 
 	void TurnOffHPFX ()

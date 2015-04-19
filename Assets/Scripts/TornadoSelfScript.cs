@@ -2,33 +2,37 @@
 using System.Collections;
 
 public class TornadoSelfScript : Photon.MonoBehaviour {
-
-	public Transform PlayerPosition;
+	
+	private int PlayerViewId;
 	private Vector3 heading;
 	public int speed = 30;
 	public int timelimited = 10;
 	// Use this for initialization
 	void Start () {
-		//Debug.Log("start");
-		heading = this.gameObject.transform.position -PlayerPosition.transform.position;
-		Invoke ("destroyself", timelimited);
+		PlayerViewId = (int)photonView.instantiationData [0];
+		heading = this.gameObject.transform.position - PhotonView.Find(PlayerViewId).gameObject.transform.position;
+		this.gameObject.rigidbody.velocity = heading.normalized * speed;
+
+		if(PhotonView.Find(PlayerViewId).isMine)
+		{
+			Invoke ("destroyself", timelimited);
+		}
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 		//Debug.Log ("heading");
-		this.gameObject.rigidbody.velocity = heading.normalized * speed;
 		this.GetComponentInChildren<ParticleSystem>().startSize += 0.1f;
-
 	}
 	void destroyself()
 	{
-		Destroy (this.gameObject);
+		PhotonNetwork.Destroy (this.gameObject);
 	}
 
 	void OnTriggerEnter(Collider other) {
 		Debug.Log (other.gameObject.name);
-		if(this.GetComponentInParent<TornadoSelfScript>().photonView.isMine)
+		//this.GetComponentInParent<TornadoSelfScript>()
+		if(photonView.isMine)
 		{
 			if(other.gameObject.tag == "Weak")
 			{

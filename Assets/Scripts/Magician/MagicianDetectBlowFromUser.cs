@@ -84,7 +84,7 @@ public class MagicianDetectBlowFromUser : MonoBehaviour {
 //		float y = audio.GetSpectrumData (128, 0, FFTWindow.BlackmanHarris) [64] * 1000000;
 //		//Debug.Log (y);
 //
-		if(dbValue > 1.0f && Time.time > nextThrow)
+		if(dbValue > 10.0f && Time.time > nextThrow)
 		{
 			nextThrow = Time.time + throwRate;
 			//sorry bad code here XDD

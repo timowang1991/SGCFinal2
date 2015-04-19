@@ -3,6 +3,16 @@ using System.Collections;
 
 public class MagicianFunctionalUI : MonoBehaviour {
 
+	public bool testTornado = false;
+
+	void Update()
+	{
+		if(testTornado)
+		{
+			BtnPressed(MagicianFunctionalType.Tornado);
+			testTornado = false;	
+		}
+	}
 	public enum MagicianFunctionalType
 	{
 		Tornado,
