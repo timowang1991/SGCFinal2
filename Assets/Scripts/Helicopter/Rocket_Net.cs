@@ -7,10 +7,12 @@ public class Rocket_Net : Photon.MonoBehaviour,IDamageOthersBehaviour {
 	private string poolName = GameConfig.CopterPoolName;
 	public GameObject detonatorPrefab;
 	private bool isCollided = false;
+	private float selfDespawnDuration = 10;
 
 	// Use this for initialization
 	void Start () {
-	
+		isCollided = false;
+		Invoke ("despawnSelf", selfDespawnDuration);
 	}
 	
 	// Update is called once per frame
@@ -29,20 +31,25 @@ public class Rocket_Net : Photon.MonoBehaviour,IDamageOthersBehaviour {
 //		}
 		if (!isCollided) {
 			isCollided = true;
+			CancelInvoke();
 			rocketExplodeAndDestroy (contact.normal, contact.point);
 		}
 	}
 
 	//[RPC]
 	void rocketExplodeAndDestroy(Vector3 contactNormal, Vector3 contactPos) {
-		//Debug.Log ("RPC:rocketExplodeAndDestroy");
-		Transform detonatorObj = PoolManager.Pools [poolName].Spawn (detonatorPrefab.transform); //explode
-		detonatorObj.position = contactPos;
-		detonatorObj.rotation = Quaternion.FromToRotation (Vector3.up, contactNormal);
+
+
+		Instantiate (detonatorPrefab, contactPos, Quaternion.FromToRotation (Vector3.up, contactNormal));
+		//Transform detonatorObj = PoolManager.Pools [poolName].Spawn (detonatorPrefab.transform); //explode
+		//detonatorObj.GetComponent<Detonator> ().usePoolManager = true;
+		//detonatorObj.position = contactPos;
+		//detonatorObj.rotation = Quaternion.FromToRotation (Vector3.up, contactNormal);
 
 		//damage
-		Invoke ("despawnSelf", 1);
-
+		//Invoke ("despawnSelf", 0);
+		PoolManager.Pools [poolName].Despawn (gameObject.transform); //remove rocket
+		isCollided = false;
 	}
 
 	void despawnSelf() {

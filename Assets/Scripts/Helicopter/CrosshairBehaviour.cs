@@ -11,7 +11,7 @@ public class CrosshairBehaviour : MonoBehaviour {
 	[HideInInspector]
 	public float factorY = 1.72f;
 	[HideInInspector]
-	public int usingCHIndex = 0;
+	public int usingCHIndex;
 	private GameObject _crosshair;
 
 	// we'll enable this component after player initiating one's own character in NetworkRoomLogic2

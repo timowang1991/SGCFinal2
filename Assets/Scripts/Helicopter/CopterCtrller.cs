@@ -9,11 +9,12 @@ public class CopterCtrller : Photon.MonoBehaviour {
 	public GameObject missileObj;
 	public GameObject bulletObj;
 	public GameObject detonatorObj;
+	public GameObject crosshairObj;
 
 	public Transform launchTrans;
 	public Transform targetTrans;
 
-	private float missileInitSpeed = 20;
+	private float missileInitSpeed = 50;
 	private float bulletInitSpeed = 100;
 	
 	public AudioClip launchSound;
@@ -56,6 +57,14 @@ public class CopterCtrller : Photon.MonoBehaviour {
 		smoothFollowObj.rotationDamping = 3;
 		mainCam.transform.parent = this.transform;
 
+		GameObject posObj = GameObject.Find ("copterCrosshairPos");
+
+		GameObject crosshair = (GameObject)Instantiate (crosshairObj, posObj.transform.position, posObj.transform.rotation);
+		crosshair.transform.parent = posObj.transform;
+		makeCrosshairMove chMove = crosshair.GetComponent<makeCrosshairMove> ();
+		chMove.launchPoint = launchTrans;
+		chMove.enabled = true;
+
 		missilesPool = PoolManager.Pools [GameConfig.CopterPoolName].GetPrefabPool (missileObj);
 		bulletsPool = PoolManager.Pools [GameConfig.CopterPoolName].GetPrefabPool (bulletObj);
 		detonatorPool = PoolManager.Pools [GameConfig.CopterPoolName].GetPrefabPool (detonatorObj);
@@ -69,7 +78,7 @@ public class CopterCtrller : Photon.MonoBehaviour {
 
 		if (Input.GetButtonDown (MissileKeyName) && 
 		    missilesPool.spawned.Count < missilesPool.limitAmount &&
-		    detonatorPool.spawned.Count < detonatorPool.limitAmount && 
+		    //detonatorPool.spawned.Count < detonatorPool.limitAmount && 
 		    timer > 2) {
 			//photonView.RPC ("LaunchMissile", PhotonTargets.All, launchTrans.position, (targetTrans.position - launchTrans.position));
 			photonView.RPC ("LaunchMissile", PhotonTargets.All);
@@ -108,14 +117,18 @@ public class CopterCtrller : Photon.MonoBehaviour {
 	[RPC]
 	void LaunchMissile() {
 		Transform rocketTrans = missilesPool.spawnPool.Spawn (missileObj.transform);
-		setPosDirSpeed (rocketTrans, missileInitSpeed);
-		audio.PlayOneShot(launchSound);
+		if (rocketTrans != null) {
+			setPosDirSpeed (rocketTrans, missileInitSpeed);
+			audio.PlayOneShot (launchSound);
+		}
 	}
 	
 	[RPC]
 	void FireMachineGun() {
 		Transform bulletTrans = bulletsPool.spawnPool.Spawn (bulletObj.transform);
-		setPosDirSpeed (bulletTrans, bulletInitSpeed);
+		if (bulletTrans != null) {
+			setPosDirSpeed (bulletTrans, bulletInitSpeed);
+		}
 	}
 	
 	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

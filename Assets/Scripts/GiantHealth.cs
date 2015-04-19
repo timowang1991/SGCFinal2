@@ -12,6 +12,7 @@ public class GiantHealth : MonoBehaviour {
 	private Text leftTxt = null;
 	private Text rightTxt = null;
 	private Platform platform;
+	private IDamagedBehaviour damagable;
 
 	/// <summary>
 	/// Called by BigLittleGameLogic, and just do ui thing and set default HP
@@ -43,6 +44,7 @@ public class GiantHealth : MonoBehaviour {
 		{
 			energyBar = GameObject.Find ("HP_UI_Giant/Bar4").GetComponent<EnergyBar>();
 		}
+		damagable = (IDamagedBehaviour)GetComponent(typeof(IDamagedBehaviour));
 	}
 	
 	// Update is called once per frame
@@ -85,6 +87,41 @@ public class GiantHealth : MonoBehaviour {
 	void death(){
 		//GetComponent<Animator> ().enabled = true;
 	}
+
+	public void damage(GameObject objCausingDamage) {
+		Debug.Log (objCausingDamage.name);
+		IDamageOthersBehaviour damagingBehaviour = (IDamageOthersBehaviour)objCausingDamage.GetComponent (typeof(IDamageOthersBehaviour));
+		damagingBehaviour.beforeDamaging (damagable);
+		GiantPhotonView.RPC ("damageRPC", PhotonTargets.All, damagingBehaviour.getDamageVal(damagable));
+		damagingBehaviour.afterDamaging (damagable);
+	}
+
+	public void damage(float damageVal) {
+		GiantPhotonView.RPC ("damageRPC", PhotonTargets.All, damageVal);
+	}
+
+	[RPC]
+	void damageRPC(float damageVal) {
+		int currentHP = healthPoint - (int)damageVal;
+		if (currentHP < 0) {
+			currentHP = 0;
+			damagable.dying (null);
+		} else {
+			damagable.damaged (null, currentHP);
+		}
+
+		if(energyBar != null)
+		{
+			energyBar.SetValueCurrent (currentHP);
+		}
+		else if(leftTxt != null && rightTxt != null)
+		{
+			leftTxt.text = "HP "+currentHP +"/1000";
+			rightTxt.text = "HP "+currentHP +"/1000";
+		}
+
+		healthPoint = currentHP;
+	}
 	
 	// int valus 1=Weak 2=Weaker 3=Weakest
 	/// <summary>
@@ -118,5 +155,6 @@ public class GiantHealth : MonoBehaviour {
 			loseHealthPoint(minHurtPoint * HurtWeakLevel);
 		}
 	}
+
 
 }

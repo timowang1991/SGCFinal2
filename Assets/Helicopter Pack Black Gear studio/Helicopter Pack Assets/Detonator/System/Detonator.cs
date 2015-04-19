@@ -147,6 +147,7 @@ public class Detonator : MonoBehaviour {
 	public Material glowMaterial;
 	public Material heatwaveMaterial;
 
+	[HideInInspector]
 	public bool usePoolManager = false;
 	private string poolName = GameConfig.CopterPoolName;
 
@@ -289,12 +290,12 @@ public class Detonator : MonoBehaviour {
 		{
 			if (_lastExplosionTime + destroyTime <= Time.time)
 			{
-				if(!usePoolManager) {
+				//if(!usePoolManager) {
 					Destroy(gameObject);
-				}
-				else {
-					PoolManager.Pools [poolName].Despawn (gameObject.transform);
-				}
+				//}
+				//else {
+					//PoolManager.Pools [poolName].Despawn (gameObject.transform);
+				//}
 			}
 		}
 	}

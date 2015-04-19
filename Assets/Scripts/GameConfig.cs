@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
-using System.Reflection;
+using System.Collections.Generic;
 using PathologicalGames;
 
 public class GameConfig : MonoBehaviour {
@@ -18,6 +18,8 @@ public class GameConfig : MonoBehaviour {
 	public static string CharCatapult = "Catapult";
 
 	public static string CopterPoolName = "CopterRelated";
+
+	public HashSet<string> bloodyable;
 
 //	public static int maxNumBullets = 20;
 //	public static int maxNumMissiles = 3;
@@ -37,6 +39,10 @@ public class GameConfig : MonoBehaviour {
 		if(treeObject == null) {
 			Debug.LogError ("You forget to set tree object");
 		}
+
+		bloodyable = new HashSet<string> ();
+		bloodyable.Add ("Human");
+		bloodyable.Add ("Giant");
 
 	}
 
