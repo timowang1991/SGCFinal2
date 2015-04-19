@@ -41,7 +41,9 @@ public class PackageGiantLaserEye : MonoBehaviour {
 			GiantCircularProgressActivateLaser activateLaser = canvasLeftEye.GetComponent<GiantCircularProgressActivateLaser>();
 			activateLaser.activatingScript = true;
 
-			this.GetComponent<PhotonView>().RPC ("tellMasterToDestroy", this.GetComponent<PhotonView>().owner);
+			if(col.gameObject.GetComponent<PhotonView>().isMine){
+				this.GetComponent<PhotonView>().RPC ("tellMasterToDestroy", this.GetComponent<PhotonView>().owner);
+			}
 		}
 
 		if(col.gameObject.name == "Terrain"){
