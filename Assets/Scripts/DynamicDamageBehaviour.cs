@@ -26,7 +26,7 @@ public class DynamicDamageBehaviour : MonoBehaviour,IDamageOthersBehaviour {
 	// Update is called once per frame
 	void Update () {
 		sCollider.radius += (3 * Time.deltaTime);
-		basicDamage = basicDamage / sCollider.radius;
+		basicDamage = basicDamage - sCollider.radius;
 	}
 
 
