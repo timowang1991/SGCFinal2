@@ -38,6 +38,15 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
     	
 	}
 
+	void Awake() {
+		Random.seed = (int)(Time.realtimeSinceStartup + PhotonNetwork.GetPing() * Random.value);
+		cataPointsPos [0] = catapultPoints [0].position;
+		cataPointsPos [1] = catapultPoints [1].position;
+		catapultXDiff = cataPointsPos[0].x - cataPointsPos[1].x;
+		catapultZDiff = cataPointsPos[0].z - cataPointsPos[1].z;
+		randPos.y = highestYCoordinateInScene; 
+	}
+
     /// <summary>
     /// Joing the room.
     /// </summary>
@@ -170,8 +179,8 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 //				//mCtrl.isControllable = true;
 //				//let the MC know which Catapult is controllable
 //				mCtrl.setCatapult(myCatapult);
-			
-			heroType type =  heroType.magician;//(heroType)Random.Range(0,2);
+			//Random.seed = (int)Time.time;
+			heroType type =  heroType.catapult;//(heroType)Random.Range(0,2);
 			
 			GameObject currPlayer;
 			HeroCamAlias cameraLogic;
