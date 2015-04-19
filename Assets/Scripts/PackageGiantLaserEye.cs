@@ -10,6 +10,14 @@ public class PackageGiantLaserEye : MonoBehaviour {
 	public float timeToDestroyAfterTouchGround = 10.0f;
 	// Use this for initialization
 	void Start () {
+
+		Platform platform = GameObject.Find("PlatformManager").GetComponent<PlatformIndicator>().platform;
+
+		if(platform != Platform.PC_Giant)
+		{
+			this.enabled = false;
+		}
+
 		circularProgressCanvas_LeftEye = GameObject.FindGameObjectWithTag("CircularProgressCanvas_LeftEye");
 		circularProgressCanvas_RightEye = GameObject.FindGameObjectWithTag("CircularProgressCanvas_RightEye");
 	}
