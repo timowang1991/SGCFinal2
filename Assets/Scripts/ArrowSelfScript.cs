@@ -36,19 +36,19 @@ public class ArrowSelfScript : MonoBehaviour {
 		if(other.gameObject.tag == "Weak")
 		{
 			Debug.Log ("Arrow: " + other.gameObject.tag);
-			GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().HurtGiant(1,this.gameObject.tag);
+			GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().damage(10);
 			AttachToCollisionPoint(other);
 		}
 		else if(other.gameObject.tag == "Weaker")
 		{
 			Debug.Log ("Arrow: " + other.gameObject.tag);
-			GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().HurtGiant(2,this.gameObject.tag);
+			GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().damage(20);
 			AttachToCollisionPoint(other);
 		}
 		else if(other.gameObject.tag == "Weakest")
 		{
 			Debug.Log ("Arrow: " + other.gameObject.tag);
-			GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().HurtGiant(3,this.gameObject.tag);
+			GameObject.FindGameObjectWithTag("GiantPlayer").GetComponent<GiantHealth>().damage(30);
 			AttachToCollisionPoint(other);
 		}
 	}

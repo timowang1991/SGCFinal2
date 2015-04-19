@@ -180,7 +180,7 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 //				//let the MC know which Catapult is controllable
 //				mCtrl.setCatapult(myCatapult);
 			//Random.seed = (int)Time.time;
-			heroType type = heroType.ninja;//(heroType)Random.Range(0,2);
+			heroType type = heroType.catapult;//(heroType)Random.Range(0,2);
 			
 			GameObject currPlayer;
 			HeroCamAlias cameraLogic;
@@ -198,6 +198,8 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 				//                    Camera.main.GetComponent<CharacterController>().enabled = true;
 				//                    Camera.main.GetComponent<MobileController>().enabled = true;
 				//set camera position
+
+
 				Camera.main.transform.position = camToPutTrans.position;
 				Camera.main.transform.rotation = camToPutTrans.rotation;
 				Camera.main.transform.parent = myCatapult.transform;
@@ -206,6 +208,8 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 				//mCtrl.isControllable = true;
 				//let the MC know which Catapult is controllable
 				mCtrl.setCatapult(myCatapult);
+
+				addHPSys(myCatapult,100);
 				break;
 			case heroType.magician:
 				
