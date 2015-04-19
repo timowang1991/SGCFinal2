@@ -32,7 +32,7 @@ public class NinjaMobileGesture : MonoBehaviour {
 
 		RuntimePlatform currplatform = Application.platform;
 
-		if(currplatform == RuntimePlatform.Android || currplatform == RuntimePlatform.IPhonePlayer)
+		if(!(currplatform == RuntimePlatform.Android || currplatform == RuntimePlatform.IPhonePlayer))
 		{
 			if(!this.GetComponent<PhotonView>().isMine)
 			{
@@ -58,7 +58,7 @@ public class NinjaMobileGesture : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(!leftJoystick.GetComponent<CNJoystick>().currentlyTouched && !rightJoystick.GetComponent<CNJoystick>().currentlyTouched)
+		if( !leftJoystick.GetComponent<CNJoystick>().currentlyTouched && !rightJoystick.GetComponent<CNJoystick>().currentlyTouched)
 		{
 			
 			virtualKeyPosition = new Vector3(0,0,0);
