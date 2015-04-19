@@ -11,7 +11,7 @@ public class PackageDropdownGiantLaserEyeController : Photon.MonoBehaviour {
 	public float maxInterval = 30.0f;
 	
 	//public Transform packagePrefab;
-	public string packagePrefab = "PackageGiantLaserEyePrefab";
+	public string packagePrefab = "PackageGiantLaserEyePrefab2";
 	Platform platform;
 	
 	

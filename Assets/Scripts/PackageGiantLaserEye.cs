@@ -38,6 +38,9 @@ public class PackageGiantLaserEye : MonoBehaviour {
 			canvasLeftEye.AddComponent<GiantCircularProgressActivateLaser>();
 			canvasRightEye.AddComponent<GiantCircularProgressActivateLaser>();
 
+			GiantCircularProgressActivateLaser activateLaser = canvasLeftEye.GetComponent<GiantCircularProgressActivateLaser>();
+			activateLaser.activatingScript = true;
+
 			this.GetComponent<PhotonView>().RPC ("tellMasterToDestroy", this.GetComponent<PhotonView>().owner);
 		}
 
