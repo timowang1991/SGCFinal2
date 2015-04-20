@@ -95,7 +95,7 @@ public class GiantGrabAndReleaseObject : Photon.MonoBehaviour {
 			return;
 		
 		if(displacement.magnitude >= speedValveToThrow &&
-		   displacement.y < 0 &&
+		   /*displacement.y < 0 &&*/
 		   displacement.z > 0){
 //			Debug.Log("displacement.magnitude = " + displacement.magnitude);
 			foreach(GameObject gObject in grabbedObjectList){
