@@ -180,7 +180,7 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 //				//let the MC know which Catapult is controllable
 //				mCtrl.setCatapult(myCatapult);
 			//Random.seed = (int)Time.time;
-			heroType type =(heroType)Random.Range(0,2);
+			heroType type = (heroType)Random.Range(0,2);
 			
 			GameObject currPlayer;
 			HeroCamAlias cameraLogic;
@@ -209,7 +209,7 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 				//let the MC know which Catapult is controllable
 				mCtrl.setCatapult(myCatapult);
 
-				addHPSys(myCatapult,100);
+				addHPSys(myCatapult,300);
 				break;
 			case heroType.magician:
 				
@@ -224,7 +224,7 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 				//init complete and tell everyone which weapon to take
 				gameLogic.initVarsByRPC (netCtrl, PhotonTargets.Others);
 
-				addHPSys(currPlayer,100);
+				addHPSys(currPlayer,300);
 				//currPlayer.GetComponent<HealthSystem>().enabled = true;
 				
 				//add a HeroCamera_New to currPlayer (HeroCamera_New to fine the head position of the player)
@@ -266,7 +266,7 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 				//init complete and tell everyone which weapon to take
 				gameLogic.initVarsByRPC (netCtrl_2, PhotonTargets.Others);
 				//currPlayer.GetComponent<HealthSystem>().enabled = true;
-				addHPSys(currPlayer,100);
+				addHPSys(currPlayer,300);
 				//add a HeroCamera_New to currPlayer (HeroCamera_New to fine the head position of the player)
 				cameraLogic = currPlayer.GetComponent<HeroCamAlias> ();
 				if (cameraLogic == null) {
