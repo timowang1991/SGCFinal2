@@ -137,8 +137,8 @@ public class HealthSystem : Photon.MonoBehaviour {
 	void RecoverHP (int DefaultRecoveryHPvalue)
 	{
 		int TotalHP = HealthVal + DefaultRecoveryHPvalue;
-		if ( TotalHP > 100) {
-			this.SetHealthValue(100);
+		if ( TotalHP > 300) {
+			this.SetHealthValue(300);
 		}
 		else
 		{
