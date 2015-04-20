@@ -91,6 +91,9 @@ public class GiantHealth : MonoBehaviour {
 	public void damage(GameObject objCausingDamage) {
 		Debug.Log (objCausingDamage.name);
 		IDamageOthersBehaviour damagingBehaviour = (IDamageOthersBehaviour)objCausingDamage.GetComponent (typeof(IDamageOthersBehaviour));
+		if(objCausingDamage.tag == "GiantGrabbableStone"){
+			return;
+		}
 		damagingBehaviour.beforeDamaging (damagable);
 		GiantPhotonView.RPC ("damageRPC", PhotonTargets.All, damagingBehaviour.getDamageVal(damagable));
 		damagingBehaviour.afterDamaging (damagable);
