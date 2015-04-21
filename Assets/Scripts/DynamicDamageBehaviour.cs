@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 public class DynamicDamageBehaviour : MonoBehaviour,IDamageOthersBehaviour {
 
+	public float decreaseFactor = 1.2f;
+	public float basicFixDamage = 50;
 	public float basicDamage = 50;
 	private bool causingContinuousDamage = false;
 	private SphereCollider sCollider;
@@ -26,7 +28,7 @@ public class DynamicDamageBehaviour : MonoBehaviour,IDamageOthersBehaviour {
 	// Update is called once per frame
 	void Update () {
 		sCollider.radius += (3 * Time.deltaTime);
-		basicDamage = basicDamage - sCollider.radius;
+		basicDamage = basicFixDamage - sCollider.radius * decreaseFactor;
 	}
 
 
