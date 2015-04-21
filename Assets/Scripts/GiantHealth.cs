@@ -96,6 +96,7 @@ public class GiantHealth : MonoBehaviour {
 		}
 		damagingBehaviour.beforeDamaging (damagable);
 		if (GiantPhotonView.isMine) { //send RPC only in Giant-Controlled Scene, so make sure collision is normally happen in Giant-Controlled Scene
+			Debug.Log ("Giant Damage RPC");
 			GiantPhotonView.RPC ("damageRPC", PhotonTargets.All, damagingBehaviour.getDamageVal (damagable));
 		}
 		damagingBehaviour.afterDamaging (damagable);
@@ -103,6 +104,7 @@ public class GiantHealth : MonoBehaviour {
 
 	public void damage(float damageVal) {
 		if (GiantPhotonView.isMine) {
+			Debug.Log ("Giant Damage RPC");
 			GiantPhotonView.RPC ("damageRPC", PhotonTargets.All, damageVal);
 		}
 	}
