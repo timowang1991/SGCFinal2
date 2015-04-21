@@ -81,7 +81,7 @@ public class CopterCtrller : Photon.MonoBehaviour {
 		    //detonatorPool.spawned.Count < detonatorPool.limitAmount && 
 		    timer > 2) {
 			//photonView.RPC ("LaunchMissile", PhotonTargets.All, launchTrans.position, (targetTrans.position - launchTrans.position));
-			photonView.RPC ("LaunchMissile", PhotonTargets.All);
+			photonView.RPC ("LaunchMissile", PhotonTargets.All, launchTrans.position, targetTrans.position);
 			timer = 0;
 		} 
 
@@ -89,7 +89,7 @@ public class CopterCtrller : Photon.MonoBehaviour {
 			//photonView.RPC ("FireMachineGun", PhotonTargets.All, launchTrans.position, (targetTrans.position - launchTrans.position));
 			muzzle.SetActive (true);
 			if(bulletsPool.spawned.Count < bulletsPool.limitAmount) {
-				photonView.RPC ("FireMachineGun", PhotonTargets.All);
+				photonView.RPC ("FireMachineGun", PhotonTargets.All, launchTrans.position, targetTrans.position);
 			}
 		}
 		else {
@@ -108,26 +108,26 @@ public class CopterCtrller : Photon.MonoBehaviour {
 
 	//the below code should not depend on variable values initiated in Start or Awake
 
-	void setPosDirSpeed(Transform objTrans, float speedFactor) {
-		objTrans.position = launchTrans.position;
-		objTrans.LookAt (targetTrans.position);
-		objTrans.rigidbody.velocity = speedFactor * (targetTrans.position - launchTrans.position).normalized;
+	void setPosDirSpeed(Transform objTrans, float speedFactor, Vector3 launchPos, Vector3 targetPos) {
+		objTrans.position = launchPos;
+		objTrans.LookAt (targetPos);
+		objTrans.rigidbody.velocity = speedFactor * (targetPos - launchPos).normalized;
 	}
 
 	[RPC]
-	void LaunchMissile() {
+	void LaunchMissile(Vector3 launchPos, Vector3 targetPos) {
 		Transform rocketTrans = missilesPool.spawnPool.Spawn (missileObj.transform);
 		if (rocketTrans != null) {
-			setPosDirSpeed (rocketTrans, missileInitSpeed);
+			setPosDirSpeed (rocketTrans, missileInitSpeed, launchPos, targetPos);
 			audio.PlayOneShot (launchSound);
 		}
 	}
 	
 	[RPC]
-	void FireMachineGun() {
+	void FireMachineGun(Vector3 launchPos, Vector3 targetPos) {
 		Transform bulletTrans = bulletsPool.spawnPool.Spawn (bulletObj.transform);
 		if (bulletTrans != null) {
-			setPosDirSpeed (bulletTrans, bulletInitSpeed);
+			setPosDirSpeed (bulletTrans, bulletInitSpeed, launchPos, targetPos);
 		}
 	}
 	
