@@ -4,6 +4,8 @@ using System.Collections;
 public class MagicianFunctionalUI : MonoBehaviour {
 
 	public bool testTornado = false;
+	public bool testFireball = false;
+	public bool testHealthOthers = false;
 
 	void Update()
 	{
@@ -11,6 +13,16 @@ public class MagicianFunctionalUI : MonoBehaviour {
 		{
 			BtnPressed(MagicianFunctionalType.Tornado);
 			testTornado = false;	
+		}
+		else if(testFireball)
+		{
+			BtnPressed(MagicianFunctionalType.Fireball);
+			testFireball = false;	
+		}
+		if(testHealthOthers)
+		{
+			BtnPressed(MagicianFunctionalType.HealthOthers);
+			testHealthOthers = false;	
 		}
 	}
 	public enum MagicianFunctionalType
