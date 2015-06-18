@@ -21,7 +21,7 @@ public class GiantGrabAndReleaseObject : Photon.MonoBehaviour {
 	
 	Camera ovrCamera;
 	int ovrCamRayLayer;
-	
+
 	// Use this for initialization
 	void Start () {
 		platform = GameObject.Find("PlatformManager").GetComponent<PlatformIndicator>().platform;

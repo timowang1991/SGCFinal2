@@ -2,12 +2,17 @@
 using System.Collections;
 
 public class ObjectDisappear : Photon.MonoBehaviour {
-	public float timerToDestroy = 30f;
+	public bool countDownAtStart;
+	public float timerToDestroy;
 	bool isPhotonSelfDestruct = false;
+
+//	public delegate void ObjectDestroyNotify();
+//	public event ObjectDestroyNotify OnObjectDestroyNotify;
 
 	// Use this for initialization
 	void Start () {
-	
+		if(countDownAtStart)
+			countDownDestroy();
 	}
 	
 	// Update is called once per frame
@@ -39,8 +44,16 @@ public class ObjectDisappear : Photon.MonoBehaviour {
 	/// </summary>
 	void PhotonSelfDestruct(){
 		//photonView.RPC("selfTreeDestroy", PhotonTargets.All, null);
+//		Debug.Log ("PhotonSelfDestruct transform.parent = " + transform.parent);
+		if(transform.parent != null){
+			isPhotonSelfDestruct = false;
+			countDownDestroy();
+			return;
+		}
 		Debug.Log ("PhotonSelfDestruct");
+
 		PhotonNetwork.Destroy(this.gameObject);
 		
 	}
 }
+

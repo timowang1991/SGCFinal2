@@ -3,7 +3,7 @@ using System.Collections;
 
 public class StoneSelfDestroy : MonoBehaviour {
 
-	public float timeToDestroy = 20.0f;
+	public float timeToDestroy;
 
 	// Use this for initialization
 	void Start () {

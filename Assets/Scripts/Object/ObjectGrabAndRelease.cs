@@ -8,7 +8,7 @@ public class ObjectGrabAndRelease : Photon.MonoBehaviour {
 	HashSet<string> grabbableBodyPartTagSet;
 	
 	GameObject parentGameObject;
-	
+
 	// Use this for initialization
 	void Start () {
 		grabbableBodyPartTagSet = new HashSet<string>();
