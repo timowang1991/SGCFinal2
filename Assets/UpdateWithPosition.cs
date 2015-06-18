@@ -4,7 +4,7 @@ using System.Collections;
 public class UpdateWithPosition : MonoBehaviour {
 
 	public Transform obj;
-	public int speed = 10;
+	public float speed = 0.6f;
 
 	// Use this for initialization
 	void Start () {
