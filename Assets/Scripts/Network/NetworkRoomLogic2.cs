@@ -17,8 +17,9 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 	private Platform platform;
 
 	private const float highestYCoordinateInScene = 245;
-	public bool testingMagician = false;
-	public bool testingCopter = false;
+	public bool testingMagician;
+	public bool testingCopter;
+	public bool testingKnight;
 
 	public GameObject magicianFunctionUIPrefab;
 
@@ -27,6 +28,7 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 		ninja,
 		magician,
 		catapult,
+		knight,
 	}
 
 	// Use this for initialization
@@ -97,7 +99,7 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 		else if (platform == Platform.PC_NonGiant) {
 				GameObject currPlayer;
 				bool setCamLogic = false;
-				
+				Debug.Log ("PC_NonGiant here");
 				if(testingMagician) {
 					currPlayer = PhotonNetwork.Instantiate ("Magician", startPoint.position, Quaternion.identity, 0);	
 					
@@ -112,7 +114,23 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 
 					addHPSys(currPlayer, 400);
 				}
+				else if(testingKnight) {
+					Debug.Log ("Instantiate Knight");
+					currPlayer = PhotonNetwork.Instantiate ("Knight", startPoint.position, Quaternion.identity, 0);	
+					
+					//currPlayer.GetComponent<CharacterNetSyncAlias>().correctPlayerPos = startPoint.position;
+					//MagicianNet_Ctrl netCtrl = currPlayer.GetComponent<MagicianNet_Ctrl> ();
+					//isControllable is hide for inspector, and set to false by default
+					//netCtrl.isControllable = true;
+					//gameLogic.currPlayerCharCtrlMagician= netCtrl;
+					//init complete and tell everyone which weapon to take
+					//gameLogic.initVarsByRPC (netCtrl, PhotonTargets.Others);
+					setCamLogic = true;
+					
+					//addHPSys(currPlayer, 400);
+				}
 				else if(testingCopter) {
+					Debug.Log ("Copter here");
 					currPlayer = PhotonNetwork.Instantiate ("Helicopter_Net", startPoint.position, Quaternion.identity, 0);
 					HealthSystem hpSys = addHPSys(currPlayer, 400);
 					CopterDamagedBehaviour damagable = currPlayer.GetComponent<CopterDamagedBehaviour>();
@@ -180,8 +198,14 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 //				//let the MC know which Catapult is controllable
 //				mCtrl.setCatapult(myCatapult);
 			//Random.seed = (int)Time.time;
-			heroType type = heroType.magician;//(heroType)Random.Range(0,2);
-			
+			heroType type;
+			if (testingKnight) {
+				type = heroType.knight;
+			}
+			else {
+				type = heroType.magician;//(heroType)Random.Range(0,2);
+			}
+
 			GameObject currPlayer;
 			HeroCamAlias cameraLogic;
 			switch(type){
@@ -211,7 +235,35 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 
 				addHPSys(myCatapult,300);
 				break;
-			case heroType.magician:
+			case heroType.knight:{
+				currPlayer = PhotonNetwork.Instantiate ("Knight", startPoint.position, Quaternion.identity, 0);
+				//gameLogic.currPlayerCharCtrlMagician= currPlayer;
+				//gameLogic.initVarsByRPC (currPlayer, PhotonTargets.Others);
+				//addHPSys(currPlayer,300);
+
+
+				cameraLogic = currPlayer.GetComponent<HeroCamAlias> ();
+				if (cameraLogic == null) {
+					currPlayer.AddComponent<HeroCamAlias> ();
+					cameraLogic = currPlayer.GetComponent<HeroCamAlias> ();
+				}
+				//Camera.main == The first enabled camera tagged "MainCamera" (Read Only).
+				Camera mainCam = Camera.main;
+				if (mainCam == null) {
+					mainCam = new Camera ();
+					mainCam.tag = "MainCamera";
+				}
+				mainCam.GetComponent<CharacterController>().enabled = false;
+				mainCam.GetComponent<MobileController>().enabled = false;
+				//set the transform of the camera
+				cameraLogic.cam = mainCam.transform;
+				cameraLogic.enabled = true;
+				mainCam.transform.parent = currPlayer.transform;
+
+				Destroy(Camera.main.GetComponent<CharacterController>());
+				break;
+			}
+			case heroType.magician:{
 				
 				currPlayer = PhotonNetwork.Instantiate ("Magician", startPoint.position, Quaternion.identity, 0);    
 				
@@ -252,8 +304,8 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 
 				Destroy(Camera.main.GetComponent<CharacterController>());
 
-				break;
-			case heroType.ninja:
+				break;}
+			case heroType.ninja:{
 				currPlayer = PhotonNetwork.Instantiate ("Ninja_Net2_noCollider", startPoint.position, Quaternion.identity, 0);
 				currPlayer.GetComponent<ArrowGenerator>().enabled = true;
 				
@@ -290,6 +342,7 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 				currPlayer.AddComponent<NinjaMobileGesture>();
 				currPlayer.GetComponent<NinjaMobileGesture>().controlledNinja = currPlayer;
 				break;
+				}
 			}
 
 
