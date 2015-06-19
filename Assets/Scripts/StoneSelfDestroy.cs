@@ -3,11 +3,14 @@ using System.Collections;
 
 public class StoneSelfDestroy : MonoBehaviour {
 
+	public bool countDownAtStart;
 	public float timeToDestroy;
+	bool isPhotonSelfDestruct = false;
 
 	// Use this for initialization
 	void Start () {
-		Invoke ("selfDestroy", timeToDestroy);
+		if(countDownAtStart)
+			countDownDestroy();
 	}
 
 	
@@ -16,7 +19,20 @@ public class StoneSelfDestroy : MonoBehaviour {
 
 	}
 
-	void selfDestroy(){
+	public void countDownDestroy(){
+		if (isPhotonSelfDestruct == false ) {
+			Invoke ("PhotonSelfDestruct", timeToDestroy);
+			isPhotonSelfDestruct = true;
+		}
+	}
+
+	void PhotonSelfDestruct(){
+		if(transform.parent != null){
+			isPhotonSelfDestruct = false;
+			countDownDestroy();
+			return;
+		}
+
 		this.GetComponent<PhotonView>().RPC("tellMasterToDestroy",this.GetComponent<PhotonView>().owner);
 	}
 
