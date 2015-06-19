@@ -19,8 +19,9 @@ public class ObjectGrabAndRelease : Photon.MonoBehaviour {
 	}
 
 	[RPC]
-	public void RPCAttachPoint()
+	public void RPCAttachPoint(int viewId)
 	{
+		parentGameObject = PhotonView.Find(viewId).gameObject;
 		transform.parent = parentGameObject.transform;
 		rigidbody.isKinematic = true;
 		rigidbody.useGravity = false;
@@ -39,8 +40,8 @@ public class ObjectGrabAndRelease : Photon.MonoBehaviour {
 	public bool GrabObjectByGameObject(GameObject gObject){
 		if(!IsGrabbableToGameObject(gObject)) return false;
 
-		parentGameObject = gObject;
-		photonView.RPC ("RPCAttachPoint", PhotonTargets.All, null);
+
+		photonView.RPC ("RPCAttachPoint", PhotonTargets.All, gObject.GetComponent<PhotonView>().viewID);
 		return true;
 	}
 
