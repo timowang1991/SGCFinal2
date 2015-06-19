@@ -21,7 +21,7 @@ public class ObjectGrabAndRelease : Photon.MonoBehaviour {
 	[RPC]
 	public void RPCAttachPoint(int viewId)
 	{
-		parentGameObject = PhotonView.Find(viewId);
+		parentGameObject = PhotonView.Find(viewId).gameObject;
 		transform.parent = parentGameObject.transform;
 		rigidbody.isKinematic = true;
 		rigidbody.useGravity = false;
