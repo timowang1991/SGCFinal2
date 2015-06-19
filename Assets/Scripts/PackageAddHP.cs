@@ -16,12 +16,21 @@ public class PackageAddHP : MonoBehaviour {
 	}
 	
 	void OnCollisionEnter(Collision col){
-//		print (col.gameObject.tag);
+
+		print (col.gameObject.name);
 		if (col.transform.root.gameObject.tag == "Player") {
 //			print (col.gameObject.name);
 			if(col.transform.root.gameObject.GetComponent<PhotonView>().isMine){
 				//add HP by sending negative value to damage function
 				col.transform.root.gameObject.GetComponent<HealthSystem>().damage(-addHP);
+				this.GetComponent<PhotonView>().RPC("tellMasterToDestroy",this.GetComponent<PhotonView>().owner);
+				//PhotonNetwork.Destroy(gameObject);
+			}
+		}
+		else if(col.gameObject.tag == "Player"){
+			if(col.gameObject.GetComponent<PhotonView>().isMine){
+				//add HP by sending negative value to damage function
+				col.gameObject.GetComponent<HealthSystem>().damage(-addHP);
 				this.GetComponent<PhotonView>().RPC("tellMasterToDestroy",this.GetComponent<PhotonView>().owner);
 				//PhotonNetwork.Destroy(gameObject);
 			}
