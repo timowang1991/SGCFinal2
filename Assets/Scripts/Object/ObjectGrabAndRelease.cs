@@ -47,7 +47,10 @@ public class ObjectGrabAndRelease : Photon.MonoBehaviour {
 
 	public void ReleaseObject(){
 		if(parentGameObject != null){
-			photonView.RPC ("RPCDetachPoint", PhotonTargets.All, null);
+			transform.parent = null;
+			rigidbody.isKinematic = false;
+			rigidbody.useGravity = true;
+			//photonView.RPC ("RPCDetachPoint", PhotonTargets.All, null);
 			parentGameObject = null;
 		}
 	}
