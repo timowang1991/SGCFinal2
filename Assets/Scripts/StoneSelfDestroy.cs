@@ -32,8 +32,10 @@ public class StoneSelfDestroy : MonoBehaviour {
 			countDownDestroy();
 			return;
 		}
-
-		this.GetComponent<PhotonView>().RPC("tellMasterToDestroy",this.GetComponent<PhotonView>().owner);
+		if(this.GetComponent<PhotonView>().isMine)
+		{
+			this.GetComponent<PhotonView>().RPC("tellMasterToDestroy",this.GetComponent<PhotonView>().owner);
+		}
 	}
 
 	[RPC]
