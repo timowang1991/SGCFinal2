@@ -71,18 +71,21 @@ public class knightMovement : Photon.MonoBehaviour {
 		//bool turning = h > 0.5f;
 		bool direction = v > 0.1f;
 		bool running = v != 0f || h != 0f;//v > 0.8f || v < -0.8f;
+		bool shield = rv < 0f;
 	
 		// Tell the animator whether or not the player is walking.
 		anim.SetBool ("isWalking", walking);
 		//anim.SetBool ("isTurning", turning);
 		anim.SetBool ("direction", direction);
 		anim.SetBool ("isRunning", running);
+		anim.SetBool ("isShield", shield);
 		anim.SetFloat ("turningSpeed", 0f);
 		if (rv > 0) {
 				anim.SetTrigger ("attack");
-		} else if (rv < 0) {
+		}/* else if (rv < 0) {
 				anim.SetTrigger ("shield");
-		}
+		}*/
+		
 		
 		//anim.SetTrigger ("jump", jump);
 		
