@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PackageAddHP : MonoBehaviour {
 
-	public float timeToDestroy = 10;
+	public float timeToDestroyAfterTouchGround = 10;
 	public int addHP = 10;
 	// Use this for initialization
 	void Start () {
@@ -35,11 +35,15 @@ public class PackageAddHP : MonoBehaviour {
 				//PhotonNetwork.Destroy(gameObject);
 			}
 		}
+		else if(col.gameObject.name == "Terrain"){
+			Invoke("tellMasterToDestroy", timeToDestroyAfterTouchGround);
+		}
 	}
 	
 	[RPC]
 	void tellMasterToDestroy()
 	{
+		CancelInvoke ("tellMasterToDestroy");
 		PhotonNetwork.Destroy(gameObject);
 	}
 }
