@@ -13,7 +13,8 @@ public class knightMovement : Photon.MonoBehaviour {
 	public float speed; 
 	public float turnSmoothing = 15f;
 	public float rotSpeed = 90.0f;
-	public float shakeSpeed = 90.0f;
+	public float shakeSpeed = 0.3f;
+	public bool test = false;
 
 	public bool attacking = false;
 
@@ -30,6 +31,7 @@ public class knightMovement : Photon.MonoBehaviour {
 		leftJoystick = GameObject.FindGameObjectWithTag ("Left_Joystick").GetComponent<CNJoystick> ();
 		rightJoystick = GameObject.FindGameObjectWithTag ("Right_Joystick").GetComponent<CNJoystick> ();
 		playerRigidbody = GetComponent <Rigidbody> ();
+		Input.gyro.enabled = true;
 	}
 	
 
@@ -48,6 +50,7 @@ public class knightMovement : Photon.MonoBehaviour {
 		UpdateRotateMovement (h,v);
 		UpdateGyro ();
 		UpdateAnimation (h, v, rh, rv);
+
 		
 	}
 	
@@ -102,12 +105,19 @@ public class knightMovement : Photon.MonoBehaviour {
 		}
 	}
 	void UpdateGyro (){
-		if (Input.gyro.rotationRate.y > shakeSpeed) {
+
+		Debug.Log ("Input.gyro.rotationRateUnbiased.z:" + Input.gyro.rotationRateUnbiased.z);
+
+		//if (Input.gyro.rotationRate.x > shakeSpeed) {
+		if(Input.gyro.rotationRateUnbiased.z > shakeSpeed) {
+			Debug.Log ("INNNNNNNNNNNNNNNNNNN");
 			Vector3 forward = transform.forward;
-			forward.y = 0f;
-			movement = forward.normalized*10f;
+
+			//forward.y = 0f;
+			movement = forward.normalized*30f;
 			playerRigidbody.MovePosition (transform.position + movement);
 		}
+
 
 	}
 
