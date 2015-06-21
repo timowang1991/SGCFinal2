@@ -5,16 +5,16 @@ public class KnightDamagedBehaviour : MonoBehaviour,IDamageOthersBehaviour {
 
 	public float basicDamage;
 	public bool causingContinuousDamage;
-
-	static int attackState = Animator.StringToHash("Base.attack");
-	//
-
+	int animatorAttackCode = Animator.StringToHash("Base.attack");
+	
 	float IDamageOthersBehaviour.getDamageVal(IDamagedBehaviour damagable) {
-		if(this.transform.root.gameObject.GetComponent<Animator>().GetHashCode() == attackState.GetHashCode())
+		if (this.transform.root.GetComponent<Animator> ().GetCurrentAnimatorStateInfo (0).GetHashCode () == animatorAttackCode) {
+			return basicDamage;
+		}
+		else
 		{
 			return 0;
 		}
-		return basicDamage;	
 	}
 	
 	bool IDamageOthersBehaviour.isContinuousDamage(IDamagedBehaviour damagable) {

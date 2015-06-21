@@ -22,7 +22,6 @@ public class knightMovement : Photon.MonoBehaviour {
 		leftJoystick = GameObject.FindGameObjectWithTag ("Left_Joystick").GetComponent<CNJoystick> ();
 		rightJoystick = GameObject.FindGameObjectWithTag ("Right_Joystick").GetComponent<CNJoystick> ();
 		playerRigidbody = GetComponent <Rigidbody> ();
-		
 	}
 	
 
