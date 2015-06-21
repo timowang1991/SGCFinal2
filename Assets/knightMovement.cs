@@ -59,7 +59,7 @@ public class knightMovement : Photon.MonoBehaviour {
 			//movement.y = 0f;
 			speed = movement.normalized.magnitude;
 			movement = movement.normalized * speed * 80 * Time.deltaTime;
-			print ("movement: "+movement);
+			//print ("movement: "+movement);
 			// Move the player to it's current position plus the movement.
 			playerRigidbody.MovePosition (transform.position + movement);
 		}
@@ -82,7 +82,7 @@ public class knightMovement : Photon.MonoBehaviour {
 		rigidbody.MoveRotation(newRotation);*/
 
 		if (h > 0.3f) {
-			print("H value:"+h);
+			//print("H value:"+h);
 			//transform.Rotate (Vector3.up * Time.deltaTime, Space.World);
 			transform.Rotate (Vector3.up * Time.deltaTime * 100f);
 		} 
