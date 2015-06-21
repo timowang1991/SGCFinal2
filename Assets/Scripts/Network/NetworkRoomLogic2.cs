@@ -237,9 +237,10 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 				break;
 			case heroType.knight:{
 				currPlayer = PhotonNetwork.Instantiate ("Knight", startPoint.position, Quaternion.identity, 0);
+				currPlayer.GetComponent<knightMovement>().enabled = true;
 				//gameLogic.currPlayerCharCtrlMagician= currPlayer;
 				//gameLogic.initVarsByRPC (currPlayer, PhotonTargets.Others);
-				//addHPSys(currPlayer,300);
+
 
 
 				cameraLogic = currPlayer.GetComponent<HeroCamAlias> ();
@@ -259,8 +260,16 @@ public class NetworkRoomLogic2 : Photon.MonoBehaviour{
 				cameraLogic.cam = mainCam.transform;
 				cameraLogic.enabled = true;
 				mainCam.transform.parent = currPlayer.transform;
+				print("Knight");
+
+				if(currPlayer == null)
+				{
+					print ("Knight is NULL");
+				}
+				addHPSys(currPlayer,300);
 
 				Destroy(Camera.main.GetComponent<CharacterController>());
+
 				break;
 			}
 			case heroType.magician:{
