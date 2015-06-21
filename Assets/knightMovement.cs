@@ -35,7 +35,7 @@ public class knightMovement : Photon.MonoBehaviour {
 
 		UpdateMovement (h,v);
 		UpdateRotateMovement (h,v);
-		//UpdateGyro ();
+		UpdateGyro ();
 		UpdateAnimation (h, v, rh, rv);
 		
 	}
