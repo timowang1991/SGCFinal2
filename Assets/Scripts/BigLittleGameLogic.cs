@@ -13,6 +13,7 @@ public class BigLittleGameLogic : Photon.MonoBehaviour {
 
 	private bool testingMagician = false;
 	private bool testingCopter = false;
+	//private bool testingKnight = false;
 	
 	// Use this for initialization
 	public void Start()
