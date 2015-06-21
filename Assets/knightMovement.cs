@@ -13,8 +13,9 @@ public class knightMovement : Photon.MonoBehaviour {
 	public float speed; 
 	public float turnSmoothing = 15f;
 	public float rotSpeed = 90.0f;
-	public float shakeSpeed = 0.3f;
+	public float shakeSpeed;
 	public bool test = false;
+	private float nextShift;
 
 	public bool attacking = false;
 
@@ -27,11 +28,13 @@ public class knightMovement : Photon.MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		// Set up references.
+
 		anim = GetComponent<Animator> ();
 		leftJoystick = GameObject.FindGameObjectWithTag ("Left_Joystick").GetComponent<CNJoystick> ();
 		rightJoystick = GameObject.FindGameObjectWithTag ("Right_Joystick").GetComponent<CNJoystick> ();
 		playerRigidbody = GetComponent <Rigidbody> ();
 		Input.gyro.enabled = true;
+		nextShift = Time.time;
 	}
 	
 
@@ -108,14 +111,14 @@ public class knightMovement : Photon.MonoBehaviour {
 
 		Debug.Log ("Input.gyro.rotationRateUnbiased.z:" + Input.gyro.rotationRateUnbiased.z);
 
-		//if (Input.gyro.rotationRate.x > shakeSpeed) {
-		if(Input.gyro.rotationRateUnbiased.z > shakeSpeed) {
-			Debug.Log ("INNNNNNNNNNNNNNNNNNN");
+		//if (Time.time > nextShift) {
+		if(Input.gyro.rotationRateUnbiased.z > shakeSpeed && Time.time > nextShift) {
 			Vector3 forward = transform.forward;
 
 			//forward.y = 0f;
-			movement = forward.normalized*30f;
+			movement = forward.normalized*15f;
 			playerRigidbody.MovePosition (transform.position + movement);
+			nextShift = Time.time + 0.5f;
 		}
 
 
