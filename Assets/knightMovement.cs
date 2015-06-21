@@ -15,6 +15,14 @@ public class knightMovement : Photon.MonoBehaviour {
 	public float rotSpeed = 90.0f;
 	public float shakeSpeed = 90.0f;
 
+	public bool attacking = false;
+
+	public void SetAttack(float attack)
+	{
+		Debug.Log ("AttackAnimation:"+attack);
+		attacking = attack==1;
+	}
+
 	// Use this for initialization
 	void Start () {
 		// Set up references.

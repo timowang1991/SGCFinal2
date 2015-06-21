@@ -89,7 +89,7 @@ public class GiantHealth : MonoBehaviour {
 	}
 
 	public void damage(GameObject objCausingDamage) {
-		Debug.Log (objCausingDamage.name);
+		Debug.Log ("Giant Health" + objCausingDamage.name);
 		IDamageOthersBehaviour damagingBehaviour = (IDamageOthersBehaviour)objCausingDamage.GetComponent (typeof(IDamageOthersBehaviour));
 		if(objCausingDamage.tag == "GiantGrabbableStone"){
 			return;
