@@ -35,7 +35,7 @@ public class PackageAddHP : MonoBehaviour {
 				//PhotonNetwork.Destroy(gameObject);
 			}
 		}
-		else if(col.gameObject.name == "Terrain"){
+		else if(col.gameObject.name == "Terrain" && this.GetComponent<PhotonView>().isMine){
 			Invoke("tellMasterToDestroy", timeToDestroyAfterTouchGround);
 		}
 	}
@@ -43,7 +43,9 @@ public class PackageAddHP : MonoBehaviour {
 	[RPC]
 	void tellMasterToDestroy()
 	{
-		CancelInvoke ("tellMasterToDestroy");
+		if (this.GetComponent<PhotonView> ().isMine) {
+			CancelInvoke ("tellMasterToDestroy");
+		}
 		PhotonNetwork.Destroy(gameObject);
 	}
 }
