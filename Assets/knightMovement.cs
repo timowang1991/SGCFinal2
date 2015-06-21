@@ -28,6 +28,10 @@ public class knightMovement : Photon.MonoBehaviour {
 
 	void Update()
 	{
+		if (anim.GetBool("Die") == true) {
+			this.enabled = false;
+		}
+
 		float h = leftJoystick.GetAxis ("Horizontal");
 		float v = leftJoystick.GetAxis ("Vertical");
 		float rh = rightJoystick.GetAxis ("Horizontal");
