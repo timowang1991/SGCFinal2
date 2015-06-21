@@ -120,7 +120,7 @@ public class knightMovement : Photon.MonoBehaviour {
 		anim.SetBool ("isRunning", running);
 		anim.SetBool ("isShield", shield);
 		anim.SetFloat ("turningSpeed", 0f);
-		anim.SetBool ("attack", attack);
+		anim.SetBool ("isattack", attack);
 		/*if (rv > 0) {
 			anim.SetBool ("attack", true);
 		}*//* else if (rv < 0) {
